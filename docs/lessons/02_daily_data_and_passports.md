@@ -16,7 +16,7 @@ or inside ZIP files. It selects one EQ-series security and constructs its daily
 open, high, low, close and traded-volume history. It makes no network requests.
 The old one-stock CSV/XLSX path remains available.
 
-The implementation is a **schema-subset preview**. Synthetic acceptance tests
+The UDiFF implementation is a **schema-subset preview**. Synthetic acceptance tests
 exercise the supported fields and failure cases. Acceptance against a permitted
 real report and the current complete NSE format remains pending. A file having
 the expected headers is not proof that NSE produced it.
@@ -200,3 +200,19 @@ the archive connection reset/timed out. That limitation is recorded rather than
 calling the full schema verified. Next: accept a permitted real NSE report against
 the current specification, then add a versioned exchange calendar with exceptional
 session fixtures. Corporate-action reconciliation follows as a separate milestone.
+
+## 10. Direct NSE stock-history downloads (added after the supplied-file review)
+
+The other NSE export is one security across many dates. It belongs in **Upload
+daily data**, without editing its columns, dates, comma formatting or row order.
+The app now recognizes DATE/SERIES/OPEN/HIGH/LOW/CLOSE/VOLUME alongside the extra
+quote fields. It reads DD-Mon-YYYY dates and valid Indian/international comma
+grouping. Retain the filename for a stock-label hint, explicitly not an authenticated
+security identifier. Your completion and adjustment declarations still matter.
+
+Hypothetical CLOSE 1,240.00 and LTP 1,248.00 are different fields: analysis uses
+1240. VOLUME 23,34,553 means 2334553 shares; VALUE is turnover and is not used as
+volume. Invalid/missing values are rejected instead of guessed or replaced.
+See `docs/NSE_CSV_UPLOAD.md` for the walkthrough. This support was checked against
+the owner's real security-history export locally; the separate UDiFF real-report
+acceptance gate remains open. No downloaded market dataset is bundled or uploaded.

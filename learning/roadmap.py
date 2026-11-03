@@ -137,6 +137,7 @@ Point-in-time index constituents to reduce survivorship bias
 Provider outage/rate-limit/retry/error behavior
 ~ Data completeness/freshness dashboard and adjustment-quality gates
 + No interpolation/fabrication; clearly report unavailable fields
++ Direct NSE security-history CSV upload without manual cleanup
 """)
 _add("S03", """
 Configurable swing significance, tie handling and volatility-aware filtering

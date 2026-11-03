@@ -51,6 +51,7 @@ with st.sidebar:
     is_reports = source in {"Synthetic NSE report walkthrough", "Import NSE daily reports"}
     if source == "Upload daily data":
         upload = st.file_uploader("OHLCV file", type=["csv", "xlsx"])
+        st.caption("NSE stock-history downloads work directly: keep the original CSV, columns and filename. Dates and Indian comma formatting are recognized automatically.")
     elif source == "Import NSE daily reports":
         report_uploads = st.file_uploader("Daily UDiFF reports (preview)", type=["csv", "zip"], accept_multiple_files=True, key="nse_reports")
     symbol = st.text_input("Research label", "SYNTHETIC" if source.startswith("Synthetic") else "NSE / YOUR SYMBOL", max_chars=40)
@@ -96,7 +97,7 @@ elif source.startswith("Synthetic"):
     st.info("SYNTHETIC DATA · Generated solely to demonstrate the application. This is not a stock or evidence of trading performance.")
 else:
     if upload is None:
-        st.info("Upload one symbol's daily file. Required columns: date, open, high, low, close, volume. CSV dates: YYYY-MM-DD.")
+        st.info("Upload one symbol's daily file: an original NSE stock-history CSV, or a standard date/open/high/low/close/volume CSV/XLSX. NSE downloads need no manual editing.")
         st.download_button("Download example format (synthetic)", (ROOT / "data" / "synthetic_daily.csv").read_bytes(), "synthetic_daily.csv", "text/csv")
         st.stop()
     if not complete:
@@ -107,15 +108,21 @@ else:
 if not is_reports:
     try:
         data = load_bars(content, filename)
+        input_metadata = dict(data.metadata)
+        is_nse_quote = input_metadata.get("detected_nse_quote", False)
         file_symbol = data.metadata.get("file_symbol")
         instrument_symbol = file_symbol or symbol
-        data = attach_passport(data, instrument=Instrument("Synthetic" if source.startswith("Synthetic") else declared_exchange, instrument_symbol),
-                               provider="Synthetic project fixture" if source.startswith("Synthetic") else declared_provider.strip() or "Provider not stated",
-                               input_format="Standard OHLCV CSV/XLSX", adjustment="Synthetic example" if source.startswith("Synthetic") else adjustment,
+        data = attach_passport(data, instrument=Instrument("Synthetic" if source.startswith("Synthetic") else "NSE" if is_nse_quote else declared_exchange, instrument_symbol, input_metadata.get("file_series", "")),
+                               provider="Synthetic project fixture" if source.startswith("Synthetic") else "User-supplied NSE security-history export" if is_nse_quote else declared_provider.strip() or "Provider not stated",
+                               input_format=input_metadata.get("input_format", "Standard OHLCV CSV/XLSX"), adjustment="Synthetic example" if source.startswith("Synthetic") else adjustment,
                                sources=[{"name": Path(filename).name, "sha256": data.source_hash, "bytes": len(content)}],
-                               is_synthetic=source.startswith("Synthetic"))
+                               is_synthetic=source.startswith("Synthetic"),
+                               normalization={**input_metadata.get("normalization", {}), "symbol_basis": input_metadata["symbol_basis"]} if is_nse_quote else None)
         if file_symbol:
             symbol = file_symbol
+        if is_nse_quote:
+            st.success(f"NSE stock-history format detected · {symbol} · {len(data.bars)} sessions. Dates, number formatting and row order handled automatically.")
+            st.caption(input_metadata["symbol_basis"] + ". CLOSE and VOLUME used; extra fields ignored. Adjustment declaration is still unverified.")
     except Exception as exc:
         st.error(f"Data could not be analyzed: {exc}")
         st.stop()

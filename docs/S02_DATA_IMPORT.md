@@ -2,6 +2,11 @@
 
 Status: implemented and verified with synthetic fixtures. Full S02 remains partial.
 
+Follow-on S02-021: direct NSE security-history CSV/XLSX upload is now supported
+through Upload daily data, checked against an owner-supplied real stock-history
+export locally. See `NSE_CSV_UPLOAD.md`. This is a different file format and does
+not complete the UDiFF real-file/full-current-schema gate below.
+
 ## What is usable
 
 Research offers a synthetic NSE-format walkthrough and an offline CSV/ZIP importer.

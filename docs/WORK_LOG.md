@@ -300,3 +300,45 @@ for the supported synthetic acceptance gate. Full S02 remains Partial. Next is
 permitted real-file/current-schema acceptance and exchange-calendar reconciliation,
 then corporate-action policies. No market-performance claim or learner completion
 has been added.
+
+## 2026-11-03 · S02-021: original NSE stock-history CSV compatibility
+
+- Owner supplied an unmodified NSE security-history CSV and asked to eliminate
+  manual column/date/number cleanup. Inspected its header and parser behavior.
+  This is a security-history download, not a daily multi-security UDiFF report.
+- Implemented scoped format detection in `quant_engine/nse_quotes.py`, called by
+  `load_bars`. Recognize header whitespace/case/BOM and long OHLCV aliases, convert
+  explicit English DD-Mon-YYYY dates, validate Indian/international comma grouping,
+  use CLOSE and traded share VOLUME, ignore extra market fields, and sort sessions.
+- Added EQ-only and filename/supplied-symbol conflict guards. Download filename
+  supplies a clearly disclosed label hint, not authenticated security identity.
+  Missing numbers, malformed groups, dates, duplicate sessions and bad OHLC still
+  fail instead of being filled or silently repaired. Standard CSV stays strict.
+- Added detected-format feedback and interpretation details in Data & exports.
+  Passport stores the normalization policy; adapter version is now 1.1.0 so new
+  source interpretations are versioned. Adjustment declarations remain unverified.
+- Checked the owner's unchanged file locally: **21 sessions**, ascending after
+  normalization. No row was fabricated, dropped or aggregated. The actual file
+  remains outside source control, fixtures and GitHub uploads.
+- Added 27 independent checks using invented values in the observed schema:
+  exact close/volume mapping, grouping formats, XLSX equivalence, invalid fields,
+  ambiguity/identity guards and app upload/passport flow. Initial targeted result:
+  **27 passed in 17.02 seconds**, with a pandas inference warning for an invalid-date
+  rejection. Made ISO parsing explicit, eliminating the inference path.
+- Full regression after that change: **117 passed in 48.11 seconds**, without
+  warnings. Includes the previous 90 checks and generated-doc consistency checks.
+- Added `docs/NSE_CSV_UPLOAD.md`, expanded Lesson 2 and the concept library (120
+  entries), and added explicit S02-021 to the shared roadmap (342 items). Updated
+  README/build report/S02 scope and regenerated the handbook/checklist.
+
+**Learning example:** invented CLOSE 1,240.00 versus LTP 1,248.00 means this
+daily analysis uses 1240. VOLUME 23,34,553 means 2334553 shares, not rupee turnover.
+Formatting conversion preserves quoted values; it is not split/dividend adjustment.
+
+**Owner exercise:** upload the original file through Upload daily data, inspect
+the detected format and interpretation record, and explain the long-indicator
+warm-up warning for a one-month history. Learner mastery is not marked complete.
+
+**Remaining:** UDiFF real-report/current-schema acceptance, exchange calendar and
+corporate-action reconciliation remain separate gates. Browser and GitHub results
+for this change will be recorded once observed.

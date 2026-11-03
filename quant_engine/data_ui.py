@@ -59,6 +59,10 @@ def render_passport(data):
     st.caption(f"Source dataset: {passport['source_rows']} rows, {passport['source_start']}–{passport['source_end']}. Analysis slice: {passport['analyzed_rows']} rows through {passport['analyzed_through']}.")
     st.caption(passport["calendar_status"])
     st.caption(passport["usage_rights"])
+    if passport.get("normalization"):
+        with st.expander("How this upload was interpreted"):
+            for key, value in passport["normalization"].items():
+                st.write(f"**{key.replace('_', ' ').capitalize()}:** {value}")
     coverage = passport.get("coverage", {})
     if coverage.get("report_dates_without_security"):
         st.warning("Selected security is absent from these uploaded report dates: " + ", ".join(coverage["report_dates_without_security"][:20]))

@@ -6,7 +6,7 @@ import json
 
 from .models import ValidatedData
 
-ADAPTER_VERSION = "1.0.0"
+ADAPTER_VERSION = "1.1.0"
 
 
 @dataclass(frozen=True)
@@ -34,7 +34,7 @@ def canonical_bars_bytes(bars):
 def attach_passport(data: ValidatedData, *, instrument: Instrument, provider: str,
                     input_format: str, adjustment: str, sources: list[dict],
                     is_synthetic: bool = False, source_hash_kind: str = "raw-file SHA-256",
-                    coverage: dict | None = None) -> ValidatedData:
+                    coverage: dict | None = None, normalization: dict | None = None) -> ValidatedData:
     allowed = {"Unknown / unverified", "Consistently adjusted OHLC", "Unadjusted OHLC", "Synthetic example"}
     if adjustment not in allowed:
         raise ValueError("Unsupported adjustment declaration.")
@@ -57,6 +57,7 @@ def attach_passport(data: ValidatedData, *, instrument: Instrument, provider: st
         "usage_rights": "Synthetic project fixture" if is_synthetic else "Not verified by this application; use according to your source's permissions",
         "calendar_status": "Not configured; missing sessions versus holidays cannot yet be determined",
         "coverage": coverage or {},
+        "normalization": normalization or {},
     }
     return data
 

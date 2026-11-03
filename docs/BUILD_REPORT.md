@@ -144,6 +144,16 @@ where they are useful, rather than hiding all uncertainty in a footer.
 
 ## Verification and limitations
 
+**Direct security-history upload increment:** `quant_engine/nse_quotes.py`
+recognizes the supplied NSE quote-export schema, parses explicit dates and Indian
+number grouping, selects CLOSE/share VOLUME, guards EQ identity and records its
+interpretation in the passport. Research → Upload daily data requires no manual
+file cleanup. Existing generic CSV/XLSX and UDiFF paths remain separate.
+The owner's 21-row download was parsed locally unchanged; test fixtures use
+invented data and the downloaded file is not redistributed. See `NSE_CSV_UPLOAD.md`
+and the latest work-log entry for test and browser evidence. The catalogue now has
+120 concepts and the checklist 342 items (S02-021 adds this explicit upload gate).
+
 Latest S02-A acceptance: **90 local tests passed in 52.97 seconds**. Source commit
 `165264391dbdef6e0f1dcd1b3d88eec7c70e06c2` contains all 46 reviewed files, each
 verified against its remote blob SHA. GitHub Actions run **41639106785** passed

@@ -2,7 +2,7 @@
 
 Updated: 2026-11-03
 
-119 entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.
+120 entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.
 
 All numerical examples are invented teaching examples, explicitly not market observations or performance claims. A traditional pattern description does not demonstrate a trading edge. A glossary entry is not proof that its detector exists.
 
@@ -1339,3 +1339,23 @@ A data passport records instrument, source claim, raw-file hashes, normalized-da
 **Try it yourself:** Download a passport before and after replay. Compare source_rows, analyzed_rows and both normalized hashes.
 
 **Implementation reference:** `quant_engine/datasets.py; quant_engine/data_ui.py`
+
+## NSE stock-history CSV: close, LTP, volume and value
+
+**Category:** Data quality · **Application status:** Automatic NSE security-history CSV/XLSX normalization; supplied real-file workflow checked locally
+
+A security-history download contains one stock over many sessions. CLOSE is the reported closing price, LTP is the last traded price, PREV. CLOSE describes the preceding close, VOLUME is share quantity and VALUE is rupee turnover. These fields are not interchangeable.
+
+**Calculation or rule:** The automatic stock-history adapter uses DATE/OPEN/HIGH/LOW/CLOSE/VOLUME, EQ series only. It converts explicit DD-Mon-YYYY dates and valid Indian or international comma grouping, then applies the usual OHLCV validation.
+
+**Hypothetical worked example:** An invented row has CLOSE 1,240.00, LTP 1,248.00 and VOLUME 23,34,553. The analyzed close is 1240 and the traded quantity is 2334553 shares. VALUE is not substituted for volume.
+
+**How to read it:** Keep the downloaded filename to retain its stock-label hint. The file may not contain a symbol or ISIN, so the filename is a declaration rather than independently verified security identity.
+
+**Common mistake:** Renaming VALUE to volume, treating a missing dash as zero, or assuming formatting conversion also adjusts splits and dividends.
+
+**Try it yourself:** Upload an original NSE stock-history CSV through Upload daily data. Find the detected format and warm-up warning, and explain why CLOSE and LTP can differ.
+
+**Further reading:** [NSE: daily reports](https://www.nseindia.com/all-reports)
+
+**Implementation reference:** `quant_engine/nse_quotes.py; quant_engine/data.py; tests/test_nse_quotes.py`

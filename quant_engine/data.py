@@ -1,6 +1,8 @@
 """Daily session-date ingestion. Never fill, aggregate duplicates, or mix adjustments."""
 from hashlib import sha256
 from io import BytesIO
+import csv
+from io import StringIO
 import re
 
 import numpy as np
@@ -38,7 +40,7 @@ def validate_daily(raw: pd.DataFrame, source_hash: str = "", *, min_rows: int = 
         if isinstance(value, (int, float, np.number)):
             raise ValueError("Numeric date serials are ambiguous; use Excel date cells or YYYY-MM-DD.")
     try:
-        index = pd.DatetimeIndex(pd.to_datetime(dates, errors="raise"))
+        index = pd.DatetimeIndex(pd.to_datetime(dates, errors="raise", format="ISO8601"))
     except (ValueError, TypeError) as exc:
         raise ValueError("Invalid dates; use daily session dates in YYYY-MM-DD format.") from exc
     if index.tz is not None or (index != index.normalize()).any():
@@ -75,10 +77,15 @@ def validate_daily(raw: pd.DataFrame, source_hash: str = "", *, min_rows: int = 
 
 
 def load_bars(content: bytes, filename: str) -> ValidatedData:
+    from .nse_quotes import header_name, normalize_quote
     if len(content) > 20 * 1024 * 1024:
         raise ValueError("File exceeds the 20 MB limit.")
     try:
         if filename.lower().endswith(".csv"):
+            header = next(csv.reader(StringIO(content.decode("utf-8-sig"))), [])
+            cleaned = [header_name(c) for c in header]
+            if len(cleaned) != len(set(cleaned)):
+                raise ValueError("CSV column names must be unique after ignoring case and spaces.")
             frame = pd.read_csv(BytesIO(content))
         elif filename.lower().endswith(".xlsx"):
             frame = pd.read_excel(BytesIO(content), engine="openpyxl")
@@ -86,7 +93,10 @@ def load_bars(content: bytes, filename: str) -> ValidatedData:
             raise ValueError("Upload a CSV or XLSX file.")
     except (pd.errors.ParserError, UnicodeError, OSError, ImportError) as exc:
         raise ValueError("Could not read file; check its encoding and format.") from exc
+    frame, metadata, warnings = normalize_quote(frame, filename)
     result = validate_daily(frame, sha256(content).hexdigest())
+    result.metadata.update(metadata)
+    result.warnings = warnings + result.warnings
     symbol_columns = [c for c in frame.columns if str(c).strip().casefold() == "symbol"]
     if symbol_columns:
         result.metadata["file_symbol"] = str(frame[symbol_columns[0]].iloc[0]).strip()

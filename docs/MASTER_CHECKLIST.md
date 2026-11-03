@@ -4,7 +4,7 @@ Updated: 2026-11-03
 
 Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.
 
-341 work items: 32 done, 11 partial, 286 planned, 12 optional / later.
+342 work items: 33 done, 11 partial, 286 planned, 12 optional / later.
 
 Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.
 
@@ -140,6 +140,8 @@ Original brief: 4,16,20
 - [ ] **S02-019** · Partial · Data completeness/freshness dashboard and adjustment-quality gates
 
 - [x] **S02-020** · Done · No interpolation/fabrication; clearly report unavailable fields
+
+- [x] **S02-021** · Done · Direct NSE security-history CSV upload without manual cleanup
 
 
 ## S03 · Price structure, zones and breakouts

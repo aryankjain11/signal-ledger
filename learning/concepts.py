@@ -343,13 +343,23 @@ add("data-passport", "Data passport, source hash and analysis slice", "AI and so
     code="quant_engine/datasets.py; quant_engine/data_ui.py",
     exercise="Download a passport before and after replay. Compare source_rows, analyzed_rows and both normalized hashes.")
 
+add("nse-quote-export", "NSE stock-history CSV: close, LTP, volume and value", "Data quality",
+    "A security-history download contains one stock over many sessions. CLOSE is the reported closing price, LTP is the last traded price, PREV. CLOSE describes the preceding close, VOLUME is share quantity and VALUE is rupee turnover. These fields are not interchangeable.",
+    rule="The automatic stock-history adapter uses DATE/OPEN/HIGH/LOW/CLOSE/VOLUME, EQ series only. It converts explicit DD-Mon-YYYY dates and valid Indian or international comma grouping, then applies the usual OHLCV validation.",
+    example="An invented row has CLOSE 1,240.00, LTP 1,248.00 and VOLUME 23,34,553. The analyzed close is 1240 and the traded quantity is 2334553 shares. VALUE is not substituted for volume.",
+    interpretation="Keep the downloaded filename to retain its stock-label hint. The file may not contain a symbol or ISIN, so the filename is a declaration rather than independently verified security identity.",
+    mistake="Renaming VALUE to volume, treating a missing dash as zero, or assuming formatting conversion also adjusts splits and dividends.",
+    status="Automatic NSE security-history CSV/XLSX normalization; supplied real-file workflow checked locally", source="nse-reports",
+    code="quant_engine/nse_quotes.py; quant_engine/data.py; tests/test_nse_quotes.py",
+    exercise="Upload an original NSE stock-history CSV through Upload daily data. Find the detected format and warm-up warning, and explain why CLOSE and LTP can differ.")
+
 BY_ID = {c["id"]: c for c in CONCEPTS}
 BY_ID["git-github"].update(
     app_status="Private repository, verified source upload and passing GitHub CI; local Git authentication is separate",
     code="docs/GITHUB_SYNC.md; .github/workflows/tests.yml",
     exercise="Open the source commit and its Actions run. Explain how a verified file snapshot differs from a passing test result.")
 CURRENT_BEHAVIOR_IDS = {
-    "bhavcopy", "security-identity", "data-passport",
+    "bhavcopy", "security-identity", "data-passport", "nse-quote-export",
     "ohlcv", "timeframe", "price-return", "adjustments", "trend", "pivot", "zones", "breakout",
     "sma", "ema", "rsi", "macd", "atr", "bollinger", "rvol", "obv", "doji", "engulfing",
     "double-pattern", "risk-sizing", "reward-risk", "costs", "gaps", "backtest", "drawdown", "leakage",

@@ -13,9 +13,9 @@ without an upload. Start with Lesson 1, then try the RSI, position-sizing and
 synthetic Evening Star labs. The concept library labels what is actually computed
 or detected separately from features that are only explained.
 
-- [Master checklist](docs/MASTER_CHECKLIST.md): 341 tracked items across 21 stages,
+- [Master checklist](docs/MASTER_CHECKLIST.md): 342 tracked items across 21 stages,
   covering the original brief and optional extensions with acceptance gates.
-- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 119 definitions and
+- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 120 definitions and
   notes; worked examples for foundations and current features, concise entries for
   future additions.
 - [Lesson 1](docs/lessons/01_from_prices_to_evidence.md): connected explanations,
@@ -71,6 +71,9 @@ python -m pip --python .venv\Scripts\python.exe install -r requirements-dev.txt
 ## Try your own data
 
 1. Select **Upload daily data** and choose a CSV or XLSX file containing one stock.
+   Original NSE security-history CSVs work directly: retain the downloaded file's
+   columns and filename. DD-Mon-YYYY dates, Indian/international number grouping,
+   extra market columns and newest-first rows are handled automatically.
 2. Enter its label. Labels do not fetch data. Supply INR prices; no currency
    conversion is performed. No automated NSE/BSE data feed is integrated yet.
 3. Declare whether all OHLC prices use a consistent corporate-action adjustment
@@ -91,7 +94,8 @@ date,open,high,low,close,volume
 2024-01-03,102,104,101,103,105000
 ```
 
-CSV dates must be YYYY-MM-DD. Native Excel date cells are accepted. Missing values,
+Standard CSV dates must be YYYY-MM-DD; recognized NSE stock-history exports also
+accept DD-Mon-YYYY. Native Excel date cells are accepted. Missing values,
 duplicate dates, mixed symbols, infinite/negative values and impossible OHLC
 relationships fail validation. Rows may be sorted with a visible warning. No
 prices are forward-filled or fabricated. Only the first XLSX worksheet is read.
@@ -99,6 +103,10 @@ Maximum size: 20 MB and 50,000 sessions. Use at least 60 sessions for the baseli
 and 20 completed prior calendar weeks for weekly SMA context.
 
 ## Implemented
+
+- Direct NSE stock-history CSV/XLSX normalization using CLOSE and share VOLUME;
+  automatic filename label hint, EQ guards and a passport interpretation record.
+  See [NSE upload guide](docs/NSE_CSV_UPLOAD.md). This is distinct from UDiFF reports.
 
 - Offline NSE CM UDiFF-style CSV/ZIP import preview for one selected EQ security
   across daily reports; source/date/identity/duplicate guards and bounded ZIP reading.
