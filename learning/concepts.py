@@ -6,6 +6,8 @@ examples are hypothetical. 'Explained' and 'computed/detected' are separate stat
 
 FIDELITY = "https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/"
 SOURCES = {
+    "nse-reports": ("NSE: daily reports", "https://www.nseindia.com/all-reports"),
+    "nse-formats": ("NSE: formats", "https://www.nseindia.com/static/resources/forms-formats-members"),
     "rsi": ("Fidelity: RSI", FIDELITY + "RSI"),
     "macd": ("Fidelity: MACD", FIDELITY + "macd"),
     "atr": ("Fidelity: ATR", FIDELITY + "atr"),
@@ -317,12 +319,37 @@ for category, rows in COMPACT.items():
             interpretation="This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.",
             mistake="Confusing a traditional interpretation or an educational description with validated predictive performance.")
 
+add("bhavcopy", "Bhavcopy and UDiFF daily reports", "Data quality",
+    "A daily exchange report contains records for many securities for one session. It is not already one stock's historical price table. UDiFF is a standardized exchange-file format; a matching header does not authenticate a file's origin.",
+    rule="Select the exact symbol and series across completed daily reports; map TradDt and quoted OHLCV without price repair.",
+    example="Three invented daily reports each contain ALPHA and BETA. Selecting ALPHA EQ creates three daily bars, not six observations or an average of both stocks.",
+    mistake="Uploading overlapping reports and silently removing duplicates, or assuming one report supplies months of history.",
+    status="Offline CSV/ZIP schema-subset preview tested with synthetic reports; real-file acceptance pending", source="nse-reports",
+    code="quant_engine/nse_files.py; tests/test_nse_files.py",
+    exercise="Select DEMOBETA in the report walkthrough, then explain why its 80 bars came from 80 reports.")
+add("security-identity", "Symbol, series, ISIN and security continuity", "Data quality",
+    "A ticker is a market label, a series classifies a trading segment, and an ISIN identifies a security. Labels alone do not establish historical continuity through reorganizations or symbol changes.",
+    example="Invented ALPHA EQ has ISIN ZZ0000000001 on one date and ZZ0000000002 later. This importer stops the combination for review instead of assuming continuity.",
+    interpretation="This build checks ISIN structure and one-ISIN consistency, not the check digit, real listing or full corporate history. Only EQ series is imported.",
+    status="EQ selection and basic identity-consistency guards; listing-history resolver pending", source="nse-formats",
+    code="quant_engine/nse_files.py: ReportBundle.select",
+    exercise="Explain why the synthetic ZZ identifiers passing a format check does not make them actual listed securities.")
+add("data-passport", "Data passport, source hash and analysis slice", "AI and software",
+    "A data passport records instrument, source claim, raw-file hashes, normalized-data hash, date convention and adjustment declaration. It documents what was used without certifying authenticity or accuracy.",
+    rule="A dataset ID hashes stable input identity and declarations. Import time is recorded separately. Replaying a subset preserves the source ID and adds a separate analyzed-data hash.",
+    example="Import 80 invented sessions, replay the first 40. Source rows remain 80, analyzed rows become 40, and the analyzed CSV hash changes while the original dataset ID stays fixed.",
+    mistake="Treating matching hashes as proof of correct prices or confusing a full-source hash with the exported replay slice.",
+    status="JSON passport and analyzed-CSV exports; source and replay hashes included in analysis evidence",
+    code="quant_engine/datasets.py; quant_engine/data_ui.py",
+    exercise="Download a passport before and after replay. Compare source_rows, analyzed_rows and both normalized hashes.")
+
 BY_ID = {c["id"]: c for c in CONCEPTS}
 BY_ID["git-github"].update(
     app_status="Private repository, verified source upload and passing GitHub CI; local Git authentication is separate",
     code="docs/GITHUB_SYNC.md; .github/workflows/tests.yml",
     exercise="Open the source commit and its Actions run. Explain how a verified file snapshot differs from a passing test result.")
 CURRENT_BEHAVIOR_IDS = {
+    "bhavcopy", "security-identity", "data-passport",
     "ohlcv", "timeframe", "price-return", "adjustments", "trend", "pivot", "zones", "breakout",
     "sma", "ema", "rsi", "macd", "atr", "bollinger", "rvol", "obv", "doji", "engulfing",
     "double-pattern", "risk-sizing", "reward-risk", "costs", "gaps", "backtest", "drawdown", "leakage",

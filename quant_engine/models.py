@@ -42,6 +42,7 @@ class ValidatedData:
     bars: pd.DataFrame
     warnings: list[str]
     source_hash: str
+    metadata: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True)

@@ -117,26 +117,26 @@ _add("S01", """
 + Baseline numerical and application test suite
 """)
 _add("S02", """
-Choose and document licensed Indian historical-data source and permitted uses
-Provider-neutral daily data contract and symbol/company-name resolver
-NSE/BSE identifiers, symbol changes, mergers and delistings
+~ Choose and document licensed Indian historical-data source and permitted uses
+~ Provider-neutral daily data contract and symbol/company-name resolver
+~ NSE/BSE identifiers, symbol changes, mergers and delistings
 Exchange trading calendar, holidays and exceptional sessions
-Asia/Kolkata timestamps and explicit session-date semantics
++ Asia/Kolkata timestamps and explicit session-date semantics
 Detect genuinely missing sessions against the configured calendar
 Consistent split/bonus adjustment across OHLC and volume
 Dividend/total-return conventions and point-in-time adjustment policy
 Rights/demerger/merger action handling and ambiguous-action review queue
-Preserve original raw files plus normalized versioned datasets
+~ Preserve original raw files plus normalized versioned datasets
 Cross-source data checks, stale-feed detection and source timestamps
-Duplicate correction policy with a visible audit record
+~ Duplicate correction policy with a visible audit record
 Outlier, zero-volume, price-circuit and suspension flags
 Adjusted-close, VWAP, number-of-trades and spread optional schema
 Delivery volume and delivery percentage where licensed/available
 Market-index and sector-index context
 Point-in-time index constituents to reduce survivorship bias
 Provider outage/rate-limit/retry/error behavior
-Data completeness/freshness dashboard and adjustment-quality gates
-No interpolation/fabrication; clearly report unavailable fields
+~ Data completeness/freshness dashboard and adjustment-quality gates
++ No interpolation/fabrication; clearly report unavailable fields
 """)
 _add("S03", """
 Configurable swing significance, tie handling and volatility-aware filtering

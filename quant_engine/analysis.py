@@ -10,9 +10,12 @@ from .indicators import indicators
 from .models import Analysis, Settings, ValidatedData
 from .patterns import candle_events, double_patterns, market_structure, support_resistance, swings
 from .strategy import current_setup
+from .datasets import passport_for_analysis
 
 
 def analyze(data: ValidatedData, settings: Settings) -> Analysis:
+    if len(data.bars) < 3:
+        raise ValueError("Analysis needs at least three completed daily observations; a smaller import is preview-only.")
     frame = indicators(data.bars)
     pivots = swings(frame, settings.pivot_window)
     trend, structure = market_structure(pivots)
@@ -62,6 +65,7 @@ def run_evidence(analysis: Analysis, data: ValidatedData, settings: Settings,
                  symbol: str, adjustment: str) -> dict:
     return json_safe({"engine_version": __version__, "symbol": symbol,
                       "source_sha256": data.source_hash, "adjustment_status": adjustment,
+                      "data_passport": passport_for_analysis(data) if data.metadata.get("dataset_id") else None,
                       "bar_semantics": "User-declared completed daily session bars; timezone-free dates",
                       "settings": asdict(settings), "rows": len(analysis.frame),
                       "start": analysis.frame.index[0], "as_of": analysis.frame.index[-1],

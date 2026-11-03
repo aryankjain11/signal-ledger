@@ -205,3 +205,72 @@ test suite still does not demonstrate trading profitability.
 **Owner exercise:** open the source commit and Actions run; identify the tests
 step, then return to Lesson 1's candle/RSI/sizing examples. **Next engineering
 milestone remains S02:** verified daily data, exchange sessions and adjustment policy.
+
+## 2026-11-03 · S02-A opened: daily-data contract and NSE file adapter
+
+- The owner asked to begin the next planned increment. Read the project working
+  agreement, journal, checklist and existing ingestion/analysis interfaces first.
+- Small milestone: normalize user-supplied NSE CM UDiFF daily report CSVs into a
+  single selected stock's daily OHLCV, and attach a provider-neutral data passport
+  containing identity, source hashes, date semantics and adjustment/permission
+  declarations. Keep the existing standard CSV/XLSX path working.
+- Checked official NSE format/report pages. The current reports page points to
+  CM-UDiFF Common Bhavcopy Final ZIP rather than the discontinued legacy format.
+  The adapter will use the published UDiFF field names, not guessed legacy aliases.
+- Checked NSE's data-usage policy: downloadable/visible data is not assumed to
+  confer redistribution or automated-feed rights. This milestone builds a local
+  importer for files the user is entitled to use; no subscription, automated scraping,
+  rights acceptance, real-market dataset redistribution or broker connection is added.
+- Acceptance: deterministic normalization; exact instrument/series selection;
+  no silent duplicate merging; reject inconsistent identities/dates/prices;
+  passport exported with numerical evidence; meaningful synthetic fixtures and
+  application tests; explanation and exercises in Lesson 2.
+- Calendar reconciliation and corporate-action adjustments remain later S02 work.
+  Recording an unadjusted/unknown status is not the same as verifying or adjusting it.
+
+**Learning example:** a hypothetical 2-for-1 split can halve the quoted share price
+while doubling the share count. A raw price jump alone does not establish an
+economic return or justify inventing an adjustment.
+
+**Official references:**
+https://www.nseindia.com/static/resources/forms-formats-members
+https://www.nseindia.com/all-reports
+https://www.nseindia.com/static/market-data/nse-data-policy
+
+## 2026-11-03 · S02-A implementation and local acceptance
+
+- Completed the offline daily-report CSV/ZIP adapter, EQ security selector,
+  provider-neutral passport, raw/normalized hashes and downloadable analysis CSV.
+  Existing standard CSV/XLSX ingestion now also attaches a passport.
+- Separated the full source identity from the historical replay slice. Evidence
+  JSON and the passport carry an analyzed-data hash matching the exported CSV;
+  a replay does not overwrite the original source count/range/hash.
+- Reject duplicate date/symbol/series records, inconsistent selected ISINs,
+  malformed required fields, invalid selected OHLCV, recognized provisional or
+  interim reports, and unsupported/unsafe ZIP members. Imports stay in memory.
+- Added a deterministic 80-report/two-security teaching ZIP generated without
+  real-market data. Missing security records are disclosed without fabricated bars
+  or an invented exchange calendar. One/two-row imports show preview only.
+- Added Lesson 2 in Education → Start here, with definitions, worked split and
+  report examples, code walkthrough, exercises/answers and source limitations.
+  Added bhavcopy, security identity and data-passport entries (119 concepts total).
+  Updated the shared 341-item roadmap, README, build report and S02 scope record.
+- Fixed a pandas method/column name collision (`frame.isin` versus `frame["isin"]`)
+  during the initial smoke check; identity selection is now covered by regression.
+- Source research limitation: the linked current NSE format workbook could not
+  be fetched (connection reset/timeout). An official NCDEX UDiFF document confirmed
+  shared field meanings only, not the full current NSE equity schema. No real-file
+  acceptance or authenticated source claim is made.
+- First importer suite: **38 passed in 19.79 seconds**. After adding uploaded-ZIP
+  analysis/failure and Lesson 2 checks, full regression: **90 passed in 52.97 seconds**
+  in the local Python 3.13 environment. This includes all 49 existing checks.
+  Shared handbook/checklist exports were regenerated before the complete run.
+
+**Owner exercise:** select DEMOBETA in the synthetic report walkthrough, inspect
+its passport, then replay earlier. Explain which row counts and hashes change and
+why a 2-for-1 split does not alone halve the holding value. No mastery is assumed.
+
+**Remaining S02 gates:** permitted real-file/current-schema acceptance, versioned
+exchange calendar and genuine missing-session reconciliation; then corporate-action
+policies/fixtures, provider integration and durable dataset storage. GitHub upload
+and remote verification of this milestone are recorded after they are observed.

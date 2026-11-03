@@ -4,7 +4,7 @@ Updated: 2026-11-03
 
 Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.
 
-341 work items: 30 done, 5 partial, 294 planned, 12 optional / later.
+341 work items: 32 done, 11 partial, 286 planned, 12 optional / later.
 
 Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.
 
@@ -101,15 +101,15 @@ Original brief: 4,16,20
 
 **Acceptance gate:** Versioned source and adjustment metadata; calendar/corporate-action fixtures; no invented observations; provider failures handled.
 
-- [ ] **S02-001** · Planned · Choose and document licensed Indian historical-data source and permitted uses
+- [ ] **S02-001** · Partial · Choose and document licensed Indian historical-data source and permitted uses
 
-- [ ] **S02-002** · Planned · Provider-neutral daily data contract and symbol/company-name resolver
+- [ ] **S02-002** · Partial · Provider-neutral daily data contract and symbol/company-name resolver
 
-- [ ] **S02-003** · Planned · NSE/BSE identifiers, symbol changes, mergers and delistings
+- [ ] **S02-003** · Partial · NSE/BSE identifiers, symbol changes, mergers and delistings
 
 - [ ] **S02-004** · Planned · Exchange trading calendar, holidays and exceptional sessions
 
-- [ ] **S02-005** · Planned · Asia/Kolkata timestamps and explicit session-date semantics
+- [x] **S02-005** · Done · Asia/Kolkata timestamps and explicit session-date semantics
 
 - [ ] **S02-006** · Planned · Detect genuinely missing sessions against the configured calendar
 
@@ -119,11 +119,11 @@ Original brief: 4,16,20
 
 - [ ] **S02-009** · Planned · Rights/demerger/merger action handling and ambiguous-action review queue
 
-- [ ] **S02-010** · Planned · Preserve original raw files plus normalized versioned datasets
+- [ ] **S02-010** · Partial · Preserve original raw files plus normalized versioned datasets
 
 - [ ] **S02-011** · Planned · Cross-source data checks, stale-feed detection and source timestamps
 
-- [ ] **S02-012** · Planned · Duplicate correction policy with a visible audit record
+- [ ] **S02-012** · Partial · Duplicate correction policy with a visible audit record
 
 - [ ] **S02-013** · Planned · Outlier, zero-volume, price-circuit and suspension flags
 
@@ -137,9 +137,9 @@ Original brief: 4,16,20
 
 - [ ] **S02-018** · Planned · Provider outage/rate-limit/retry/error behavior
 
-- [ ] **S02-019** · Planned · Data completeness/freshness dashboard and adjustment-quality gates
+- [ ] **S02-019** · Partial · Data completeness/freshness dashboard and adjustment-quality gates
 
-- [ ] **S02-020** · Planned · No interpolation/fabrication; clearly report unavailable fields
+- [x] **S02-020** · Done · No interpolation/fabrication; clearly report unavailable fields
 
 
 ## S03 · Price structure, zones and breakouts

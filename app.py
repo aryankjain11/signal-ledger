@@ -1,6 +1,5 @@
 """Run with: python -m streamlit run app.py"""
 from dataclasses import asdict
-from hashlib import sha256
 import json
 from pathlib import Path
 
@@ -13,6 +12,8 @@ from quant_engine.data import load_bars
 from quant_engine.models import Settings
 from quant_engine.strategy import backtest
 from learning.pages import render_education, render_build_journal
+from quant_engine.datasets import Instrument, attach_passport
+from quant_engine.data_ui import report_import, render_passport
 
 ROOT = Path(__file__).resolve().parent
 st.set_page_config(page_title="Signal Ledger · Quant research", page_icon="◈", layout="wide")
@@ -44,14 +45,27 @@ with st.sidebar:
     st.markdown("### ◈ Signal Ledger")
     st.caption("TECHNICAL RESEARCH WORKBENCH · v0.1")
     st.divider()
-    source = st.radio("Data source", ["Synthetic walkthrough", "Upload daily data"])
+    source = st.radio("Data source", ["Synthetic walkthrough", "Upload daily data", "Synthetic NSE report walkthrough", "Import NSE daily reports"])
     upload = None
+    report_uploads = None
+    is_reports = source in {"Synthetic NSE report walkthrough", "Import NSE daily reports"}
     if source == "Upload daily data":
         upload = st.file_uploader("OHLCV file", type=["csv", "xlsx"])
+    elif source == "Import NSE daily reports":
+        report_uploads = st.file_uploader("Daily UDiFF reports (preview)", type=["csv", "zip"], accept_multiple_files=True, key="nse_reports")
     symbol = st.text_input("Research label", "SYNTHETIC" if source.startswith("Synthetic") else "NSE / YOUR SYMBOL", max_chars=40)
-    adjustment = st.selectbox("Price adjustment basis", ["Unknown / unverified", "Consistently adjusted OHLC", "Unadjusted OHLC"])
+    declared_provider, declared_exchange = "User-supplied file; provider not stated", "Unknown"
+    if not is_reports:
+        adjustment = st.selectbox("Price adjustment basis", ["Unknown / unverified", "Consistently adjusted OHLC", "Unadjusted OHLC"])
+        if source == "Upload daily data":
+            with st.expander("Data source declaration"):
+                declared_provider = st.text_input("Provider/source label", value=declared_provider, key="declared_provider")
+                declared_exchange = st.selectbox("Exchange declaration", ["Unknown", "NSE", "BSE"], key="declared_exchange")
+    else:
+        adjustment = "Synthetic example" if source.startswith("Synthetic") else "Unadjusted OHLC"
+        st.caption("UDiFF preview: select the security from report fields after upload. Prices remain as quoted; adjustments and origin are not independently verified.")
     complete = True
-    if source == "Upload daily data":
+    if source in {"Upload daily data", "Import NSE daily reports"}:
         complete = st.checkbox("Every row is a completed daily session bar", value=False)
     st.divider()
     st.markdown("**Research assumptions**")
@@ -67,7 +81,16 @@ st.markdown('<div class="eyebrow">OBSERVE / EXPLAIN / TEST</div>', unsafe_allow_
 st.title("Price structure, with evidence.")
 st.markdown('<div class="subtitle">A transparent starting point for technical research. Every observation traces back to your data.</div>', unsafe_allow_html=True)
 
-if source.startswith("Synthetic"):
+if is_reports:
+    if source == "Import NSE daily reports" and report_uploads and not complete:
+        st.warning("Confirm that all uploaded rows are completed daily bars before running analysis.")
+        st.stop()
+    files = [(f.name, f.getvalue()) for f in report_uploads] if report_uploads else []
+    data = report_import(files, is_synthetic=source.startswith("Synthetic"))
+    symbol = data.metadata["instrument"]["symbol"]
+    filename = f"{len(data.metadata['source_files'])} report input file(s)"
+    adjustment = data.metadata["adjustment_basis"]
+elif source.startswith("Synthetic"):
     content = (ROOT / "data" / "synthetic_daily.csv").read_bytes()
     filename = "synthetic_daily.csv"
     st.info("SYNTHETIC DATA · Generated solely to demonstrate the application. This is not a stock or evidence of trading performance.")
@@ -81,14 +104,26 @@ else:
         st.stop()
     content, filename = upload.getvalue(), upload.name
 
-try:
-    data = load_bars(content, filename)
-except Exception as exc:
-    st.error(f"Data could not be analyzed: {exc}")
-    st.stop()
+if not is_reports:
+    try:
+        data = load_bars(content, filename)
+        file_symbol = data.metadata.get("file_symbol")
+        instrument_symbol = file_symbol or symbol
+        data = attach_passport(data, instrument=Instrument("Synthetic" if source.startswith("Synthetic") else declared_exchange, instrument_symbol),
+                               provider="Synthetic project fixture" if source.startswith("Synthetic") else declared_provider.strip() or "Provider not stated",
+                               input_format="Standard OHLCV CSV/XLSX", adjustment="Synthetic example" if source.startswith("Synthetic") else adjustment,
+                               sources=[{"name": Path(filename).name, "sha256": data.source_hash, "bytes": len(content)}],
+                               is_synthetic=source.startswith("Synthetic"))
+        if file_symbol:
+            symbol = file_symbol
+    except Exception as exc:
+        st.error(f"Data could not be analyzed: {exc}")
+        st.stop()
 
 if adjustment == "Unknown / unverified":
     st.warning("Adjustment status is unverified. Splits and dividends can distort indicators, patterns and backtest results.")
+elif adjustment == "Unadjusted OHLC":
+    st.warning("Quoted/unadjusted prices: splits and other corporate actions have not been reconciled. Interpret long-horizon indicators and backtests accordingly.")
 options = [d.date().isoformat() for d in data.bars.index]
 as_of = st.select_slider("Replay through session · analysis uses only rows through this date", options=options, value=options[-1])
 data.bars = data.bars.loc[:as_of]
@@ -184,8 +219,9 @@ with backtest_tab:
 
 with quality_tab:
     st.subheader("Source and limitations")
-    st.write(f"File: {filename} · SHA-256: `{sha256(content).hexdigest()}`")
+    st.write(f"Input: {filename} · source hash: `{data.source_hash}`")
     st.write(f"Adjustment declaration: {adjustment}. No adjustment is applied automatically.")
+    render_passport(data)
     for warning in analysis.warnings:
         st.write(f"• {warning}")
     st.dataframe(frame.tail(100), width="stretch")

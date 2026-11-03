@@ -2,7 +2,7 @@
 
 Updated: 2026-11-03
 
-116 entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.
+119 entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.
 
 All numerical examples are invented teaching examples, explicitly not market observations or performance claims. A traditional pattern description does not demonstrate a trading edge. A glossary entry is not proof that its detector exists.
 
@@ -1289,3 +1289,53 @@ A screenshot shows rendered pixels and may omit axes, scale, timeframe or full h
 **How to read it:** This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
+
+## Bhavcopy and UDiFF daily reports
+
+**Category:** Data quality · **Application status:** Offline CSV/ZIP schema-subset preview tested with synthetic reports; real-file acceptance pending
+
+A daily exchange report contains records for many securities for one session. It is not already one stock's historical price table. UDiFF is a standardized exchange-file format; a matching header does not authenticate a file's origin.
+
+**Calculation or rule:** Select the exact symbol and series across completed daily reports; map TradDt and quoted OHLCV without price repair.
+
+**Hypothetical worked example:** Three invented daily reports each contain ALPHA and BETA. Selecting ALPHA EQ creates three daily bars, not six observations or an average of both stocks.
+
+**Common mistake:** Uploading overlapping reports and silently removing duplicates, or assuming one report supplies months of history.
+
+**Try it yourself:** Select DEMOBETA in the report walkthrough, then explain why its 80 bars came from 80 reports.
+
+**Further reading:** [NSE: daily reports](https://www.nseindia.com/all-reports)
+
+**Implementation reference:** `quant_engine/nse_files.py; tests/test_nse_files.py`
+
+## Symbol, series, ISIN and security continuity
+
+**Category:** Data quality · **Application status:** EQ selection and basic identity-consistency guards; listing-history resolver pending
+
+A ticker is a market label, a series classifies a trading segment, and an ISIN identifies a security. Labels alone do not establish historical continuity through reorganizations or symbol changes.
+
+**Hypothetical worked example:** Invented ALPHA EQ has ISIN ZZ0000000001 on one date and ZZ0000000002 later. This importer stops the combination for review instead of assuming continuity.
+
+**How to read it:** This build checks ISIN structure and one-ISIN consistency, not the check digit, real listing or full corporate history. Only EQ series is imported.
+
+**Try it yourself:** Explain why the synthetic ZZ identifiers passing a format check does not make them actual listed securities.
+
+**Further reading:** [NSE: formats](https://www.nseindia.com/static/resources/forms-formats-members)
+
+**Implementation reference:** `quant_engine/nse_files.py: ReportBundle.select`
+
+## Data passport, source hash and analysis slice
+
+**Category:** AI and software · **Application status:** JSON passport and analyzed-CSV exports; source and replay hashes included in analysis evidence
+
+A data passport records instrument, source claim, raw-file hashes, normalized-data hash, date convention and adjustment declaration. It documents what was used without certifying authenticity or accuracy.
+
+**Calculation or rule:** A dataset ID hashes stable input identity and declarations. Import time is recorded separately. Replaying a subset preserves the source ID and adds a separate analyzed-data hash.
+
+**Hypothetical worked example:** Import 80 invented sessions, replay the first 40. Source rows remain 80, analyzed rows become 40, and the analyzed CSV hash changes while the original dataset ID stays fixed.
+
+**Common mistake:** Treating matching hashes as proof of correct prices or confusing a full-source hash with the exported replay slice.
+
+**Try it yourself:** Download a passport before and after replay. Compare source_rows, analyzed_rows and both normalized hashes.
+
+**Implementation reference:** `quant_engine/datasets.py; quant_engine/data_ui.py`

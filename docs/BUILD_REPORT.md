@@ -91,7 +91,13 @@ add a database/model/provider merely to make the architecture look complete.
 **L0/S00, current:** establish shared vocabulary, learning UI, documentation and
 versioned source. Run the first exercises; questions guide subsequent lessons.
 
-**Next S02:** choose a permitted data source, define daily session/calendar and
+**S02-A implemented (synthetic acceptance):** offline NSE CM UDiFF-style CSV/ZIP
+preview, exact EQ security selection, provider-neutral passports, source versus
+replay hashes and Lesson 2. See `S02_DATA_IMPORT.md` for individual gates and limits.
+Real-file acceptance, a verified full current NSE schema and a licensed provider
+are not yet complete. No automatic feed or corporate-action adjustment is implied.
+
+**Next S02:** accept a permitted real report, define the versioned session/calendar and
 adjustment contracts, import a small verified Indian-stock dataset and show its
 provenance. Learn splits/dividends/volume adjustment and distinguish a missing
 session from a holiday. Data access, subscription costs or credentials are resolved
@@ -161,5 +167,8 @@ Actions availability and the actual workflow run; a workflow file alone is not a
 
 Open Education and Concepts → Start here → Lesson1. Complete the candle, RSI,
 MACD and sizing exercises, then replay a pivot. Bring back one answer or question.
-Our next build increment is the verified daily-data foundation, not automatically
-implementing every unchecked roadmap item in one session.
+Then open Lesson 2 and the synthetic NSE report walkthrough. Compare source_rows
+and analyzed_rows before and after replay; explain why a price split is not a 50%
+economic loss. S02-A has 119 shared concept entries including bhavcopy, security
+identity and data passports. The next increment is exchange-calendar reconciliation
+after real-file/schema acceptance, followed by corporate-action adjustment work.

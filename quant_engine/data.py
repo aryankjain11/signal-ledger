@@ -11,7 +11,9 @@ from .models import ValidatedData
 REQUIRED = ["open", "high", "low", "close", "volume"]
 
 
-def validate_daily(raw: pd.DataFrame, source_hash: str = "") -> ValidatedData:
+def validate_daily(raw: pd.DataFrame, source_hash: str = "", *, min_rows: int = 3) -> ValidatedData:
+    if type(min_rows) is not int or not 1 <= min_rows <= 50_000:
+        raise ValueError("Minimum row count must be a positive integer up to 50,000.")
     frame = raw.copy()
     frame.columns = [str(c).strip().lower() for c in frame.columns]
     if frame.columns.duplicated().any():
@@ -19,10 +21,13 @@ def validate_daily(raw: pd.DataFrame, source_hash: str = "") -> ValidatedData:
     date_names = [c for c in ("date", "timestamp", "datetime") if c in frame]
     if len(date_names) != 1 or any(c not in frame for c in REQUIRED):
         raise ValueError("Expected one date/timestamp/datetime column and open, high, low, close, volume.")
-    if not 3 <= len(frame) <= 50_000:
-        raise ValueError("Supply between 3 and 50,000 daily observations for one symbol.")
-    if "symbol" in frame and frame.symbol.nunique(dropna=False) != 1:
-        raise ValueError("Only one symbol per file is supported.")
+    if not min_rows <= len(frame) <= 50_000:
+        raise ValueError(f"Supply between {min_rows} and 50,000 daily observations for one symbol.")
+    if "symbol" in frame:
+        if frame.symbol.isna().any() or frame.symbol.astype(str).str.strip().eq("").any():
+            raise ValueError("Symbol values cannot be missing or blank when the column is supplied.")
+        if frame.symbol.nunique(dropna=False) != 1:
+            raise ValueError("Only one symbol per file is supported.")
     dates = frame[date_names[0]]
     if dates.isna().any():
         raise ValueError("Dates cannot be missing.")
@@ -81,7 +86,11 @@ def load_bars(content: bytes, filename: str) -> ValidatedData:
             raise ValueError("Upload a CSV or XLSX file.")
     except (pd.errors.ParserError, UnicodeError, OSError, ImportError) as exc:
         raise ValueError("Could not read file; check its encoding and format.") from exc
-    return validate_daily(frame, sha256(content).hexdigest())
+    result = validate_daily(frame, sha256(content).hexdigest())
+    symbol_columns = [c for c in frame.columns if str(c).strip().casefold() == "symbol"]
+    if symbol_columns:
+        result.metadata["file_symbol"] = str(frame[symbol_columns[0]].iloc[0]).strip()
+    return result
 
 
 def completed_weeks(bars: pd.DataFrame) -> pd.DataFrame:

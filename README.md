@@ -15,11 +15,13 @@ or detected separately from features that are only explained.
 
 - [Master checklist](docs/MASTER_CHECKLIST.md): 341 tracked items across 21 stages,
   covering the original brief and optional extensions with acceptance gates.
-- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 116 definitions and
+- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 119 definitions and
   notes; worked examples for foundations and current features, concise entries for
   future additions.
 - [Lesson 1](docs/lessons/01_from_prices_to_evidence.md): connected explanations,
   exercises, answers and pointers into the code.
+- [Lesson 2](docs/lessons/02_daily_data_and_passports.md): daily reports, security
+  identity, session dates, adjustments, hashes and a hands-on import walkthrough.
 - [Work log](docs/WORK_LOG.md): chronological changes, reasons, verification and blockers.
 - [Build report](docs/BUILD_REPORT.md): architecture, curriculum and current limits.
 
@@ -29,7 +31,7 @@ automatically checked off for the learner.
 
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
-verified. GitHub's clean Linux test run passed all 49 checks. See
+verified for the learning foundation. See
 [GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
 The local computer's Git client does not currently have a saved GitHub login;
 the connected GitHub tools handle this upload, and no credentials are stored here.
@@ -69,7 +71,7 @@ python -m pip --python .venv\Scripts\python.exe install -r requirements-dev.txt
 
 1. Select **Upload daily data** and choose a CSV or XLSX file containing one stock.
 2. Enter its label. Labels do not fetch data. Supply INR prices; no currency
-   conversion is performed. No specific NSE/BSE data feed is integrated yet.
+   conversion is performed. No automated NSE/BSE data feed is integrated yet.
 3. Declare whether all OHLC prices use a consistent corporate-action adjustment
    basis. The app cannot verify this declaration or repair corporate actions.
 4. Confirm every row is a completed daily candle. Intraday timestamps are rejected.
@@ -96,6 +98,15 @@ Maximum size: 20 MB and 50,000 sessions. Use at least 60 sessions for the baseli
 and 20 completed prior calendar weeks for weekly SMA context.
 
 ## Implemented
+
+- Offline NSE CM UDiFF-style CSV/ZIP import preview for one selected EQ security
+  across daily reports; source/date/identity/duplicate guards and bounded ZIP reading.
+- Synthetic 80-report walkthrough with two fake securities; no real market data.
+- Provider-neutral data passport, original-file hashes, source versus replay-slice
+  fingerprints, JSON passport and analyzed-CSV downloads. Provenance records claims;
+  it does not independently authenticate origin or verify adjustment/usage rights.
+- Lesson 2 in Education → Start here. See [S02-A scope](docs/S02_DATA_IMPORT.md)
+  for acceptance and remaining real-file, calendar and corporate-action work.
 
 - SMA20/50/200, EMA20/50, Wilder RSI14 and ATR14, MACD12/26/9, Bollinger20
   (population standard deviation), OBV and prior-20-session relative volume.

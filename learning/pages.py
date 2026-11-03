@@ -45,6 +45,10 @@ def render_education(root: Path):
         with st.expander("Lesson 1 · From prices to evidence"):
             st.markdown(lesson)
         st.download_button("Download Lesson 1", lesson, "lesson-01.md", "text/markdown")
+        lesson2 = (root / "docs" / "lessons" / "02_daily_data_and_passports.md").read_text(encoding="utf-8")
+        with st.expander("Lesson 2 · Daily reports, identity and data passports"):
+            st.markdown(lesson2)
+        st.download_button("Download Lesson 2", lesson2, "lesson-02.md", "text/markdown")
         st.download_button("Download the complete concepts handbook", handbook_markdown(), "education-and-concepts.md", "text/markdown")
         st.caption("Exercises are for you to complete. The project does not automatically mark a lesson as understood.")
     with library:
