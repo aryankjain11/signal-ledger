@@ -12,6 +12,13 @@ Keep existing reference material available; do not add exercises or require lear
 responses to progress. Include a concise done/partial/pending checklist mapped to
 the original plan in completion updates. This supersedes exercise-related steps below.
 
+Feature-priority steering: prioritize visible analytical/strategy/research features
+and the concepts demonstrated by using them. Defer further file-format adapters,
+automatic corporate-action downloads and data plumbing unless they block a selected
+feature or correct an actual reliability problem. Conceptual learning does not mean
+homework or exercises. See docs/FEATURE_PRIORITIES.md for the current recommendation;
+its proposed features remain unimplemented until their acceptance gates pass.
+
 ## Work one milestone at a time
 
 1. Read `docs/WORK_LOG.md`, `docs/MASTER_CHECKLIST.md` and the relevant source.

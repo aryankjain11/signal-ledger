@@ -524,3 +524,21 @@ The new bounded split/bonus research gate is Done; broader corporate-action/data
 reconciliation remains Partial. Automatic action sources, dividends/total returns,
 composite events, share-accounting execution, wider calendars and real UDiFF
 acceptance remain pending. Learning assignments remain paused.
+
+## 2026-11-03 · Feature-value prioritization review
+
+- Owner asked to stop extending file adapters and assess which analytical features
+  add the most product value and conceptual learning. Reviewed S03–S12, original
+  pattern requirements and current structure/pattern/strategy implementations.
+- Recorded the new priority in AGENTS.md. Conceptual learning should happen through
+  inspectable product behavior; homework/exercises remain paused. Additional NSE
+  corporate-action-download parsing is deferred unless a selected feature needs it.
+- Added `FEATURE_PRIORITIES.md`: planned feature inventory, current baselines,
+  recommended breakout/retest/failed-breakout lifecycle, an explicit strategy
+  follow-through and a subsequent event-study research view. This is a proposed
+  development sequence, not a claim that these features have been built.
+- No numerical or UI behavior changed and no task was marked Done. Existing
+  original-phase counts remain 8 Done / 18 Partial / 17 Planned. Planning records
+  are synchronized to the existing private repository; verification is reported
+  after the commit is observed. No new software test result is claimed for these
+  documentation-only changes.
