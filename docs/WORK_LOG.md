@@ -171,3 +171,37 @@ in the next log entry rather than being assumed from local file creation.
   continues through automatic approval review; no alternative bypass is used.
 - Re-running the full local regression suite before the branch update. Actual
   commit, verification and CI outcomes will be recorded once observed.
+
+## 2026-11-03 · Source upload completed and verified
+
+- The approval service processed the retry normally. Prepared all 40 reviewed
+  files through the connected GitHub tools, assembled their Git tree, created
+  source commit **`189b15a6043dad2638f7c04d08920c52ada0d03a`**, and updated `main`
+  with an expected-head check (no forced overwrite).
+- Repository: https://github.com/aryankjain11/signal-ledger. Reconfirmed **private**
+  visibility. Source includes the engine, app, synthetic CSV, tests, workflow,
+  original brief, roadmap, concept library, lessons, build report and journal.
+  Environments, private uploads, credentials, databases and runtime outputs were excluded.
+- Fetched every uploaded file at the source commit and compared its Git blob SHA
+  with the reviewed upload object: **40 of 40 matched**. Repository creation or an
+  API success message alone was not used as proof of a complete source upload.
+- Fresh local regression before upload: **49 passed in 13.05 seconds**.
+- GitHub Actions **run 41624242800**, job **125877447096**, completed successfully.
+  The log reports **49 passed in 3.13 seconds**, on Ubuntu 26.04 / Python 3.13.17.
+  Run: https://github.com/aryankjain11/signal-ledger/actions/runs/41624242800.
+- Marked source synchronization and clean-runner CI Done in the checklist; updated
+  the sync report, README and build report. Updated the Git/GitHub concept entry
+  to connect the learner's actual repository and CI to the definitions.
+- Documentation audit follows the verified source commit. Its shared catalogue
+  exports are regenerated and checked before uploading the audit. These records
+  reference an already observed commit/run rather than claiming to predict the
+  outcome of the commit that contains the record itself.
+
+**Learning point:** a commit is a versioned snapshot, content hashes check what
+was uploaded, and a CI result checks the behavior of that snapshot in a separate
+environment. These are related but distinct forms of evidence. A passing software
+test suite still does not demonstrate trading profitability.
+
+**Owner exercise:** open the source commit and Actions run; identify the tests
+step, then return to Lesson 1's candle/RSI/sizing examples. **Next engineering
+milestone remains S02:** verified daily data, exchange sessions and adjustment policy.

@@ -4,7 +4,7 @@ Updated: 2026-11-03
 
 Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.
 
-341 work items: 27 done, 8 partial, 294 planned, 12 optional / later.
+341 work items: 30 done, 5 partial, 294 planned, 12 optional / later.
 
 Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.
 
@@ -41,9 +41,9 @@ Original brief: 1,17,20,22 + learning request
 
 - [x] **S00-009** · Done · Create private GitHub repository
 
-- [ ] **S00-010** · Partial · Upload reviewed source, synthetic data, tests and documents; verify remote tree
+- [x] **S00-010** · Done · Upload reviewed source, synthetic data, tests and documents; verify remote tree
 
-- [ ] **S00-011** · Partial · Add automated test workflow; distinguish local pass from remote CI pass
+- [x] **S00-011** · Done · Add automated test workflow; distinguish local pass from remote CI pass
 
 - [ ] **S00-012** · Planned · Record learner questions and exercises without claiming mastery
 
@@ -787,7 +787,7 @@ Original brief: 17,18,20,21,22
 
 - [ ] **S18-002** · Planned · Configuration validation and dependency/version policy
 
-- [ ] **S18-003** · Partial · Continuous integration on clean Python installs
+- [x] **S18-003** · Done · Continuous integration on clean Python installs
 
 - [ ] **S18-004** · Planned · Numerical regression fixtures and leakage/property tests
 

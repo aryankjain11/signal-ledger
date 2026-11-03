@@ -6,36 +6,43 @@ Updated: 2026-11-03.
 - Visibility: **private**, verified through the GitHub page and connected metadata.
 - Initial branch: `main`.
 - Initial README commit: `bc09670a45e3776f5fcb47b393d93e685974fe63`.
-- **Full source upload: retry in progress.** The prepared source has not yet been committed to
-  the remote branch. Do not infer completion from repository creation.
-- **Remote CI: not run/verified for this source.** The workflow is prepared locally.
-- Local verification:49 tests passed; subsequent catalogue-only verification:14 passed.
+- **Full source upload: complete and verified.** All 40 files in the reviewed
+  source snapshot were committed on `main`; every remote content-object SHA matched
+  the corresponding reviewed file.
+- Source commit: [`189b15a6043dad2638f7c04d08920c52ada0d03a`](https://github.com/aryankjain11/signal-ledger/commit/189b15a6043dad2638f7c04d08920c52ada0d03a).
+- **Remote CI: passed**, 49 tests in 3.13 seconds on Ubuntu 26.04 / Python 3.13.17.
+  [Verified Actions run 41624242800](https://github.com/aryankjain11/signal-ledger/actions/runs/41624242800).
+- Fresh local verification before upload: 49 tests passed in 13.05 seconds.
+- This status/checklist/log update is a documentation audit after the source commit;
+  the links above identify the already-verified snapshot and test evidence.
 
-## Blocker
+## Prior blocker: resolved
 
 The owner requested a retry. A small write through the same tool succeeded on
-2026-11-03; the current retry continues to use approval-reviewed writes. Completion
-will be recorded only after the remote source commit and files are verified.
+2026-11-03. Individual file writes, tree assembly, commit creation and the branch
+update then succeeded through the normal automatic approval checks. The `main`
+update used an expected-head check and did not force-overwrite another change.
 
 The connected GitHub tool's automatic approval service reported:
 “Selected model is at capacity.” It explicitly identified this as a review failure,
 not a determination that the upload is unsafe, and said the action was not executed.
-The reviewed upload was retried and hit the same condition. No branch update was
-attempted after these failures. Some immutable content objects may have been
-prepared, but that is not a committed, browsable source upload.
+The earlier reviewed upload was retried and hit the same condition. No branch
+update was attempted during that failed session. Its immutable content-object
+preparation was not treated as a committed source upload. The later successful
+source commit and file verification above resolved this distinction.
 
 The computer's separate Git client also has no saved GitHub login. Its non-interactive
 access check failed without opening a login dialog. No token or password was extracted.
 The agent did not bypass the failing approval check using a different write path.
 
-## Ready to resume
+## Future synchronization
 
 The local allow-list and credential-pattern check are in `scripts/source_manifest.py`.
-The existing repository should be reused, not recreated. When the approval service
-recovers, upload the reviewed files, create a commit based on the current remote
-head, update `main` with an expected-head check, verify key files and the resulting
-commit, then record the actual outcome in `WORK_LOG.md` and this status document.
-Inspect the branch again before retrying if the owner has changed it meanwhile.
+The existing repository should be reused, not recreated. For future work, upload
+the reviewed files, create a commit based on the current remote head, update `main`
+with an expected-head check, verify the files and resulting commit, then record
+the outcome in `WORK_LOG.md` and this status document. Inspect the branch again
+before retrying if the owner has changed it meanwhile.
 
 ## Owner-controlled manual option
 

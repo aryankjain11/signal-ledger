@@ -145,7 +145,14 @@ not test economic value. Compact glossary entries are introductory, not full
 standalone courses or claims that all future definitions have been quantitatively
 validated.
 
-Remote repository privacy is verified. The computer's Git client has no saved
+Remote repository privacy is verified. All 40 source-snapshot files were uploaded
+and their remote blob SHAs matched the reviewed contents, at source commit
+`189b15a6043dad2638f7c04d08920c52ada0d03a`. GitHub Actions run 41624242800 passed
+all 49 tests on a clean Ubuntu 26.04 / Python 3.13.17 runner (3.13 seconds of tests).
+The fresh local run before upload also passed 49 tests (13.05 seconds).
+See `GITHUB_SYNC.md` for links and the resolved approval-service outage.
+
+The computer's Git client has no saved
 GitHub credentials; the connected GitHub tools can upload to the repository.
 No credential is copied into this project. CI execution depends on the repository's
 Actions availability and the actual workflow run; a workflow file alone is not a pass.

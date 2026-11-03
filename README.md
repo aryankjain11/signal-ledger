@@ -28,10 +28,11 @@ The continuing agreement is in [AGENTS.md](AGENTS.md). Understanding is not
 automatically checked off for the learner.
 
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
-Source is prepared for upload through the connected GitHub tools. See
-[GitHub sync status](docs/GITHUB_SYNC.md) for what is actually verified and any
-current blocker. The local computer's Git client does not currently have a saved
-GitHub login; no credentials are stored in the project.
+The source, tests, synthetic sample and learning documents have been uploaded and
+verified. GitHub's clean Linux test run passed all 49 checks. See
+[GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
+The local computer's Git client does not currently have a saved GitHub login;
+the connected GitHub tools handle this upload, and no credentials are stored here.
 
 ## Open the app
 

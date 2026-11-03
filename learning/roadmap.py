@@ -92,8 +92,8 @@ _add("S00", """
 + Add detailed build report and chronological work log
 + Add first lesson: from OHLCV to a falsifiable strategy
 + Create private GitHub repository
-~ Upload reviewed source, synthetic data, tests and documents; verify remote tree
-~ Add automated test workflow; distinguish local pass from remote CI pass
++ Upload reviewed source, synthetic data, tests and documents; verify remote tree
++ Add automated test workflow; distinguish local pass from remote CI pass
 Record learner questions and exercises without claiming mastery
 """)
 _add("S01", """
@@ -420,7 +420,7 @@ Integration fixtures and graceful unavailable-provider behavior
 _add("S18", """
 Clear typed interfaces between acquisition, analysis, strategies and narration
 Configuration validation and dependency/version policy
-~ Continuous integration on clean Python installs
++ Continuous integration on clean Python installs
 Numerical regression fixtures and leakage/property tests
 Upload parsing limits and spreadsheet/image resource safeguards
 Secrets scanning and sanitized diagnostic logs

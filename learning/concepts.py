@@ -318,6 +318,10 @@ for category, rows in COMPACT.items():
             mistake="Confusing a traditional interpretation or an educational description with validated predictive performance.")
 
 BY_ID = {c["id"]: c for c in CONCEPTS}
+BY_ID["git-github"].update(
+    app_status="Private repository, verified source upload and passing GitHub CI; local Git authentication is separate",
+    code="docs/GITHUB_SYNC.md; .github/workflows/tests.yml",
+    exercise="Open the source commit and its Actions run. Explain how a verified file snapshot differs from a passing test result.")
 CURRENT_BEHAVIOR_IDS = {
     "ohlcv", "timeframe", "price-return", "adjustments", "trend", "pivot", "zones", "breakout",
     "sma", "ema", "rsi", "macd", "atr", "bollinger", "rvol", "obv", "doji", "engulfing",

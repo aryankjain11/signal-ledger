@@ -1268,13 +1268,17 @@ A language model can explain a validated evidence bundle. It should not manufact
 
 ## Git, GitHub, commits and continuous integration
 
-**Category:** AI and software · **Application status:** Explained; engine extension pending
+**Category:** AI and software · **Application status:** Private repository, verified source upload and passing GitHub CI; local Git authentication is separate
 
 Git records versioned snapshots; GitHub hosts repositories and collaboration. A commit identifies a snapshot/history record. CI runs specified checks remotely. A connected GitHub app and the computer's Git client can have different authentication contexts.
 
 **How to read it:** This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
+
+**Try it yourself:** Open the source commit and its Actions run. Explain how a verified file snapshot differs from a passing test result.
+
+**Implementation reference:** `docs/GITHUB_SYNC.md; .github/workflows/tests.yml`
 
 ## Screenshot observations versus structured data
 
