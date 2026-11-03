@@ -498,3 +498,29 @@ and reran the full suite: **168 passed in 30.66 seconds** (27 action checks).
 Browser verified two applied events, separate original/source declarations and
 raw/factor/audit downloads; the exploratory backtest control was disabled in
 adjusted mode. Proof saved locally to `outputs/corporate-actions-verified.png`.
+
+## 2026-11-03 · Split/bonus research published and verified
+
+- Source commit **`3c17469bb15ec48dd2d54e628e7f091688f88110`** published on main
+  using an expected-head update from `225977f1b0bc6e34f846957f4908351222dc0025`.
+  Repository remains private. All **58 of 58** allow-listed source files were
+  fetched at the commit and their blob SHAs matched the reviewed upload objects.
+- GitHub Actions run **41683491255**, job **126082987461**, completed successfully:
+  **168 passed in 11.06 seconds**. Source run:
+  https://github.com/aryankjain11/signal-ledger/actions/runs/41683491255
+- Browser checked the optional price/action upload flow using original synthetic
+  fixtures, declared raw basis and adjusted mode. The audit showed two applied
+  events with ex/known dates and resulting share counts; source and analysis bases
+  were separate, original/factor/audit exports were present, and the backtest
+  control was disabled. Runtime screenshot/fixtures remain local under outputs.
+- Updated sync/README/build evidence after observation. This final documentation
+  audit references the verified source snapshot and does not predict its own
+  later commit. Source archive is rebuilt and integrity/hash-checked after these
+  records, excluding runtime outputs, credentials and user market-data uploads.
+
+Current checklist: **344 tasks — 35 Done, 16 Partial, 281 Planned, 12 Optional**.
+Original five-phase mapping remains **8 Done, 18 Partial, 17 Planned** of 43 items.
+The new bounded split/bonus research gate is Done; broader corporate-action/data
+reconciliation remains Partial. Automatic action sources, dividends/total returns,
+composite events, share-accounting execution, wider calendars and real UDiFF
+acceptance remain pending. Learning assignments remain paused.

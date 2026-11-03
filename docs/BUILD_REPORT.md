@@ -162,6 +162,11 @@ Latest local regression: **168 passed in 30.66 seconds**, including 27 action ca
 and mode-switch/cache-policy isolation. Expanded counts: 35 Done, 16 Partial,
 281 Planned, 12 Optional. Original phase counts remain 8 Done, 18 Partial and
 17 Planned; the bounded research feature does not complete the whole data stage.
+Remote acceptance: commit `3c17469bb15ec48dd2d54e628e7f091688f88110`, all 58 source
+files verified; GitHub run **41683491255**, job **126082987461**, passed **168 tests
+in 11.06 seconds**. Browser acceptance confirmed two synthetic events, separate
+source/analysis basis, exports and disabled execution. Local runtime fixtures and
+screenshots are excluded from source control.
 
 Earlier data-quality increment: versioned NSE CM 2026 calendar snapshot with trading
 holidays, January closure amendment, Budget and Muhurat Sunday overrides; missing

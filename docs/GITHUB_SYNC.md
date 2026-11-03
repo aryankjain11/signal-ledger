@@ -6,11 +6,19 @@ Updated: 2026-11-03.
 - Visibility: **private**, verified through the GitHub page and connected metadata.
 - Initial branch: `main`.
 - Initial README commit: `bc09670a45e3776f5fcb47b393d93e685974fe63`.
-- **Latest calendar/status source: complete and verified.** Commit
+- **Latest split/bonus research source: complete and verified.** Commit
+  [`3c17469bb15ec48dd2d54e628e7f091688f88110`](https://github.com/aryankjain11/signal-ledger/commit/3c17469bb15ec48dd2d54e628e7f091688f88110)
+  has 58 reviewed files, all fetched and blob-SHA matched. Private visibility
+  remains unchanged; actual uploads and runtime outputs were excluded.
+- **Latest CI:** [run 41683491255](https://github.com/aryankjain11/signal-ledger/actions/runs/41683491255),
+  job 126082987461: **168 passed in 11.06 seconds**. Final local regression:
+  **168 passed in 30.66 seconds**, including 27 corporate-action cases.
+  This audit records an already observed source snapshot; its own commit is later.
+- **Earlier calendar/status source: complete and verified.** Commit
   [`9a41497dd7024d0a1d3b39534573f80df6f45e77`](https://github.com/aryankjain11/signal-ledger/commit/9a41497dd7024d0a1d3b39534573f80df6f45e77)
   has 54 reviewed files, all fetched and blob-SHA matched; repository remains private.
   No owner market-data upload or screenshot was included.
-- **Latest CI:** [run 41657477162](https://github.com/aryankjain11/signal-ledger/actions/runs/41657477162),
+- **Earlier calendar/status CI:** [run 41657477162](https://github.com/aryankjain11/signal-ledger/actions/runs/41657477162),
   job 125991544026: **141 passed in 10.45 seconds**, Ubuntu 26.04 / Python 3.13.17.
   Local regression: **141 passed in 49.18 seconds**. This audit documents the already
   observed snapshot, rather than predicting the result of its own later commit.
