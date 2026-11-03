@@ -144,6 +144,14 @@ where they are useful, rather than hiding all uncertainty in a footer.
 
 ## Verification and limitations
 
+Latest direct-NSE-export result: **117 local checks passed in 48.11 seconds**.
+Source commit `dbb5a3db7e48cbf58f7bb3b2519e7ca063f6de8d` was uploaded privately;
+all **49** allow-listed source files matched their remote blob SHAs. GitHub run
+**41652886132**, job **125975413746**, passed **117 tests in 12.78 seconds** on
+Ubuntu 26.04 / Python 3.13.17. Browser upload of the owner's original file rendered
+21 sessions with correct label, close and interpretation record. The real dataset
+and its screenshot remain local. The new numerical fixtures contain invented data.
+
 **Direct security-history upload increment:** `quant_engine/nse_quotes.py`
 recognizes the supplied NSE quote-export schema, parses explicit dates and Indian
 number grouping, selects CLOSE/share VOLUME, guards EQ identity and records its
@@ -154,7 +162,7 @@ invented data and the downloaded file is not redistributed. See `NSE_CSV_UPLOAD.
 and the latest work-log entry for test and browser evidence. The catalogue now has
 120 concepts and the checklist 342 items (S02-021 adds this explicit upload gate).
 
-Latest S02-A acceptance: **90 local tests passed in 52.97 seconds**. Source commit
+Earlier S02-A acceptance: **90 local tests passed in 52.97 seconds**. Source commit
 `165264391dbdef6e0f1dcd1b3d88eec7c70e06c2` contains all 46 reviewed files, each
 verified against its remote blob SHA. GitHub Actions run **41639106785** passed
 the same 90 tests in **11.79 seconds** on Ubuntu 26.04 / Python 3.13.17.

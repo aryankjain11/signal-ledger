@@ -342,3 +342,34 @@ warm-up warning for a one-month history. Learner mastery is not marked complete.
 **Remaining:** UDiFF real-report/current-schema acceptance, exchange calendar and
 corporate-action reconciliation remain separate gates. Browser and GitHub results
 for this change will be recorded once observed.
+
+## 2026-11-03 · Direct NSE upload browser and GitHub gate passed
+
+- Restarted only this project's verified local server. Uploaded the owner's
+  original CSV through Research → Upload daily data with the file chooser, then
+  confirmed completed sessions. No manual preprocessing was performed.
+- Browser displayed the inferred stock label, **21 sessions**, source date range,
+  closing price matching the supplied CLOSE field, computed indicators and the
+  appropriate unavailable/short-history states. Data & exports showed EQ identity,
+  input hash, normalization details and the original adjustment/rights limitations.
+- Saved local proof `outputs/nse-quote-upload-verified.png`. Because it displays
+  the owner's uploaded market data, it is excluded from the source upload.
+- Published commit **`dbb5a3db7e48cbf58f7bb3b2519e7ca063f6de8d`** on main, based
+  on `718fef3a53a20e5cad71d54d96215351a78512bc`, using an expected-head update.
+  A tool-catalog refresh interrupted commit preparation once; refreshing the
+  catalog and retrying normally succeeded. No authorization check was bypassed.
+- Reconfirmed private visibility. All **49 source files** at the commit were
+  fetched and their blob SHAs matched the reviewed upload objects. Source excludes
+  the actual CSV, screenshots of it, environments and credentials.
+- GitHub Actions run **41652886132**, job **125975413746**, succeeded:
+  **117 passed in 12.78 seconds**, Ubuntu 26.04 / Python 3.13.17.
+  https://github.com/aryankjain11/signal-ledger/actions/runs/41652886132
+- Updated the sync/build reports and README after observing these results. This
+  documentation audit references the verified source snapshot; it does not claim
+  to predict its own later commit/test result. Source archive is regenerated and
+  hash-checked after the final documentation update.
+
+**Outcome:** the supplied security-history format now uploads unchanged. Keep
+the original filename for its label hint and use a longer date range to warm up
+long indicators. UDiFF acceptance, calendar and corporate actions remain separate
+next steps. No trading-performance or learner-mastery claim is made.
