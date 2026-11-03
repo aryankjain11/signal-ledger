@@ -35,6 +35,8 @@ def size_position(equity: float, entry: float, stop: float, prior_volume: float,
 
 
 def current_setup(frame: pd.DataFrame, settings: Settings) -> dict:
+    if frame.attrs.get("execution_restriction"):
+        return {"status": "Research view · execution unavailable", "reason": frame.attrs["execution_restriction"], "probability": None}
     bar = frame.iloc[-1]
     if not bool(breakout_signals(frame, settings).iloc[-1]):
         return {"status": "NO TRADE — INSUFFICIENT EVIDENCE",
@@ -60,6 +62,8 @@ def current_setup(frame: pd.DataFrame, settings: Settings) -> dict:
 
 
 def backtest(frame: pd.DataFrame, settings: Settings) -> BacktestResult:
+    if frame.attrs.get("execution_restriction"):
+        raise ValueError(frame.attrs["execution_restriction"])
     signals = breakout_signals(frame, settings)
     fee = settings.fee_bps / 10_000
     slip = settings.slippage_bps / 10_000

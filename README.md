@@ -13,7 +13,7 @@ without an upload. Start with Lesson 1, then try the RSI, position-sizing and
 synthetic Evening Star labs. The concept library labels what is actually computed
 or detected separately from features that are only explained.
 
-- [Master checklist](docs/MASTER_CHECKLIST.md): 343 tracked items across 21 stages,
+- [Master checklist](docs/MASTER_CHECKLIST.md): 344 tracked items across 21 stages,
   covering the original brief and optional extensions with acceptance gates.
 - [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 120 definitions and
   notes; worked examples for foundations and current features, concise entries for
@@ -35,8 +35,8 @@ automatically checked off for the learner.
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
 verified, including direct NSE stock-history uploads. Latest local regression:
-141 passed, including the new calendar and project-status checks. GitHub's Linux
-run also passed all 141 checks. The separate UDiFF real-report gate remains pending. See
+168 passed, including split/bonus, replay, execution-policy and view-switching checks.
+Remote results are recorded after observation. The separate UDiFF real-report gate remains pending. See
 [GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
 The local computer's Git client does not currently have a saved GitHub login;
 the connected GitHub tools handle this upload, and no credentials are stored here.
@@ -107,6 +107,11 @@ Maximum size: 20 MB and 50,000 sessions. Use at least 60 sessions for the baseli
 and 20 completed prior calendar weeks for weekly SMA context.
 
 ## Implemented
+
+- Optional reviewed split/bonus action ledger with replay-aware OHLCV research
+  normalization; preserved source, per-date factors and audit exports. Adjusted
+  research and known event-crossing ranges disable execution/backtesting until
+  share-accounting support exists. See [corporate-action scope](docs/CORPORATE_ACTIONS.md).
 
 - NSE CM 2026 calendar snapshot, absent/non-session/future-date checks and
   conservative freshness reporting; replay audits only visible rows. See

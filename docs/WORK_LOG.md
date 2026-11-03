@@ -440,3 +440,61 @@ partial implementations across original phases 1–3. No original phase or final
 acceptance is declared complete. Next implementation gates: UDiFF real-report
 acceptance, broader calendars and corporate-action policies/fixtures, followed by
 structure/indicator and pattern/strategy expansion. Exercises remain paused.
+
+## 2026-11-03 · Reviewed split/bonus normalization opened
+
+- Continued the next authorized data-foundation increment. Scope: reviewed
+  split/bonus ledger, preservation of source prices, separate adjusted research
+  view and auditable per-date factors. No learning assignments were added.
+- Checked official NSE corporate-action records and investor material for
+  split/bonus ratio semantics. Derived original implementation/examples; no
+  market dataset or source document was redistributed. References are in
+  `docs/CORPORATE_ACTIONS.md`.
+- Added explicit CSV fields for action ID, symbol, ex-date, first knowable date,
+  type, shares before/total shares after and reference. Reject ambiguous same-date
+  composites, duplicates, bad ratios/dates, unsupported types and missing effective
+  ex-date bars. No action is inferred from a price jump.
+- Normalize pre-ex-date OHLC and volume consistently, composing multiple actions.
+  Ex-date bars remain in new units. Replay considers only events declared knowable
+  by the cutoff, applies only effective events, and uses the selected cutoff's
+  share units rather than later events. Late-known corrections stay excluded from
+  earlier replay. These declarations are not independently authenticated.
+- Preserve original source identity and hashes; add a separate research-view ID,
+  ledger/result hashes, raw-visible download, factor CSV and audit JSON. Source
+  warnings are preserved separately while adjusted jump warnings are recomputed.
+- Added optional controls and synthetic file examples. Original price CSVs need
+  no editing. Unknown/already-adjusted sources cannot enter adjusted mode; the
+  original price basis must be explicitly declared unadjusted.
+- Adjusted research and raw views spanning known effective events disable trade
+  plans/sizing and backtests. Added guards in the engine and UI; the current
+  simulator does not yet account for share/lot changes and entitlements.
+- Initial targeted run: **24 passed, 2 failed in 16.16 seconds**. Both failures
+  were incorrect test assumptions: changing only one of two symbols still left
+  a matching future event, and a two-bar UI replay correctly stopped at the
+  existing three-observation analysis minimum. Corrected those cases; did not
+  loosen the engine's data gate. Engine execution guards were strengthened during
+  review. Final full-suite evidence follows after completion.
+- Updated the relevant reference entry and original-phase status description,
+  added bounded S02-023 (344 tracked tasks), kept broad adjustment/point-in-time
+  gates Partial, and regenerated shared documents. An interrupted verification
+  call left its output unavailable; inspected state and reran the full suite
+  rather than treating an interrupted call as a successful check.
+
+Remaining scope: automatic action ingestion/completeness, dividends/total returns,
+simultaneous-event review, rights/mergers, listing/entitlement history, execution
+accounting, broader calendars and real UDiFF report acceptance. No complete S02
+stage or original project phase is claimed.
+
+Full local acceptance after the interrupted call: **167 passed in 29.09 seconds**
+(141 existing checks plus 26 new corporate-action cases). Numerical/replay/guard
+checks and generated-doc consistency passed. Final UI wording distinguishes the
+original-source declaration from the explicit adjusted analysis view. Browser
+acceptance and GitHub verification are recorded after observation below.
+
+Final cache-policy check: identical raw/adjusted numerical values can still have
+different execution restrictions before an event becomes effective. Made that
+policy an explicit computation-cache input, added a mode-switching regression,
+and reran the full suite: **168 passed in 30.66 seconds** (27 action checks).
+Browser verified two applied events, separate original/source declarations and
+raw/factor/audit downloads; the exploratory backtest control was disabled in
+adjusted mode. Proof saved locally to `outputs/corporate-actions-verified.png`.

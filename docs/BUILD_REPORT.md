@@ -150,13 +150,26 @@ where they are useful, rather than hiding all uncertainty in a footer.
 
 ## Verification and limitations
 
-New data-quality increment: versioned NSE CM 2026 calendar snapshot with trading
+New split/bonus increment: reviewed action-ledger CSV, before/after share ratios,
+ex-date and known-on cutoff policy, optional adjusted OHLCV research view, preserved
+original source and separate research ID/hashes/factor exports. Source declaration
+must be unadjusted; ambiguous/unsupported events stop for review. Engine/UI guards
+disable execution for adjusted and known action-crossing ranges. No automatic
+action feed, dividend/total-return calculation, composite event handling or
+share-accounting backtest is claimed. See `CORPORATE_ACTIONS.md` for the contract.
+The master checklist now has 344 items; broad corporate-action gates remain Partial.
+Latest local regression: **168 passed in 30.66 seconds**, including 27 action cases
+and mode-switch/cache-policy isolation. Expanded counts: 35 Done, 16 Partial,
+281 Planned, 12 Optional. Original phase counts remain 8 Done, 18 Partial and
+17 Planned; the bounded research feature does not complete the whole data stage.
+
+Earlier data-quality increment: versioned NSE CM 2026 calendar snapshot with trading
 holidays, January closure amendment, Budget and Muhurat Sunday overrides; missing
 observation/non-session/future-date flags; explicit 18:00 IST conservative freshness
 policy; source/replay isolation and passport/evidence downloads. Calendar checks
 do not infer security listing/suspension history or fill bars. Other years and
 exchanges remain unverified. `DATA_QUALITY.md` contains sources and limitations.
-The shared checklist has 343 items; broader S02 gates remain Partial.
+At that increment the shared checklist had 343 items; broader S02 gates remained Partial.
 Local regression for this increment: **141 passed in 49.18 seconds**. The original
 43-item phase mapping has 8 Done, 18 Partial and 17 Planned items; none of the five
 original phases is claimed complete. Expanded task counts are 34 Done, 14 Partial,

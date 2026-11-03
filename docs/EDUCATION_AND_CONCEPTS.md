@@ -60,7 +60,7 @@ Price is a currency amount per share. Simple return measures relative change. To
 
 ## Corporate actions and adjusted prices
 
-**Category:** Data quality · **Application status:** User declaration and warnings; verification/adjustment pending
+**Category:** Data quality · **Application status:** Reviewed split/bonus ledger and replay-aware OHLCV research normalization; dividend/total-return and execution accounting pending
 
 Splits, bonus issues, dividends and reorganizations can change the meaning of historical prices. A consistent adjustment policy preserves comparability. Price and share-volume transformations must agree with the event type; dividend adjustment is different from split adjustment.
 
@@ -71,6 +71,8 @@ Splits, bonus issues, dividends and reorganizations can change the meaning of hi
 **Common mistake:** Combining adjusted close with unadjusted open/high/low, or assuming every sharp move is a split.
 
 **Further reading:** [NSE: corporate actions](https://www.nseindia.com/companies-listing/corporate-filings-actions)
+
+**Implementation reference:** `quant_engine/corporate_actions.py; quant_engine/actions_ui.py`
 
 ## Trend and market structure: HH, HL, LH, LL
 

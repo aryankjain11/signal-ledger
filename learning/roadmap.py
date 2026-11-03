@@ -123,8 +123,8 @@ _add("S02", """
 ~ Exchange trading calendar, holidays and exceptional sessions
 + Asia/Kolkata timestamps and explicit session-date semantics
 ~ Detect genuinely missing sessions against the configured calendar
-Consistent split/bonus adjustment across OHLC and volume
-Dividend/total-return conventions and point-in-time adjustment policy
+~ Consistent split/bonus adjustment across OHLC and volume
+~ Dividend/total-return conventions and point-in-time adjustment policy
 Rights/demerger/merger action handling and ambiguous-action review queue
 ~ Preserve original raw files plus normalized versioned datasets
 ~ Cross-source data checks, stale-feed detection and source timestamps
@@ -139,6 +139,7 @@ Provider outage/rate-limit/retry/error behavior
 + No interpolation/fabrication; clearly report unavailable fields
 + Direct NSE security-history CSV upload without manual cleanup
 + NSE CM 2026 calendar snapshot and visible-slice completeness/freshness audit
++ Reviewed split/bonus ledger, replay-safe adjusted research and factor exports
 """)
 _add("S03", """
 Configurable swing significance, tie handling and volatility-aware filtering

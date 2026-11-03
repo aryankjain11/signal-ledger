@@ -4,7 +4,7 @@ Updated: 2026-11-03
 
 Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.
 
-343 work items: 34 done, 14 partial, 283 planned, 12 optional / later.
+344 work items: 35 done, 16 partial, 281 planned, 12 optional / later.
 
 Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.
 
@@ -113,9 +113,9 @@ Original brief: 4,16,20
 
 - [ ] **S02-006** · Partial · Detect genuinely missing sessions against the configured calendar
 
-- [ ] **S02-007** · Planned · Consistent split/bonus adjustment across OHLC and volume
+- [ ] **S02-007** · Partial · Consistent split/bonus adjustment across OHLC and volume
 
-- [ ] **S02-008** · Planned · Dividend/total-return conventions and point-in-time adjustment policy
+- [ ] **S02-008** · Partial · Dividend/total-return conventions and point-in-time adjustment policy
 
 - [ ] **S02-009** · Planned · Rights/demerger/merger action handling and ambiguous-action review queue
 
@@ -144,6 +144,8 @@ Original brief: 4,16,20
 - [x] **S02-021** · Done · Direct NSE security-history CSV upload without manual cleanup
 
 - [x] **S02-022** · Done · NSE CM 2026 calendar snapshot and visible-slice completeness/freshness audit
+
+- [x] **S02-023** · Done · Reviewed split/bonus ledger, replay-safe adjusted research and factor exports
 
 
 ## S03 · Price structure, zones and breakouts

@@ -6,17 +6,17 @@ Current position: working local daily-data research prototype. Parts of original
 
 Learning assignments are paused at the owner's request. Product implementation, testing, records and GitHub synchronization continue. Existing reference pages remain available.
 
-Expanded master checklist: 343 work items — 34 done, 14 partial, 283 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
+Expanded master checklist: 344 work items — 35 done, 16 partial, 281 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
 
 This document maps every one of the original five-phase roadmap's 43 implementation bullets (brief §19). Detailed subfeatures and the original acceptance-criteria audit are in MASTER_CHECKLIST.md; the complete brief is ORIGINAL_BRIEF.md.
 
-Calendar scope: offline NSE CM 2026 snapshot with specified amendments and special sessions. Missing observations are review candidates, not a claim of broken source data. Corporate-action reconciliation, other years/exchanges and live calendar updates remain pending.
+Calendar scope: offline NSE CM 2026 snapshot with specified amendments and special sessions. Missing observations are review candidates, not a claim of broken source data. Reviewed split/bonus ledgers support research normalization; automatic action reconciliation, dividends/total returns, share-accounting execution, other calendar years/exchanges and live updates remain pending.
 
 ## Phase 1 · Core technical analysis engine
 
 - [x] **Done · OHLCV data ingestion** — Single-stock standard CSV/XLSX and native NSE history downloads; UDiFF import is a separate preview.
 
-- [ ] **Partial · Data validation and preprocessing** — Strict OHLCV plus NSE CM 2026 calendar audit; broader calendars, corporate actions and provider checks remain.
+- [ ] **Partial · Data validation and preprocessing** — Strict OHLCV, NSE CM 2026 calendar audit and reviewed split/bonus research adjustments; broader calendars, automatic action reconciliation and provider checks remain.
 
 - [ ] **Partial · Multiple timeframe support** — Daily plus conservative prior-week context; configurable intraday/monthly alignment pending.
 
@@ -114,11 +114,13 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 - [x] Original NSE security-history CSV support, data passports and source/replay hashes.
 
+- [x] Reviewed split/bonus action ledger, replay-aware adjusted research, raw/factor/audit exports and execution restrictions.
+
 - [x] Build journal, detailed checklist and downloadable status records.
 
 - [ ] Full real-file acceptance for UDiFF report import; separate from security-history CSV support.
 
-- [ ] Wider historical calendar coverage and corporate-action policies/fixtures.
+- [ ] Wider historical calendars; automatic corporate-action feeds, dividends/total returns and share-accounting backtests.
 
 - [ ] Continue structure/indicator improvements, then one pattern/strategy family at a time.
 

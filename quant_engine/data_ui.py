@@ -56,6 +56,9 @@ def render_passport(data):
     st.write(f"**Provider/source claim:** {passport['provider_claim']}")
     st.write(f"**Identity:** ISIN {instrument['isin'] or 'not supplied'} · {passport['origin_verification']}")
     st.write(f"**Price basis:** {passport['adjustment_basis']} · {passport['adjustment_verification']}")
+    if passport.get("analysis_price_basis"):
+        st.write(f"**Analysis price basis:** {passport['analysis_price_basis']}")
+        st.caption(f"Research view ID: {passport['research_view_id']}")
     st.write(f"**Dates:** {passport['date_semantics']} ({passport['session_timezone']})")
     st.caption(f"Source dataset: {passport['source_rows']} rows, {passport['source_start']}–{passport['source_end']}. Analysis slice: {passport['analyzed_rows']} rows through {passport['analyzed_through']}.")
     st.caption(passport["calendar_status"])

@@ -8,7 +8,7 @@ from .roadmap import TASKS
 PHASES = [
     ("1", "Core technical analysis engine", [
         ("done", "OHLCV data ingestion", "Single-stock standard CSV/XLSX and native NSE history downloads; UDiFF import is a separate preview."),
-        ("partial", "Data validation and preprocessing", "Strict OHLCV plus NSE CM 2026 calendar audit; broader calendars, corporate actions and provider checks remain."),
+        ("partial", "Data validation and preprocessing", "Strict OHLCV, NSE CM 2026 calendar audit and reviewed split/bonus research adjustments; broader calendars, automatic action reconciliation and provider checks remain."),
         ("partial", "Multiple timeframe support", "Daily plus conservative prior-week context; configurable intraday/monthly alignment pending."),
         ("partial", "Trend identification", "Basic confirmed HH/HL/LH/LL; richer strength/range/reversal classifications pending."),
         ("done", "Swing high/low identification", "Confirmed fixed three-left/right pivots with formation and knowability dates."),
@@ -74,16 +74,17 @@ def progress_markdown():
         "Learning assignments are paused at the owner's request. Product implementation, testing, records and GitHub synchronization continue. Existing reference pages remain available.",
         f"Expanded master checklist: {len(TASKS)} work items — {counts['done']} done, {counts['partial']} partial, {counts['planned']} planned, {counts['optional']} optional. Counts are not effort estimates or a meaningful project-completion percentage.",
         "This document maps every one of the original five-phase roadmap's 43 implementation bullets (brief §19). Detailed subfeatures and the original acceptance-criteria audit are in MASTER_CHECKLIST.md; the complete brief is ORIGINAL_BRIEF.md.",
-        "Calendar scope: offline NSE CM 2026 snapshot with specified amendments and special sessions. Missing observations are review candidates, not a claim of broken source data. Corporate-action reconciliation, other years/exchanges and live calendar updates remain pending."]
+        "Calendar scope: offline NSE CM 2026 snapshot with specified amendments and special sessions. Missing observations are review candidates, not a claim of broken source data. Reviewed split/bonus ledgers support research normalization; automatic action reconciliation, dividends/total returns, share-accounting execution, other calendar years/exchanges and live updates remain pending."]
     for number, title, items in PHASES:
         lines += [f"## Phase {number} · {title}"]
         lines += [f"- [{'x' if status == 'done' else ' '}] **{status.title()} · {name}** — {scope}" for status, name, scope in items]
     lines += ["## Build support and immediate sequence",
         "- [x] Local app, source/tests, private GitHub repository and automated test workflow.",
         "- [x] Original NSE security-history CSV support, data passports and source/replay hashes.",
+        "- [x] Reviewed split/bonus action ledger, replay-aware adjusted research, raw/factor/audit exports and execution restrictions.",
         "- [x] Build journal, detailed checklist and downloadable status records.",
         "- [ ] Full real-file acceptance for UDiFF report import; separate from security-history CSV support.",
-        "- [ ] Wider historical calendar coverage and corporate-action policies/fixtures.",
+        "- [ ] Wider historical calendars; automatic corporate-action feeds, dividends/total returns and share-accounting backtests.",
         "- [ ] Continue structure/indicator improvements, then one pattern/strategy family at a time.",
         "- [ ] Persist research events/results, freeze validation, then add statistical/model layers.",
         "Actual local/remote checks and verified source commits are recorded in WORK_LOG.md and GITHUB_SYNC.md. A test workflow is not proof of investment performance. Live execution is outside the authorized scope."]

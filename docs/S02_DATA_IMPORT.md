@@ -2,6 +2,11 @@
 
 Status: implemented and verified with synthetic fixtures. Full S02 remains partial.
 
+Current follow-ons: S02-022 adds the offline NSE CM 2026 calendar/quality snapshot
+(`DATA_QUALITY.md`). S02-023 adds reviewed split/bonus-ledger research normalization,
+cutoff-aware replay and raw/factor/audit exports (`CORPORATE_ACTIONS.md`). Broader
+calendar years, automatic action reconciliation and execution accounting remain pending.
+
 Follow-on S02-021: direct NSE security-history CSV/XLSX upload is now supported
 through Upload daily data, checked against an owner-supplied real stock-history
 export locally. See `NSE_CSV_UPLOAD.md`. This is a different file format and does
@@ -45,7 +50,7 @@ implementation's tested behavior, not real-feed compatibility or investment valu
 - S02-005 Done: explicit daily session dates and Asia/Kolkata semantics; no UTC-date substitution.
 - S02-010 Partial: hashes and normalized exports exist; durable raw/normalized store pending.
 - S02-012 Partial: reject-all duplicate policy exists; correction/version audit pending.
-- S02-019 Partial: uploaded-date coverage and declarations shown; calendar/freshness gates pending.
+- S02-019 Partial: uploaded-date coverage, declarations and bounded 2026 calendar/freshness checks exist; wider coverage and adjustment-quality gates remain.
 - S02-020 Done: unavailable fields/absences are disclosed; no interpolation or fabricated bars.
 
 ## Limits and next increments
@@ -55,8 +60,8 @@ The linked official workbook download failed during research (reset/timeout).
 Shared UDiFF tag meanings were cross-checked against an official NCDEX document;
 that is not proof of the complete current NSE equity schema. See Lesson 2 sources.
 
-Next small milestone: versioned exchange calendar and exceptional-session fixtures,
-followed by missingness reconciliation. Then explicit split/bonus/dividend policies
-and point-in-time corporate-action fixtures. Licensed provider selection, automatic
+The bounded calendar and reviewed split/bonus research layers are implemented.
+Remaining: wider calendar snapshots, real UDiFF report acceptance, automatic action
+reconciliation, dividends/total returns and share-accounting execution. Licensed provider selection, automatic
 updates, retries, full listing history and persistent dataset storage remain future
 work. No live orders, broker access or paid service has been added.

@@ -53,7 +53,8 @@ add("adjustments", "Corporate actions and adjusted prices", "Data quality",
     example="In a hypothetical 2-for-1 split, ₹200 with one share becomes about ₹100 with two shares before other market movement. Splits alone do not halve portfolio value.",
     interpretation="Keep the raw series, event record, adjusted series, method and version. Back-adjustment can revise old numbers, so research needs a point-in-time policy.",
     mistake="Combining adjusted close with unadjusted open/high/low, or assuming every sharp move is a split.",
-    status="User declaration and warnings; verification/adjustment pending", source="nse")
+    status="Reviewed split/bonus ledger and replay-aware OHLCV research normalization; dividend/total-return and execution accounting pending", source="nse",
+    code="quant_engine/corporate_actions.py; quant_engine/actions_ui.py")
 add("trend", "Trend and market structure: HH, HL, LH, LL", "Price structure",
     "Higher high (HH) and higher low (HL) mean successive meaningful highs and lows are rising. Lower high (LH) and lower low (LL) mean they are falling. Mixed sequences need a mixed/range interpretation rather than a forced direction.",
     example="Confirmed highs 100→110 and lows 90→96 give HH+HL. Highs 110→104 with lows 96→92 give LH+LL.",

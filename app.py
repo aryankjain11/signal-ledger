@@ -14,6 +14,9 @@ from quant_engine.strategy import backtest
 from learning.pages import render_education, render_build_journal
 from quant_engine.datasets import Instrument, attach_passport
 from quant_engine.data_ui import report_import, render_passport
+from quant_engine.actions_ui import action_controls, render_action_audit
+from quant_engine.corporate_actions import apply_actions
+from quant_engine.datasets import canonical_bars_bytes
 
 ROOT = Path(__file__).resolve().parent
 st.set_page_config(page_title="Signal Ledger · Quant research", page_icon="◈", layout="wide")
@@ -131,9 +134,21 @@ if adjustment == "Unknown / unverified":
     st.warning("Adjustment status is unverified. Splits and dividends can distort indicators, patterns and backtest results.")
 elif adjustment == "Unadjusted OHLC":
     st.warning("Quoted/unadjusted prices: splits and other corporate actions have not been reconciled. Interpret long-horizon indicators and backtests accordingly.")
+action_ledger, use_adjusted = action_controls(data)
 options = [d.date().isoformat() for d in data.bars.index]
 as_of = st.select_slider("Replay through session · analysis uses only rows through this date", options=options, value=options[-1])
 data.bars = data.bars.loc[:as_of]
+original_visible_csv = canonical_bars_bytes(data.bars)
+action_factors = None
+if action_ledger is not None:
+    try:
+        data, action_factors = apply_actions(data, action_ledger, as_of=as_of, adjusted=use_adjusted)
+        if use_adjusted:
+            adjustment = "Split/bonus adjusted research; no dividend/total-return adjustment"
+            st.info("Split/bonus adjusted research view. Original quoted prices are preserved separately. Trade sizing and backtesting are unavailable in this view.")
+    except ValueError as exc:
+        st.error(f"Corporate-action review required: {exc}")
+        st.stop()
 from quant_engine.calendar import attach_quality
 quality = attach_quality(data, replay=as_of != options[-1])
 if any(quality[key] for key in ("missing_expected_dates", "unexpected_dates", "future_dates")):
@@ -144,12 +159,16 @@ if len(data.bars) < 3:
 settings = Settings(capital=capital, risk_fraction=risk / 100, fee_bps=fees, slippage_bps=slip)
 
 @st.cache_data(show_spinner=False)
-def compute(content_hash, bars, settings_dict):
+def compute(content_hash, bars, settings_dict, execution_restriction=""):
     from quant_engine.models import ValidatedData
-    return analyze(ValidatedData(bars, [], content_hash), Settings(**settings_dict))
+    return analyze(ValidatedData(bars, [], content_hash, {"execution_restriction": execution_restriction}), Settings(**settings_dict))
 
-analysis = compute(data.source_hash, data.bars, asdict(settings))
+from copy import deepcopy
+analysis = deepcopy(compute(data.source_hash, data.bars, asdict(settings), data.metadata.get("execution_restriction", "")))
 analysis.warnings = data.warnings + analysis.warnings
+execution_restriction = data.metadata.get("execution_restriction")
+if execution_restriction:
+    analysis.setup = {"status": "Research view · execution unavailable", "reason": execution_restriction}
 frame, last = analysis.frame, analysis.frame.iloc[-1]
 columns = st.columns(4)
 columns[0].metric("Last close", f"{last.close:,.2f}", f"{(last.close / frame.close.iloc[-2] - 1) * 100:+.2f}%")
@@ -208,7 +227,9 @@ with backtest_tab:
     st.subheader("A testable hypothesis, not a forecast")
     st.write("Enter at the next session's open after a close above the prior 20 highs, above EMA50, with relative volume ≥ 1.2. Fix a 2 ATR stop and 2R target at entry; hold at most 10 sessions.")
     st.caption("One long position; no leverage. Size is capped by cash, risk budget and 1% of prior-session volume. Slippage and fees apply on both sides. If stop and target touch in one bar, stop wins. Gaps can exceed the risk budget. Open positions close at the end of the dataset.")
-    if st.button("Run exploratory backtest", type="primary"):
+    if execution_restriction:
+        st.warning(execution_restriction)
+    if st.button("Run exploratory backtest", type="primary", disabled=bool(execution_restriction)):
         result = backtest(frame, settings)
         metrics = result.metrics
         c1, c2, c3, c4 = st.columns(4)
@@ -231,8 +252,14 @@ with backtest_tab:
 with quality_tab:
     st.subheader("Source and limitations")
     st.write(f"Input: {filename} · source hash: `{data.source_hash}`")
-    st.write(f"Adjustment declaration: {adjustment}. No adjustment is applied automatically.")
+    if action_ledger is not None:
+        st.write(f"Analysis price basis: {data.metadata['analysis_price_basis']}.")
+        st.caption(f"Original-source declaration: {data.metadata['adjustment_basis']}. Only explicitly selected split/bonus research adjustments are applied.")
+    else:
+        st.write(f"Adjustment declaration: {adjustment}. No adjustment is applied automatically.")
     render_passport(data)
+    if action_ledger is not None:
+        render_action_audit(data, original_visible_csv, action_factors)
     for warning in analysis.warnings:
         st.write(f"• {warning}")
     st.dataframe(frame.tail(100), width="stretch")

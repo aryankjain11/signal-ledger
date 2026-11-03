@@ -17,6 +17,8 @@ def analyze(data: ValidatedData, settings: Settings) -> Analysis:
     if len(data.bars) < 3:
         raise ValueError("Analysis needs at least three completed daily observations; a smaller import is preview-only.")
     frame = indicators(data.bars)
+    if data.metadata.get("execution_restriction"):
+        frame.attrs["execution_restriction"] = data.metadata["execution_restriction"]
     pivots = swings(frame, settings.pivot_window)
     trend, structure = market_structure(pivots)
     bar = frame.iloc[-1]
