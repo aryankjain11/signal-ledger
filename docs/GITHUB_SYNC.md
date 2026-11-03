@@ -6,7 +6,15 @@ Updated: 2026-11-03.
 - Visibility: **private**, verified through the GitHub page and connected metadata.
 - Initial branch: `main`.
 - Initial README commit: `bc09670a45e3776f5fcb47b393d93e685974fe63`.
-- **Full source upload: complete and verified.** All 40 files in the reviewed
+- **Latest S02-A upload: complete and verified.** All 46 reviewed files matched
+  their remote blob SHAs at source commit
+  [`165264391dbdef6e0f1dcd1b3d88eec7c70e06c2`](https://github.com/aryankjain11/signal-ledger/commit/165264391dbdef6e0f1dcd1b3d88eec7c70e06c2).
+- **Latest remote CI: passed**, 90 tests in 11.79 seconds on Ubuntu 26.04 / Python 3.13.17.
+  [Verified Actions run 41639106785](https://github.com/aryankjain11/signal-ledger/actions/runs/41639106785), job 125927744182.
+  Local full regression: 90 passed in 52.97 seconds. These are synthetic/software
+  checks; acceptance against a permitted real NSE file remains pending.
+- This audit records the observed S02-A source snapshot; its own commit is later.
+- **Earlier learning-foundation upload:** All 40 files in the reviewed
   source snapshot were committed on `main`; every remote content-object SHA matched
   the corresponding reviewed file.
 - Source commit: [`189b15a6043dad2638f7c04d08920c52ada0d03a`](https://github.com/aryankjain11/signal-ledger/commit/189b15a6043dad2638f7c04d08920c52ada0d03a).

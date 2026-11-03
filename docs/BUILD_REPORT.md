@@ -144,6 +144,18 @@ where they are useful, rather than hiding all uncertainty in a footer.
 
 ## Verification and limitations
 
+Latest S02-A acceptance: **90 local tests passed in 52.97 seconds**. Source commit
+`165264391dbdef6e0f1dcd1b3d88eec7c70e06c2` contains all 46 reviewed files, each
+verified against its remote blob SHA. GitHub Actions run **41639106785** passed
+the same 90 tests in **11.79 seconds** on Ubuntu 26.04 / Python 3.13.17.
+This synthetic/schema-subset gate does not establish current full NSE schema
+compatibility, real-source authenticity or profitability. See `S02_DATA_IMPORT.md`.
+
+The new modules are `quant_engine/nse_files.py` (bounded offline report adapter),
+`datasets.py` (instrument/provenance contract) and `data_ui.py` (import/passport UI).
+`tests/test_nse_files.py` adds 41 checks to the previous 49. Lesson 2 is available
+inside the app and as Markdown. Shared handbook/checklist exports remain tested.
+
 Tests cover catalogue integrity and documentation consistency as well as app search,
 page navigation, lab arithmetic and invalid inputs. The existing35 analytical/app
 checks remain a regression requirement. A synthetic fixture tests software; it does
@@ -151,7 +163,7 @@ not test economic value. Compact glossary entries are introductory, not full
 standalone courses or claims that all future definitions have been quantitatively
 validated.
 
-Remote repository privacy is verified. All 40 source-snapshot files were uploaded
+Earlier learning-foundation verification: repository privacy was verified. All 40 source-snapshot files were uploaded
 and their remote blob SHAs matched the reviewed contents, at source commit
 `189b15a6043dad2638f7c04d08920c52ada0d03a`. GitHub Actions run 41624242800 passed
 all 49 tests on a clean Ubuntu 26.04 / Python 3.13.17 runner (3.13 seconds of tests).

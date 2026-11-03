@@ -31,7 +31,8 @@ automatically checked off for the learner.
 
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
-verified for the learning foundation. See
+verified, including the S02-A importer/passport increment. All 90 tests passed
+locally and on GitHub's Linux runner. Real-file NSE acceptance remains pending. See
 [GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
 The local computer's Git client does not currently have a saved GitHub login;
 the connected GitHub tools handle this upload, and no credentials are stored here.

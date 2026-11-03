@@ -274,3 +274,29 @@ why a 2-for-1 split does not alone halve the holding value. No mastery is assume
 exchange calendar and genuine missing-session reconciliation; then corporate-action
 policies/fixtures, provider integration and durable dataset storage. GitHub upload
 and remote verification of this milestone are recorded after they are observed.
+
+## 2026-11-03 · S02-A published and remotely verified
+
+- Private repository reconfirmed. Published source commit
+  `165264391dbdef6e0f1dcd1b3d88eec7c70e06c2` on main, based on verified previous
+  head `8abef847f1f5e8d8dbea464abe769bb53c036ffe`, using an expected-head update.
+- Fetched all **46** allow-listed source files at that commit and matched their
+  blob SHAs to the reviewed contents. A few connector reads returned internal
+  errors; smaller sequential retries succeeded. No content mismatch remained.
+- GitHub Actions run **41639106785**, job **125927744182**, completed successfully:
+  **90 passed in 11.79 seconds**, Ubuntu 26.04 / Python 3.13.17.
+  Run: https://github.com/aryankjain11/signal-ledger/actions/runs/41639106785.
+- Restarted only this project's verified Streamlit server to refresh imported
+  modules. Browser-checked Research → Synthetic NSE report walkthrough →
+  Data & exports: 80 observations, exact instrument/ISIN, synthetic origin/basis,
+  source versus analysis range, limitations and both download controls rendered.
+  Screenshot: local `outputs/S02-import-verified.jpg` (runtime output, not uploaded).
+- This documentation audit records the observed source commit and remote result;
+  it does not predict the result of its own later audit commit. The source-only
+  archive is rebuilt after this record with the same allow-list and verified hashes.
+
+**Milestone outcome:** offline importer/passport and learning increment complete
+for the supported synthetic acceptance gate. Full S02 remains Partial. Next is
+permitted real-file/current-schema acceptance and exchange-calendar reconciliation,
+then corporate-action policies. No market-performance claim or learner completion
+has been added.
