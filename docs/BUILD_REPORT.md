@@ -161,8 +161,12 @@ Local regression for this increment: **141 passed in 49.18 seconds**. The origin
 43-item phase mapping has 8 Done, 18 Partial and 17 Planned items; none of the five
 original phases is claimed complete. Expanded task counts are 34 Done, 14 Partial,
 283 Planned and 12 Optional, which are not effort-weighted completion percentages.
+Remote evidence: source commit `9a41497dd7024d0a1d3b39534573f80df6f45e77`,
+54 of 54 source files verified; GitHub run **41657477162**, job **125991544026**,
+passed **141 tests in 10.45 seconds** on Ubuntu 26.04 / Python 3.13.17. Browser
+checks confirmed the original-plan table and calendar summary on the owner's file.
 
-Latest direct-NSE-export result: **117 local checks passed in 48.11 seconds**.
+Earlier direct-NSE-export result: **117 local checks passed in 48.11 seconds**.
 Source commit `dbb5a3db7e48cbf58f7bb3b2519e7ca063f6de8d` was uploaded privately;
 all **49** allow-listed source files matched their remote blob SHAs. GitHub run
 **41652886132**, job **125975413746**, passed **117 tests in 12.78 seconds** on

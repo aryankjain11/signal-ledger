@@ -6,11 +6,19 @@ Updated: 2026-11-03.
 - Visibility: **private**, verified through the GitHub page and connected metadata.
 - Initial branch: `main`.
 - Initial README commit: `bc09670a45e3776f5fcb47b393d93e685974fe63`.
-- **Latest native NSE stock-history upload: complete and verified.** Source
+- **Latest calendar/status source: complete and verified.** Commit
+  [`9a41497dd7024d0a1d3b39534573f80df6f45e77`](https://github.com/aryankjain11/signal-ledger/commit/9a41497dd7024d0a1d3b39534573f80df6f45e77)
+  has 54 reviewed files, all fetched and blob-SHA matched; repository remains private.
+  No owner market-data upload or screenshot was included.
+- **Latest CI:** [run 41657477162](https://github.com/aryankjain11/signal-ledger/actions/runs/41657477162),
+  job 125991544026: **141 passed in 10.45 seconds**, Ubuntu 26.04 / Python 3.13.17.
+  Local regression: **141 passed in 49.18 seconds**. This audit documents the already
+  observed snapshot, rather than predicting the result of its own later commit.
+- **Earlier native NSE stock-history upload: complete and verified.** Source
   [`dbb5a3db7e48cbf58f7bb3b2519e7ca063f6de8d`](https://github.com/aryankjain11/signal-ledger/commit/dbb5a3db7e48cbf58f7bb3b2519e7ca063f6de8d)
   contains 49 reviewed source files, all fetched and blob-SHA matched. The supplied
   market-data download was not uploaded. Repository remains private.
-- **Latest CI:** [run 41652886132](https://github.com/aryankjain11/signal-ledger/actions/runs/41652886132),
+- **Earlier native-upload CI:** [run 41652886132](https://github.com/aryankjain11/signal-ledger/actions/runs/41652886132),
   job 125975413746: **117 passed in 12.78 seconds**, Ubuntu 26.04 / Python 3.13.17.
   Local full regression: **117 passed in 48.11 seconds**. This audit records the
   already-observed source result, rather than predicting its own later commit.

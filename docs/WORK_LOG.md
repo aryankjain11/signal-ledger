@@ -413,3 +413,30 @@ Sources: NSE CMTR71775 (2026 CM holidays), CMTR72260 (January closure amendment)
 CMTR72349 (Budget live session), CMTR76941 (Muhurat schedule). Exact links are in
 DATA_QUALITY.md and in the exported assessment. Only source references and the
 calendar rules are bundled; no owner market-data download is redistributed.
+
+## 2026-11-03 · Calendar/status live and remote verification
+
+- Browser-checked Build checklist & log: 343 expanded tasks, 34 Done, 14 Partial,
+  12 Optional; original five-phase overview and project-status download rendered.
+  Original-plan mapping remains 8 Done, 18 Partial and 17 Planned out of 43 bullets.
+- Uploaded the owner's unchanged NSE security-history file locally. Data & exports
+  displayed 21 observations, no absent/unexpected observations within the checked
+  range, and current through November 3 with zero-session lag. Short-history and
+  adjustment/identity limits remained visible. No real dataset was uploaded remotely.
+- Saved runtime proof to `outputs/project-status-verified.png` and
+  `outputs/data-quality-verified.png`; runtime outputs remain excluded from source.
+- Published source commit **`9a41497dd7024d0a1d3b39534573f80df6f45e77`**, based on
+  `fc9582d2720e45ef7372ccd0b46e257592619384`, with an expected-head branch update.
+  Reconfirmed private visibility and fetched/matched **54 of 54** source blob SHAs.
+- GitHub Actions run **41657477162**, job **125991544026**, completed successfully:
+  **141 passed in 10.45 seconds**, Ubuntu 26.04 / Python 3.13.17.
+  https://github.com/aryankjain11/signal-ledger/actions/runs/41657477162
+- Final documentation audit records the observed source snapshot and test run;
+  it does not predict its own later commit. Regenerate and verify the source-only
+  archive after updating these records, keeping market uploads/screenshots local.
+
+Current position: daily research prototype with bounded data-quality coverage and
+partial implementations across original phases 1–3. No original phase or final
+acceptance is declared complete. Next implementation gates: UDiFF real-report
+acceptance, broader calendars and corporate-action policies/fixtures, followed by
+structure/indicator and pattern/strategy expansion. Exercises remain paused.
