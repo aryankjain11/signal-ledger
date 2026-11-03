@@ -134,6 +134,10 @@ elif adjustment == "Unadjusted OHLC":
 options = [d.date().isoformat() for d in data.bars.index]
 as_of = st.select_slider("Replay through session · analysis uses only rows through this date", options=options, value=options[-1])
 data.bars = data.bars.loc[:as_of]
+from quant_engine.calendar import attach_quality
+quality = attach_quality(data, replay=as_of != options[-1])
+if any(quality[key] for key in ("missing_expected_dates", "unexpected_dates", "future_dates")):
+    st.warning("Calendar checks found observations needing review. Open Data & exports for the dates and details; no bars were filled or removed.")
 if len(data.bars) < 3:
     st.info("Select at least three observations to begin analysis.")
     st.stop()

@@ -4,6 +4,14 @@ The owner's primary goal is to LEARN finance, quantitative research and software
 engineering while building a useful application. These are continuing project
 instructions, not a request to finish the entire roadmap in a single change.
 
+## Owner update · 2026-11-03
+
+Pause learning exercises and assignments until the owner revisits that scope.
+Continue product implementation, testing, documentation and GitHub synchronization.
+Keep existing reference material available; do not add exercises or require learner
+responses to progress. Include a concise done/partial/pending checklist mapped to
+the original plan in completion updates. This supersedes exercise-related steps below.
+
 ## Work one milestone at a time
 
 1. Read `docs/WORK_LOG.md`, `docs/MASTER_CHECKLIST.md` and the relevant source.

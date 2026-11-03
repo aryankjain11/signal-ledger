@@ -120,14 +120,14 @@ _add("S02", """
 ~ Choose and document licensed Indian historical-data source and permitted uses
 ~ Provider-neutral daily data contract and symbol/company-name resolver
 ~ NSE/BSE identifiers, symbol changes, mergers and delistings
-Exchange trading calendar, holidays and exceptional sessions
+~ Exchange trading calendar, holidays and exceptional sessions
 + Asia/Kolkata timestamps and explicit session-date semantics
-Detect genuinely missing sessions against the configured calendar
+~ Detect genuinely missing sessions against the configured calendar
 Consistent split/bonus adjustment across OHLC and volume
 Dividend/total-return conventions and point-in-time adjustment policy
 Rights/demerger/merger action handling and ambiguous-action review queue
 ~ Preserve original raw files plus normalized versioned datasets
-Cross-source data checks, stale-feed detection and source timestamps
+~ Cross-source data checks, stale-feed detection and source timestamps
 ~ Duplicate correction policy with a visible audit record
 Outlier, zero-volume, price-circuit and suspension flags
 Adjusted-close, VWAP, number-of-trades and spread optional schema
@@ -138,6 +138,7 @@ Provider outage/rate-limit/retry/error behavior
 ~ Data completeness/freshness dashboard and adjustment-quality gates
 + No interpolation/fabrication; clearly report unavailable fields
 + Direct NSE security-history CSV upload without manual cleanup
++ NSE CM 2026 calendar snapshot and visible-slice completeness/freshness audit
 """)
 _add("S03", """
 Configurable swing significance, tie handling and volatility-aware filtering

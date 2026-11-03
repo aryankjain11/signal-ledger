@@ -6,6 +6,12 @@ a claim of profitable trading or of the learner having mastered the material.
 
 ## Purpose and scope
 
+Owner update on 2026-11-03: learning assignments are paused until the owner
+revisits their intended scope. Product implementation, testing, logs and source
+synchronization continue. Existing educational references remain available;
+new work does not require exercises or learner responses. `PROJECT_STATUS.md`
+maps all 43 original phase items; `MASTER_CHECKLIST.md` tracks detailed subfeatures.
+
 The owner's primary objective is to learn financial analysis, quantitative research
 and software construction by building the system step by step. The product is a
 research workbench for Indian-stock daily swing setups, with later extensions
@@ -144,6 +150,18 @@ where they are useful, rather than hiding all uncertainty in a footer.
 
 ## Verification and limitations
 
+New data-quality increment: versioned NSE CM 2026 calendar snapshot with trading
+holidays, January closure amendment, Budget and Muhurat Sunday overrides; missing
+observation/non-session/future-date flags; explicit 18:00 IST conservative freshness
+policy; source/replay isolation and passport/evidence downloads. Calendar checks
+do not infer security listing/suspension history or fill bars. Other years and
+exchanges remain unverified. `DATA_QUALITY.md` contains sources and limitations.
+The shared checklist has 343 items; broader S02 gates remain Partial.
+Local regression for this increment: **141 passed in 49.18 seconds**. The original
+43-item phase mapping has 8 Done, 18 Partial and 17 Planned items; none of the five
+original phases is claimed complete. Expanded task counts are 34 Done, 14 Partial,
+283 Planned and 12 Optional, which are not effort-weighted completion percentages.
+
 Latest direct-NSE-export result: **117 local checks passed in 48.11 seconds**.
 Source commit `dbb5a3db7e48cbf58f7bb3b2519e7ca063f6de8d` was uploaded privately;
 all **49** allow-listed source files matched their remote blob SHAs. GitHub run
@@ -193,12 +211,11 @@ GitHub credentials; the connected GitHub tools can upload to the repository.
 No credential is copied into this project. CI execution depends on the repository's
 Actions availability and the actual workflow run; a workflow file alone is not a pass.
 
-## Next exercise for the owner
+## Next implementation work
 
-Open Education and Concepts → Start here → Lesson1. Complete the candle, RSI,
-MACD and sizing exercises, then replay a pivot. Bring back one answer or question.
-Then open Lesson 2 and the synthetic NSE report walkthrough. Compare source_rows
-and analyzed_rows before and after replay; explain why a price split is not a 50%
-economic loss. S02-A has 119 shared concept entries including bhavcopy, security
-identity and data passports. The next increment is exchange-calendar reconciliation
-after real-file/schema acceptance, followed by corporate-action adjustment work.
+Learning assignments are paused. Current position is a working daily research
+prototype, with bounded data-quality checks and parts of original phases 1–3.
+Next data gates are broader historical calendar coverage, UDiFF real-report
+acceptance and corporate-action policies/fixtures. Then continue structure,
+indicators and pattern/strategy families before statistical/model layers.
+`PROJECT_STATUS.md` maps every original phase item; no phase is claimed complete.

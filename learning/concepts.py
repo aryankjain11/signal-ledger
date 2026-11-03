@@ -354,6 +354,9 @@ add("nse-quote-export", "NSE stock-history CSV: close, LTP, volume and value", "
     exercise="Upload an original NSE stock-history CSV through Upload daily data. Find the detected format and warm-up warning, and explain why CLOSE and LTP can differ.")
 
 BY_ID = {c["id"]: c for c in CONCEPTS}
+BY_ID["timeframe"].update(
+    app_status="Daily/prior-week context; bounded NSE CM 2026 calendar and freshness checks",
+    code="quant_engine/data.py: completed_weeks; quant_engine/calendar.py")
 BY_ID["git-github"].update(
     app_status="Private repository, verified source upload and passing GitHub CI; local Git authentication is separate",
     code="docs/GITHUB_SYNC.md; .github/workflows/tests.yml",

@@ -51,6 +51,7 @@ def render_passport(data):
         st.caption("No passport is attached to this legacy in-memory dataset.")
         return
     instrument = passport["instrument"]
+    render_quality(passport.get("data_quality"))
     st.write(f"**{instrument['symbol']}** · {instrument['exchange']} · series {instrument['series'] or 'not supplied'} · {instrument['currency']}")
     st.write(f"**Provider/source claim:** {passport['provider_claim']}")
     st.write(f"**Identity:** ISIN {instrument['isin'] or 'not supplied'} · {passport['origin_verification']}")
@@ -75,3 +76,35 @@ def render_passport(data):
                             "adapter_version": passport["adapter_version"]}, indent=2), language="json")
     st.download_button("Download data passport", json.dumps(passport, indent=2, allow_nan=False), "data-passport.json", "application/json")
     st.download_button("Download analyzed daily data", canonical_bars_bytes(data.bars), "analyzed-daily.csv", "text/csv")
+
+
+def render_quality(quality):
+    if not quality:
+        return
+    st.markdown("#### Data quality checks")
+    st.write(quality["calendar_status"])
+    st.write(f"**Freshness:** {quality['freshness']}")
+    if quality["latest_ready_session"]:
+        st.caption(f"Latest expected completed session: {quality['latest_ready_session']} · lag: {quality['lag_sessions'] if quality['lag_sessions'] is not None else 'unverified'} session(s)")
+    issues = []
+    labels = {"missing_expected_dates": "Absent expected observations", "unexpected_dates": "Observations on non-session dates",
+              "unsupported_dates": "Dates outside calendar coverage", "future_dates": "Future-dated observations", "zero_volume_dates": "Zero-volume observations"}
+    for key, label in labels.items():
+        if quality[key]:
+            issues.append({"Check": label, "Count": len(quality[key]), "Dates (first 20)": ", ".join(quality[key][:20])})
+    if issues:
+        st.warning("Data quality needs review. These flags do not establish why an observation is absent.")
+        st.dataframe(pd.DataFrame(issues), hide_index=True, width="stretch")
+    elif quality["calendar_version"]:
+        st.success("No absent or unexpected observations found within the checked calendar range.")
+    if quality["short_history"]:
+        st.caption("Short history: fewer than 60 observations. Longer-window indicators and strategy context may be unavailable.")
+    with st.expander("Calendar sources and assessment details"):
+        if quality["calendar_version"]:
+            st.caption(quality["calendar_version"])
+            st.caption(quality["availability_policy"])
+            for url in quality["calendar_sources"]:
+                st.markdown(f"[NSE {url.rsplit('/', 1)[-1]}]({url})")
+        for note in quality["notes"]:
+            st.caption(note)
+    st.download_button("Download data quality checks", json.dumps(quality, indent=2, allow_nan=False), "data-quality.json", "application/json")

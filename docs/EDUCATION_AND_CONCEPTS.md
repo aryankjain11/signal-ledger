@@ -32,7 +32,7 @@ One bar summarizes one interval: open is its first traded price, high/low are it
 
 ## Timeframe, session and resampling
 
-**Category:** Foundations · **Application status:** Daily plus conservative completed-prior-week context
+**Category:** Foundations · **Application status:** Daily/prior-week context; bounded NSE CM 2026 calendar and freshness checks
 
 A timeframe is the interval represented by a bar. An exchange session is a trading period, not necessarily a whole calendar day. Weekly OHLCV must be built from eligible daily bars, with clear handling of incomplete weeks.
 
@@ -44,7 +44,7 @@ A timeframe is the interval represented by a bar. An exchange session is a tradi
 
 **Common mistake:** Using Friday's completed weekly close to explain a trade made on Monday of that same week.
 
-**Implementation reference:** `quant_engine/data.py: completed_weeks`
+**Implementation reference:** `quant_engine/data.py: completed_weeks; quant_engine/calendar.py`
 
 ## Price, simple return and total return
 

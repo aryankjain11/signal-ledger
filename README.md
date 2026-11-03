@@ -13,7 +13,7 @@ without an upload. Start with Lesson 1, then try the RSI, position-sizing and
 synthetic Evening Star labs. The concept library labels what is actually computed
 or detected separately from features that are only explained.
 
-- [Master checklist](docs/MASTER_CHECKLIST.md): 342 tracked items across 21 stages,
+- [Master checklist](docs/MASTER_CHECKLIST.md): 343 tracked items across 21 stages,
   covering the original brief and optional extensions with acceptance gates.
 - [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 120 definitions and
   notes; worked examples for foundations and current features, concise entries for
@@ -23,6 +23,9 @@ or detected separately from features that are only explained.
 - [Lesson 2](docs/lessons/02_daily_data_and_passports.md): daily reports, security
   identity, session dates, adjustments, hashes and a hands-on import walkthrough.
 - [Work log](docs/WORK_LOG.md): chronological changes, reasons, verification and blockers.
+- [Original-plan status](docs/PROJECT_STATUS.md): all 43 items from the original
+  five development phases, with done/partial/pending scope. Learning assignments
+  are paused; product development continues.
 - [Build report](docs/BUILD_REPORT.md): architecture, curriculum and current limits.
 
 Each future increment follows learn → specify → build → verify → explain → record.
@@ -31,8 +34,9 @@ automatically checked off for the learner.
 
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
-verified, including direct NSE stock-history uploads. All 117 tests passed locally
-and on GitHub's Linux runner. The separate UDiFF real-report gate remains pending. See
+verified, including direct NSE stock-history uploads. Latest local regression:
+141 passed, including the new calendar and project-status checks. Remote results
+are recorded after observation; the separate UDiFF real-report gate remains pending. See
 [GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
 The local computer's Git client does not currently have a saved GitHub login;
 the connected GitHub tools handle this upload, and no credentials are stored here.
@@ -103,6 +107,10 @@ Maximum size: 20 MB and 50,000 sessions. Use at least 60 sessions for the baseli
 and 20 completed prior calendar weeks for weekly SMA context.
 
 ## Implemented
+
+- NSE CM 2026 calendar snapshot, absent/non-session/future-date checks and
+  conservative freshness reporting; replay audits only visible rows. See
+  [data quality scope](docs/DATA_QUALITY.md). Other years/exchanges remain unverified.
 
 - Direct NSE stock-history CSV/XLSX normalization using CLOSE and share VOLUME;
   automatic filename label hint, EQ guards and a passport interpretation record.

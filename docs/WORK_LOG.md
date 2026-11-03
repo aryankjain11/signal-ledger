@@ -373,3 +373,43 @@ for this change will be recorded once observed.
 the original filename for its label hint and use a longer date range to warm up
 long indicators. UDiFF acceptance, calendar and corporate actions remain separate
 next steps. No trading-performance or learner-mastery claim is made.
+
+## 2026-11-03 · Owner steering and calendar/data-quality increment
+
+- Owner paused learning exercises until their intent is discussed later, and
+  requested implementation plus a done/remaining checklist against the original
+  plan. Recorded this preference in AGENTS.md; it supersedes exercise-related
+  steps. Existing reference pages remain available, with no new assignments.
+- Inspected original brief §19 and mapped all 43 implementation bullets across
+  its five phases in shared `learning/progress.py`, exported `PROJECT_STATUS.md`
+  and the Build checklist & log workspace. Partial scope is explicit; no complete
+  original phase or percent-of-effort claim is made.
+- Checked official NSE CM holiday and amendment circulars. Implemented offline
+  snapshot `NSE-CM-2026/2026-11-03.1`, January 15 election closure and February 1
+  Budget/November 8 Muhurat live Sunday overrides. Settlement/banking holidays
+  are deliberately not substituted for trading holidays.
+- Added visible-slice checks for absent expected observations, non-session/future
+  dates, unsupported years, zero volume, short history and freshness. Source
+  identity remains stable; replay disables today's freshness comparison and
+  does not inspect hidden source rows. No bars are inserted, dropped or changed.
+- Freshness uses a documented conservative 18:00 Asia/Kolkata application cutoff,
+  not an assertion about exchange close or provider publication/finality.
+  Listing/suspension histories remain unverified, so absent observations are
+  candidates for review rather than proof of a broken feed.
+- The summary appears under Data & exports and is included in the passport,
+  analysis/backtest evidence and its own JSON download. Calendar/source hashes
+  and assessed clock are recorded. Synthetic and other-exchange fixtures are
+  explicitly excluded from the NSE calendar audit.
+- Added `docs/DATA_QUALITY.md` with sources and limits. Broader calendars and
+  corporate actions remain pending; the added bounded gate is S02-022 (343 total
+  tasks). Updated the relevant reference entry without adding exercises.
+- Targeted verification: **23 passed in 18.74 seconds**, covering exceptional
+  sessions, unsupported dates, timezone/cutoff boundaries, gaps versus freshness,
+  replay isolation, immutability and UI flags. Full regression: **141 passed in
+  49.18 seconds** (117 previous checks, 23 calendar checks and one original-plan
+  mapping/export check). No changes to strategy rules were made.
+
+Sources: NSE CMTR71775 (2026 CM holidays), CMTR72260 (January closure amendment),
+CMTR72349 (Budget live session), CMTR76941 (Muhurat schedule). Exact links are in
+DATA_QUALITY.md and in the exported assessment. Only source references and the
+calendar rules are bundled; no owner market-data download is redistributed.

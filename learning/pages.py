@@ -9,6 +9,7 @@ from quant_engine.models import Settings
 from quant_engine.strategy import size_position
 from .concepts import CONCEPTS, BY_ID, concept_markdown, find_concepts, handbook_markdown
 from .roadmap import TASKS, STAGE_BY_ID, STATUS_LABELS, checklist_markdown
+from .progress import progress_rows, progress_markdown
 
 
 def rsi_from_averages(gain, loss):
@@ -126,7 +127,8 @@ def render_education(root: Path):
 
 def render_build_journal(root: Path):
     st.title("Build checklist and journal")
-    st.write("One small milestone at a time: learn → specify → build → verify → explain → record.")
+    st.write("Implementation status, verification and remaining scope against the original plan.")
+    st.caption("Learning assignments are paused. Product development and documentation continue.")
     done = sum(t["status"] == "done" for t in TASKS)
     partial = sum(t["status"] == "partial" for t in TASKS)
     optional = sum(t["status"] == "optional" for t in TASKS)
@@ -136,6 +138,9 @@ def render_build_journal(root: Path):
     c.metric("Partial", partial)
     d.metric("Optional extensions", optional)
     st.caption("Counts are work items, not effort estimates or a percent of project value. Implementation completion is different from learner mastery.")
+    with st.expander("Original five-phase plan · done, partial and pending", expanded=True):
+        st.dataframe(pd.DataFrame(progress_rows()), hide_index=True, width="stretch")
+        st.download_button("Download project status checklist", progress_markdown(), "project-status.md", "text/markdown")
     stage = st.selectbox("Build stage", list(STAGE_BY_ID), format_func=lambda key: f"{key} · {STAGE_BY_ID[key]['title']}", key="build_stage")
     meta = STAGE_BY_ID[stage]
     st.markdown(f"**Learn:** {meta['learn']}")

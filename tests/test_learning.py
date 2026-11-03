@@ -85,4 +85,15 @@ def test_no_result_search_and_build_journal_navigation():
     assert app.title[0].value == "Build checklist and journal"
     app.selectbox(key="build_stage").set_value("S05").run()
     assert not app.exception
-    assert "Evening star" in app.dataframe[0].value.Feature.tolist()
+    stage_tables = [d.value for d in app.dataframe if "ID" in d.value.columns]
+    assert len(stage_tables) == 1 and "Evening star" in stage_tables[0].Feature.tolist()
+
+
+def test_original_plan_progress_mapping_and_export():
+    from learning.progress import PHASES, progress_markdown, progress_rows
+    assert [p[0] for p in PHASES] == ["1", "2", "3", "4", "5"]
+    assert [len(p[2]) for p in PHASES] == [10, 9, 9, 8, 7]
+    assert len(progress_rows()) == 43
+    assert {r["Status"] for r in progress_rows()} == {"Done", "Partial", "Planned"}
+    assert (ROOT / "docs" / "PROJECT_STATUS.md").read_text(encoding="utf-8") == progress_markdown()
+    assert "assignments are paused" in progress_markdown()

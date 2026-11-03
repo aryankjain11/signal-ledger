@@ -4,7 +4,7 @@ Updated: 2026-11-03
 
 Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.
 
-342 work items: 33 done, 11 partial, 286 planned, 12 optional / later.
+343 work items: 34 done, 14 partial, 283 planned, 12 optional / later.
 
 Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.
 
@@ -107,11 +107,11 @@ Original brief: 4,16,20
 
 - [ ] **S02-003** · Partial · NSE/BSE identifiers, symbol changes, mergers and delistings
 
-- [ ] **S02-004** · Planned · Exchange trading calendar, holidays and exceptional sessions
+- [ ] **S02-004** · Partial · Exchange trading calendar, holidays and exceptional sessions
 
 - [x] **S02-005** · Done · Asia/Kolkata timestamps and explicit session-date semantics
 
-- [ ] **S02-006** · Planned · Detect genuinely missing sessions against the configured calendar
+- [ ] **S02-006** · Partial · Detect genuinely missing sessions against the configured calendar
 
 - [ ] **S02-007** · Planned · Consistent split/bonus adjustment across OHLC and volume
 
@@ -121,7 +121,7 @@ Original brief: 4,16,20
 
 - [ ] **S02-010** · Partial · Preserve original raw files plus normalized versioned datasets
 
-- [ ] **S02-011** · Planned · Cross-source data checks, stale-feed detection and source timestamps
+- [ ] **S02-011** · Partial · Cross-source data checks, stale-feed detection and source timestamps
 
 - [ ] **S02-012** · Partial · Duplicate correction policy with a visible audit record
 
@@ -142,6 +142,8 @@ Original brief: 4,16,20
 - [x] **S02-020** · Done · No interpolation/fabrication; clearly report unavailable fields
 
 - [x] **S02-021** · Done · Direct NSE security-history CSV upload without manual cleanup
+
+- [x] **S02-022** · Done · NSE CM 2026 calendar snapshot and visible-slice completeness/freshness audit
 
 
 ## S03 · Price structure, zones and breakouts
