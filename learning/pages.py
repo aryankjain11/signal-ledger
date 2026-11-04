@@ -100,7 +100,7 @@ def render_education(root: Path):
             c3.metric("Planned stop loss with costs", f"₹{size['planned_loss_with_costs']:,.2f}")
             st.caption("The assumed entry is already a fill price. This is the same sizing function used by the engine: cash, risk and a 1% previous-volume cap all apply. Opening gaps and actual execution can create larger losses.")
         st.subheader("3 · Evening Star: a shape needs context")
-        st.caption("Entirely synthetic illustration. Evening Star is explained here; the research engine does not yet detect it.")
+        st.caption("Entirely synthetic illustration. The research engine now detects an explicitly defined contextual Evening Star variant; this illustration is not a market observation.")
         labels = ["Context 1", "Context 2", "Context 3", "First body", "Small body", "Third body"]
         figure = go.Figure(go.Candlestick(x=labels, open=[98, 100, 102, 104, 110.5, 110.5],
                                           high=[101, 103, 105, 111, 112, 111], low=[97, 99, 101, 103, 110, 105.5],

@@ -1,6 +1,6 @@
 # Signal Ledger · build and learning report
 
-Updated: 2026-11-03. This is a living project report. The chronological record is
+Updated: 2026-11-04. This is a living project report. The chronological record is
 `WORK_LOG.md`; the comprehensive status list is `MASTER_CHECKLIST.md`. Neither is
 a claim of profitable trading or of the learner having mastered the material.
 
@@ -149,6 +149,22 @@ not a certificate of data quality. The learning page repeats these distinctions
 where they are useful, rather than hiding all uncertainty in a footer.
 
 ## Verification and limitations
+
+2026-11-04 analytical feature bundle: versioned breakout/retest state machine,
+frozen six-anchor triangle/rectangle geometry, six contextual candle variants,
+ROC/fast stochastic, RSI/MACD confirmed-pivot divergences and a dedicated two-stock
+comparison workspace. The latter pairs native return intervals on matching start
+and end dates; adds indexed performance, drawdown, rolling/Pearson/Spearman
+correlation, scatter, side-by-side charts and local evidence exports. This is
+descriptive analysis; the existing single breakout strategy is unchanged.
+Exact definitions, alignment/precision conventions and remaining scope are in
+`ANALYSIS_AND_COMPARISON.md`. The catalogue now has 122 concepts and 349 tasks.
+Historical event outcomes, strategy comparison, remaining patterns, ADX/Supertrend,
+synchronized chart controls and model probabilities remain pending. Exercises stay paused.
+Final local regression: **201 passed in94.30 seconds** (168 existing and33 new
+cases). Current expanded counts: 349 total, 40 Done, 37 Partial, 260 Planned and
+12 Optional. Original five-phase counts remain 8 Done, 18 Partial and17 Planned;
+the full analytical/pattern/strategy stages are not declared complete.
 
 New split/bonus increment: reviewed action-ledger CSV, before/after share ratios,
 ex-date and known-on cutoff policy, optional adjusted OHLCV research view, preserved

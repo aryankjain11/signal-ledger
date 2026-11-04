@@ -44,4 +44,8 @@ def indicators(bars: pd.DataFrame) -> pd.DataFrame:
     prior_volume = frame.volume.shift().rolling(20).mean()
     frame["relative_volume"] = frame.volume / prior_volume.replace(0, np.nan)
     frame["obv"] = (np.sign(delta).fillna(0) * frame.volume).cumsum()
+    frame["roc_10"] = 100 * (close / close.shift(10) - 1)
+    lowest, highest = frame.low.rolling(14).min(), frame.high.rolling(14).max()
+    frame["stoch_k_14"] = 100 * (close - lowest) / (highest - lowest).replace(0, np.nan)
+    frame["stoch_d_3"] = frame.stoch_k_14.rolling(3).mean()
     return frame

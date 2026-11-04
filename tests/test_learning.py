@@ -22,10 +22,11 @@ def test_catalogue_integrity_and_implementation_honesty():
     assert len(CONCEPTS) >= 100
     assert all(c["definition"] and c["title"] and c["category"] and c["app_status"] for c in CONCEPTS)
     assert {"rsi", "macd", "evening-star", "risk-sizing", "leakage"} <= BY_ID.keys()
-    assert "detector pending" in BY_ID["evening-star"]["app_status"]
+    assert "Contextual detector implemented" in BY_ID["evening-star"]["app_status"]
     assert "probability" in BY_ID["rsi"]["mistake"]
     assert "rsi" in {c["id"] for c in find_concepts(implementation="Has current engine behavior")}
-    assert "evening-star" not in {c["id"] for c in find_concepts(implementation="Has current engine behavior")}
+    assert "evening-star" in {c["id"] for c in find_concepts(implementation="Has current engine behavior")}
+    assert "head-shoulders" not in {c["id"] for c in find_concepts(implementation="Has current engine behavior")}
 
 
 def test_search_and_category_return_expected_concepts():
@@ -64,7 +65,7 @@ def test_education_page_search_lab_and_quiz_flow():
     app.text_input(key="concept_search").set_value("Evening Star").run()
     assert not app.exception
     assert app.selectbox(key="chosen_concept").value == "evening-star"
-    assert any("detector pending" in m.value for m in app.markdown)
+    assert any("Contextual detector implemented" in m.value for m in app.markdown)
     app.number_input(key="rsi_gain").set_value(3.0).run()
     assert not app.exception
     assert any(m.label == "Illustrative RSI" and m.value == "75.00" for m in app.metric)

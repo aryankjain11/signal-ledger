@@ -13,10 +13,10 @@ PHASES = [
         ("partial", "Trend identification", "Basic confirmed HH/HL/LH/LL; richer strength/range/reversal classifications pending."),
         ("done", "Swing high/low identification", "Confirmed fixed three-left/right pivots with formation and knowability dates."),
         ("partial", "Support and resistance", "Pivot-cluster zones; dynamic levels, trendlines and advanced scoring pending."),
-        ("partial", "Technical indicators", "Starter moving averages, RSI, MACD, ATR, Bollinger, OBV and RVOL; complete requested catalogue pending."),
-        ("partial", "Candlestick recognition", "Doji and engulfing geometry; the remaining families/context rules pending."),
-        ("partial", "Basic chart-pattern detection", "Double top/bottom prototype; triangles, head-and-shoulders and other requested patterns pending."),
-        ("partial", "Basic volume and momentum analysis", "RSI/MACD/OBV/RVOL; divergence and stronger contextual interpretation pending."),
+        ("partial", "Technical indicators", "Starter averages/RSI/MACD/ATR/Bollinger/OBV/RVOL plus ROC10 and fast stochastic; complete catalogue pending."),
+        ("partial", "Candlestick recognition", "Doji/engulfing plus six contextual shadow/star variants; remaining families and validation pending."),
+        ("partial", "Basic chart-pattern detection", "Double top/bottom, triangle/rectangle prototypes and breakout/retest states; head-and-shoulders and broader validation pending."),
+        ("partial", "Basic volume and momentum analysis", "RSI/MACD/ROC/stochastic context and delayed pivot divergences; broader volume/divergence research pending."),
     ]),
     ("2", "Visual analysis and dashboard", [
         ("done", "Interactive candlestick charts", "Plotly zoom, hover and replay."),
@@ -56,7 +56,7 @@ PHASES = [
         ("planned", "Paper trading", "No prospective paper ledger."),
         ("planned", "Analysis history", "No saved-run database/history workflow."),
         ("planned", "Market data API integration", "Offline uploads only; typing a ticker does not fetch data."),
-        ("partial", "Enhanced dashboard", "Local research, reference and build-status workspaces; full requested dashboard pending."),
+        ("partial", "Enhanced dashboard", "Research, pattern/momentum panels and two-stock comparison/correlation plus reference/build workspaces; full requested dashboard pending."),
         ("planned", "Performance monitoring", "No production operational/model-drift monitoring."),
     ]),
 ]
@@ -69,7 +69,7 @@ def progress_rows():
 
 def progress_markdown():
     counts = Counter(t["status"] for t in TASKS)
-    lines = ["# Project status against the original plan", "Updated: 2026-11-03",
+    lines = ["# Project status against the original plan", "Updated: 2026-11-04",
         "Current position: working local daily-data research prototype. Parts of original phases 1, 2 and 3 are usable; no complete original phase or final-product acceptance is claimed. Phase 4 research/ML and most phase 5 integration remain pending.",
         "Learning assignments are paused at the owner's request. Product implementation, testing, records and GitHub synchronization continue. Existing reference pages remain available.",
         f"Expanded master checklist: {len(TASKS)} work items — {counts['done']} done, {counts['partial']} partial, {counts['planned']} planned, {counts['optional']} optional. Counts are not effort estimates or a meaningful project-completion percentage.",
@@ -83,6 +83,7 @@ def progress_markdown():
         "- [x] Original NSE security-history CSV support, data passports and source/replay hashes.",
         "- [x] Reviewed split/bonus action ledger, replay-aware adjusted research, raw/factor/audit exports and execution restrictions.",
         "- [x] Build journal, detailed checklist and downloadable status records.",
+        "- [x] Initial breakout/retest, chart/candle/momentum feature bundle and matched-interval two-stock comparison.",
         "- [ ] Full real-file acceptance for UDiFF report import; separate from security-history CSV support.",
         "- [ ] Wider historical calendars; automatic corporate-action feeds, dividends/total returns and share-accounting backtests.",
         "- [ ] Continue structure/indicator improvements, then one pattern/strategy family at a time.",

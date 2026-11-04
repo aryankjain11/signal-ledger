@@ -2,6 +2,12 @@
 
 Status: planning recommendation, not a completed implementation. Updated 2026-11-03.
 
+2026-11-04 implementation update: the initial breakout/retest detector, triangle/
+rectangle and contextual candle families, momentum/divergence panels and two-stock
+comparison are now implemented. `ANALYSIS_AND_COMPARISON.md` defines the actual
+scope. The strategy comparison and event-study follow-ups below remain planned;
+the original prioritization narrative is preserved as the design rationale.
+
 The owner asked to prioritize useful product features and conceptual learning,
 rather than more file adapters. Existing daily/NSE uploads and the current research
 engine are sufficient to begin an analytical feature increment. Known adjustment,

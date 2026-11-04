@@ -151,12 +151,13 @@ Previous session/week highs and lows
 Psychological levels with explicit price-increment convention
 Volume-near-level significance without inventing order flow
 Support/resistance role reversals
-Bullish breakout and bearish breakdown states
-Volume/distance/closing-position breakout confirmation
-Failed breakout and false breakdown event tracking
-Retests and breakout-retest conditions
+~ Bullish breakout and bearish breakdown states
+~ Volume/distance/closing-position breakout confirmation
+~ Failed breakout and false breakdown event tracking
+~ Retests and breakout-retest conditions
 Trendlines/channels with stable causal anchors
 Conflicting and insufficient-evidence explanations
++ Frozen prior-range breakout/retest/failure/continuation events and replay evidence
 """)
 _add("S04", """
 ~ Double bottom: contextual significance and research validation
@@ -172,32 +173,33 @@ Bullish flag
 Bearish flag
 Bullish pennant
 Bearish pennant
-Ascending triangle
-Descending triangle
-Symmetrical triangle
+~ Ascending triangle
+~ Descending triangle
+~ Symmetrical triangle
 Rising wedge
 Falling wedge
-Rectangle consolidation
+~ Rectangle consolidation
 Price channels
 Cup and handle
 Inverse cup and handle
-Breakout retest formation
-Bullish divergence
-Bearish divergence
+~ Breakout retest formation
+~ Bullish divergence
+~ Bearish divergence
 Higher-high/higher-low and lower-high/lower-low sequence patterns
 Developing/confirmed/invalidated/inconclusive/expired pattern lifecycle standard
 Pattern boundary/neckline/anchor coordinates and clickable evidence
 Configurable tolerances, geometric-fit diagnostics and versioned definitions
++ Six-anchor triangle/rectangle geometry with frozen boundaries and causal state events
 """)
 _add("S05", """
 ~ Doji with preceding-trend and support/resistance context
 Dragonfly doji
 Gravestone doji
 Long-legged doji
-Hammer
-Hanging man
-Inverted hammer
-Shooting star
+~ Hammer
+~ Hanging man
+~ Inverted hammer
+~ Shooting star
 Bullish marubozu
 Bearish marubozu
 Spinning top
@@ -211,8 +213,8 @@ Tweezer bottom
 Tweezer top
 Bullish kicking
 Bearish kicking
-Morning star
-Evening star
+~ Morning star
+~ Evening star
 Morning doji star
 Evening doji star
 Three white soldiers
@@ -225,6 +227,7 @@ Configurable body/wick/gap/trend definitions for each candle family
 Volume confirmation, supporting/conflicting indicators and strength evidence
 Reference-library comparison (evaluate TA-Lib installation/definitions)
 Do not convert every recognized candle into a trading signal
++ Context-aware shadow and Morning/Evening Star detector variants with known-time tests
 """)
 _add("S06", """
 Configurable SMA/EMA/WMA periods including 9/20/50/100/200
@@ -233,9 +236,9 @@ ADX and directional movement
 Parabolic SAR
 Supertrend
 Configurable Wilder RSI and flat-series conventions
-Stochastic oscillator
+~ Stochastic oscillator
 Stochastic RSI
-Rate of change
+~ Rate of change
 Williams %R
 Commodity Channel Index
 Configurable ATR and percentage-ATR
@@ -252,11 +255,12 @@ Chaikin money flow
 Money flow index
 Relative volume and rolling volume baselines
 Same-time-of-day intraday relative volume
-Price-volume and price-momentum divergence rules
-Momentum acceleration and deterioration
+~ Price-volume and price-momentum divergence rules
+~ Momentum acceleration and deterioration
 Buying/selling-pressure proxies with explicit limitations
 Avoid double-counting correlated indicators in aggregate scores
 Explain reinforcing versus contradictory evidence by indicator family
++ ROC10, fast stochastic, momentum explanations and confirmed-pivot RSI/MACD divergences
 """)
 _add("S07", """
 Daily/weekly/monthly aggregation and explicit partial-period policy
@@ -396,6 +400,7 @@ Downloadable readable HTML/PDF report alongside JSON/CSV
 Contextual glossary links/tooltips for every financial term
 Keyboard accessibility, color-safe encoding and responsive layouts
 Currency/precision/units and local-time explanations
++ Two-stock CSV/NSE comparison, matched-interval correlations and side-by-side analysis
 """)
 _add("S16", """
 Record each proposed paper setup before its outcome exists
@@ -474,7 +479,7 @@ STAGE_BY_ID = {s[0]: {"id": s[0], "title": s[1], "brief": s[2], "learn": s[3], "
 
 def checklist_markdown():
     counts = {state: sum(t["status"] == state for t in TASKS) for state in STATUS_LABELS}
-    lines = ["# Master implementation and learning checklist", "Updated: 2026-11-03",
+    lines = ["# Master implementation and learning checklist", "Updated: 2026-11-04",
              "Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.",
              f"{len(TASKS)} work items: " + ", ".join(f"{counts[s]} {STATUS_LABELS[s].lower()}" for s in counts) + ".",
              "Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.",
@@ -489,7 +494,7 @@ def checklist_markdown():
     lines += ["\n## Original acceptance criteria audit (brief §21)",
               "1–4 upload/validation/chart/principal starter indicators: implemented for daily files.",
               "5–7 structure/zones/candle starter set: implemented with limited definitions; context/extensions remain above.",
-              "8 basic double patterns: prototype; triangles and head-and-shoulders remain pending.",
+              "8 basic double patterns plus initial triangle/rectangle geometry: prototype; head-and-shoulders and further contextual/statistical validation remain pending.",
               "9 detection coordinates/status: implemented for supported events; universal schema pending.",
               "10 multiple timeframes: partial (daily plus conservative prior-week context).",
               "11–14 coherent report/conditional plan/risk math/annotations: implemented for the single baseline; broader catalogue pending.",

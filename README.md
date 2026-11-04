@@ -13,9 +13,9 @@ without an upload. Start with Lesson 1, then try the RSI, position-sizing and
 synthetic Evening Star labs. The concept library labels what is actually computed
 or detected separately from features that are only explained.
 
-- [Master checklist](docs/MASTER_CHECKLIST.md): 344 tracked items across 21 stages,
+- [Master checklist](docs/MASTER_CHECKLIST.md): 349 tracked items across 21 stages,
   covering the original brief and optional extensions with acceptance gates.
-- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 120 definitions and
+- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 122 definitions and
   notes; worked examples for foundations and current features, concise entries for
   future additions.
 - [Lesson 1](docs/lessons/01_from_prices_to_evidence.md): connected explanations,
@@ -35,8 +35,8 @@ automatically checked off for the learner.
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
 verified, including direct NSE stock-history uploads. Latest local regression:
-168 passed, including split/bonus, replay, execution-policy and view-switching checks.
-GitHub's independent run also passed all 168 checks. The separate UDiFF real-report gate remains pending. See
+201 passed, including the analytical event and stock-comparison cases. Remote
+results are recorded after observation. The separate UDiFF real-report gate remains pending. See
 [GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
 The local computer's Git client does not currently have a saved GitHub login;
 the connected GitHub tools handle this upload, and no credentials are stored here.
@@ -108,6 +108,14 @@ and 20 completed prior calendar weeks for weekly SMA context.
 
 ## Implemented
 
+- **Patterns & momentum**: frozen-range breakout/retest/failure/continuation events;
+  six-anchor rectangle/triangle geometry; contextual shadow and Morning/Evening
+  Star observations; ROC/stochastic and confirmed-pivot RSI/MACD divergences.
+- **Compare two stocks**: two CSV/XLSX/NSE uploads or synthetic pair; same-period
+  side-by-side charts, indexed performance, drawdowns, matched-interval Pearson/
+  Spearman/rolling return correlation, scatter and exports. No prices are filled.
+  See [exact definitions and limits](docs/ANALYSIS_AND_COMPARISON.md).
+
 - Optional reviewed split/bonus action ledger with replay-aware OHLCV research
   normalization; preserved source, per-date factors and audit exports. Adjusted
   research and known event-crossing ranges disable execution/backtesting until
@@ -175,7 +183,7 @@ held-out validation or evidence of future success. The win rate is descriptive
 of those completed trades, not the chance the current setup succeeds. Profit
 factor is unavailable when there are no losing trades. Buy-and-hold comparison
 is gross close-to-close return, not cost/exposure-matched. No calibrated
-probabilities, model training, triangles, head-and-shoulders, screenshot analysis,
+probabilities, model training, head-and-shoulders, screenshot analysis,
 live feeds, paper trading, database history or order execution are implemented.
 
 ## Verify

@@ -37,7 +37,7 @@ def price_chart(analysis: Analysis, show_bands: bool = False) -> go.Figure:
     for event in analysis.events:
         if "coordinates" in event:
             latest[event["id"]] = event
-    for event in list(latest.values())[-6:]:
+    for event in sorted(latest.values(), key=lambda e: e["detected_at"])[-10:]:
         if event["detected_at"] < frame.index[0].date().isoformat():
             continue
         fig.add_trace(go.Scatter(x=[c[0] for c in event["coordinates"]],
@@ -45,8 +45,11 @@ def price_chart(analysis: Analysis, show_bands: bool = False) -> go.Figure:
                                  name=f"{event['name']} · {event['status']}", mode="lines+markers",
                                  showlegend=False,
                                  line=dict(color=BLUE, width=1, dash="dash"),
-                                 text=[f"Known {event['detected_at']} · {event['status']}"] * 3,
+                                 text=[f"Known {event['detected_at']} · {event['status']}"] * len(event["coordinates"]),
                                  hovertemplate="%{text}<br>%{x}: %{y:.4f}<extra></extra>"), row=1, col=1)
+        for boundary, points in event.get("boundary_coordinates", {}).items():
+            fig.add_trace(go.Scatter(x=[c[0] for c in points], y=[c[1] for c in points], mode="lines",
+                name=f"{event['name']} {boundary}", line=dict(color="#c498ff", dash="dot", width=1), showlegend=False), row=1, col=1)
     candles = [e for e in analysis.events if "coordinates" not in e and
                e["detected_at"] >= frame.index[0].date().isoformat()]
     fig.add_trace(go.Scatter(x=[e["detected_at"] for e in candles], y=[e["price"] for e in candles],
@@ -66,6 +69,6 @@ def price_chart(analysis: Analysis, show_bands: bool = False) -> go.Figure:
                       plot_bgcolor="#101a2b", margin=dict(l=12, r=12, t=45, b=10),
                       legend=dict(orientation="h", y=1.02, yanchor="bottom", x=0, font=dict(size=10)),
                       hovermode="x unified", xaxis_rangeslider_visible=False)
-    fig.update_xaxes(showgrid=False, rangebreaks=[dict(bounds=["sat", "mon"])])
+    fig.update_xaxes(showgrid=False)
     fig.update_yaxes(gridcolor="#202c40")
     return fig

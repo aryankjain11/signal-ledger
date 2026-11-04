@@ -542,3 +542,55 @@ acceptance remain pending. Learning assignments remain paused.
   are synchronized to the existing private repository; verification is reported
   after the commit is observed. No new software test result is claimed for these
   documentation-only changes.
+
+## 2026-11-04 · Analytical features and two-stock comparison opened
+
+- Owner authorized breakout/retest analysis plus chart patterns, candlestick
+  context, momentum and side-by-side stock correlation/comparison. Interpreted
+  “reset” as retest from the accepted plan. Bounded first families are explicit;
+  no new exercises or event-feed adapters were added.
+- Added `ResearchRules` and `research-events/1`: prior-range close/volume breaks,
+  frozen level/previous ATR, later held retests, failures, continuation and expiry.
+  Added four six-anchor chart formations with frozen fits and diagnostics, six
+  context-aware shadow/star candle variants, ROC10/fast stochastic and delayed
+  confirmed-pivot RSI/MACD divergences. Events are observations, not new trades.
+- Connected the families to chart lines/markers, Patterns & momentum tabs,
+  explanation tables, momentum plots, report/evidence and event exports. Kept the
+  existing single breakout strategy and action-related execution restrictions.
+- Added Compare two stocks: two native CSV/XLSX/NSE uploads or a deterministic
+  synthetic pair, shared-period selection, normalized100 performance, common-date
+  drawdowns, relative ratio, matched return scatter and Pearson/Spearman/rolling
+  correlation. Pair native returns only on identical start AND end dates; no fills.
+  Unknown/short/constant cases and source/adjustment declarations remain explicit.
+- Side-by-side charts use each file's causal history through the selected end
+  for indicators, then crop charts to the chosen period. Two-date comparisons
+  remain available while the technical-analysis minimum is separately disclosed.
+- Fixed chart weekend hiding: calendar-date axes now preserve special Sunday
+  sessions instead of universally removing weekends. Comparison charts have
+  unique explicit keys even when uploaded numerical content is identical.
+- First new-feature suite: **29 passed, 3 failed in 32.39 seconds**. Two numerical
+  failures exposed floating-point tie fragmentation in rank correlation; ranks
+  now use returns rounded to12 decimals with that convention exported. The UI
+  failure exposed duplicate chart IDs for identical content; explicit keys fixed
+  it. Nested event geometry is serialized to strings for readable Arrow tables.
+- Follow-up new-feature run: **32 passed in33.04 seconds**. First complete
+  regression: **200 passed in99.32 seconds**. Added one final negative formation
+  case and explicit fitted diagnostics, and optimized reference-range/anchor
+  iteration before the final complete run, whose result follows after observation.
+- Added `ANALYSIS_AND_COMPARISON.md`, updated reference entries (122 concepts),
+  original-phase scope and shared 349-item checklist. Expanded task labels stay
+  Partial where broader definitions/context/validation remain incomplete; five
+  precisely bounded feature gates were added. Full source/CI/browser evidence
+  follows after verification. No real upload is included in repository fixtures.
+
+Sources checked: Fidelity fast stochastic/RSI, Zerodha Varsity Morning/Evening Star,
+and NIST correlation coefficient. Direct references and this implementation's
+distinct exact definitions are in ANALYSIS_AND_COMPARISON.md. Statistical pattern
+outcomes, strategy comparison, full pattern catalogue, model probabilities and
+synchronized chart editing remain pending. Existing exercises remain paused.
+
+Final complete regression after the negative-fit/diagnostic/performance changes:
+**201 passed in94.30 seconds** (168 existing plus33 new cases). User-facing
+comparison metrics are displayed as percentages; numerical evidence retains
+fractional return conventions. Browser acceptance and remote publication follow
+after observation. No test result is inferred from the earlier intermediate runs.

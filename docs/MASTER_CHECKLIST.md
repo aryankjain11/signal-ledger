@@ -1,10 +1,10 @@
 # Master implementation and learning checklist
 
-Updated: 2026-11-03
+Updated: 2026-11-04
 
 Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.
 
-344 work items: 35 done, 16 partial, 281 planned, 12 optional / later.
+349 work items: 40 done, 37 partial, 260 planned, 12 optional / later.
 
 Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.
 
@@ -174,17 +174,19 @@ Original brief: 5.1,5.2,5.3
 
 - [ ] **S03-009** · Planned · Support/resistance role reversals
 
-- [ ] **S03-010** · Planned · Bullish breakout and bearish breakdown states
+- [ ] **S03-010** · Partial · Bullish breakout and bearish breakdown states
 
-- [ ] **S03-011** · Planned · Volume/distance/closing-position breakout confirmation
+- [ ] **S03-011** · Partial · Volume/distance/closing-position breakout confirmation
 
-- [ ] **S03-012** · Planned · Failed breakout and false breakdown event tracking
+- [ ] **S03-012** · Partial · Failed breakout and false breakdown event tracking
 
-- [ ] **S03-013** · Planned · Retests and breakout-retest conditions
+- [ ] **S03-013** · Partial · Retests and breakout-retest conditions
 
 - [ ] **S03-014** · Planned · Trendlines/channels with stable causal anchors
 
 - [ ] **S03-015** · Planned · Conflicting and insufficient-evidence explanations
+
+- [x] **S03-016** · Done · Frozen prior-range breakout/retest/failure/continuation events and replay evidence
 
 
 ## S04 · Chart-pattern catalogue
@@ -221,17 +223,17 @@ Original brief: 5.4,13,21
 
 - [ ] **S04-013** · Planned · Bearish pennant
 
-- [ ] **S04-014** · Planned · Ascending triangle
+- [ ] **S04-014** · Partial · Ascending triangle
 
-- [ ] **S04-015** · Planned · Descending triangle
+- [ ] **S04-015** · Partial · Descending triangle
 
-- [ ] **S04-016** · Planned · Symmetrical triangle
+- [ ] **S04-016** · Partial · Symmetrical triangle
 
 - [ ] **S04-017** · Planned · Rising wedge
 
 - [ ] **S04-018** · Planned · Falling wedge
 
-- [ ] **S04-019** · Planned · Rectangle consolidation
+- [ ] **S04-019** · Partial · Rectangle consolidation
 
 - [ ] **S04-020** · Planned · Price channels
 
@@ -239,11 +241,11 @@ Original brief: 5.4,13,21
 
 - [ ] **S04-022** · Planned · Inverse cup and handle
 
-- [ ] **S04-023** · Planned · Breakout retest formation
+- [ ] **S04-023** · Partial · Breakout retest formation
 
-- [ ] **S04-024** · Planned · Bullish divergence
+- [ ] **S04-024** · Partial · Bullish divergence
 
-- [ ] **S04-025** · Planned · Bearish divergence
+- [ ] **S04-025** · Partial · Bearish divergence
 
 - [ ] **S04-026** · Planned · Higher-high/higher-low and lower-high/lower-low sequence patterns
 
@@ -252,6 +254,8 @@ Original brief: 5.4,13,21
 - [ ] **S04-028** · Planned · Pattern boundary/neckline/anchor coordinates and clickable evidence
 
 - [ ] **S04-029** · Planned · Configurable tolerances, geometric-fit diagnostics and versioned definitions
+
+- [x] **S04-030** · Done · Six-anchor triangle/rectangle geometry with frozen boundaries and causal state events
 
 
 ## S05 · Candlestick catalogue and context
@@ -270,13 +274,13 @@ Original brief: 6,13,21
 
 - [ ] **S05-004** · Planned · Long-legged doji
 
-- [ ] **S05-005** · Planned · Hammer
+- [ ] **S05-005** · Partial · Hammer
 
-- [ ] **S05-006** · Planned · Hanging man
+- [ ] **S05-006** · Partial · Hanging man
 
-- [ ] **S05-007** · Planned · Inverted hammer
+- [ ] **S05-007** · Partial · Inverted hammer
 
-- [ ] **S05-008** · Planned · Shooting star
+- [ ] **S05-008** · Partial · Shooting star
 
 - [ ] **S05-009** · Planned · Bullish marubozu
 
@@ -304,9 +308,9 @@ Original brief: 6,13,21
 
 - [ ] **S05-021** · Planned · Bearish kicking
 
-- [ ] **S05-022** · Planned · Morning star
+- [ ] **S05-022** · Partial · Morning star
 
-- [ ] **S05-023** · Planned · Evening star
+- [ ] **S05-023** · Partial · Evening star
 
 - [ ] **S05-024** · Planned · Morning doji star
 
@@ -332,6 +336,8 @@ Original brief: 6,13,21
 
 - [ ] **S05-035** · Planned · Do not convert every recognized candle into a trading signal
 
+- [x] **S05-036** · Done · Context-aware shadow and Morning/Evening Star detector variants with known-time tests
+
 
 ## S06 · Configurable indicators and interpretation
 
@@ -353,11 +359,11 @@ Original brief: 7
 
 - [ ] **S06-006** · Planned · Configurable Wilder RSI and flat-series conventions
 
-- [ ] **S06-007** · Planned · Stochastic oscillator
+- [ ] **S06-007** · Partial · Stochastic oscillator
 
 - [ ] **S06-008** · Planned · Stochastic RSI
 
-- [ ] **S06-009** · Planned · Rate of change
+- [ ] **S06-009** · Partial · Rate of change
 
 - [ ] **S06-010** · Planned · Williams %R
 
@@ -391,15 +397,17 @@ Original brief: 7
 
 - [ ] **S06-025** · Planned · Same-time-of-day intraday relative volume
 
-- [ ] **S06-026** · Planned · Price-volume and price-momentum divergence rules
+- [ ] **S06-026** · Partial · Price-volume and price-momentum divergence rules
 
-- [ ] **S06-027** · Planned · Momentum acceleration and deterioration
+- [ ] **S06-027** · Partial · Momentum acceleration and deterioration
 
 - [ ] **S06-028** · Planned · Buying/selling-pressure proxies with explicit limitations
 
 - [ ] **S06-029** · Planned · Avoid double-counting correlated indicators in aggregate scores
 
 - [ ] **S06-030** · Planned · Explain reinforcing versus contradictory evidence by indicator family
+
+- [x] **S06-031** · Done · ROC10, fast stochastic, momentum explanations and confirmed-pivot RSI/MACD divergences
 
 
 ## S07 · Multi-timeframe analysis
@@ -724,6 +732,8 @@ Original brief: 13.3,14,15,21
 
 - [ ] **S15-012** · Planned · Currency/precision/units and local-time explanations
 
+- [x] **S15-013** · Done · Two-stock CSV/NSE comparison, matched-interval correlations and side-by-side analysis
+
 
 ## S16 · Prospective paper trading
 
@@ -898,7 +908,7 @@ Original brief: Learning request + 20,21,22
 
 5–7 structure/zones/candle starter set: implemented with limited definitions; context/extensions remain above.
 
-8 basic double patterns: prototype; triangles and head-and-shoulders remain pending.
+8 basic double patterns plus initial triangle/rectangle geometry: prototype; head-and-shoulders and further contextual/statistical validation remain pending.
 
 9 detection coordinates/status: implemented for supported events; universal schema pending.
 

@@ -1,8 +1,8 @@
 # Education and Concepts
 
-Updated: 2026-11-03
+Updated: 2026-11-04
 
-120 entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.
+122 entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.
 
 All numerical examples are invented teaching examples, explicitly not market observations or performance claims. A traditional pattern description does not demonstrate a trading edge. A glossary entry is not proof that its detector exists.
 
@@ -114,7 +114,7 @@ Support is an area where declines have previously encountered buying; resistance
 
 ## Breakout, breakdown, retest and false breakout
 
-**Category:** Strategies · **Application status:** One close/volume/EMA breakout rule implemented; general lifecycle pending
+**Category:** Strategies · **Application status:** Configurable frozen-range breakout/retest/failure/continuation observations; baseline strategy remains separate
 
 A breakout moves beyond a defined upper boundary; a breakdown moves below a lower one. A retest revisits a breached boundary. A false breakout fails a predeclared continuation/invalidation rule. The rule must state whether it uses a touch, completed close, distance or volume.
 
@@ -122,7 +122,7 @@ A breakout moves beyond a defined upper boundary; a breakdown moves below a lowe
 
 **Common mistake:** Changing the confirmation threshold after seeing which trades won.
 
-**Implementation reference:** `quant_engine/strategy.py`
+**Implementation reference:** `quant_engine/research.py: breakout_events`
 
 ## SMA — Simple Moving Average
 
@@ -280,11 +280,11 @@ An engulfing observation has an opposite-color body that covers the prior candle
 
 ## Evening Star
 
-**Category:** Candlestick patterns · **Application status:** Education and illustration only; detector pending
+**Category:** Candlestick patterns · **Application status:** Contextual detector implemented; statistical validation pending
 
 A traditional three-candle bearish reversal candidate after an uptrend: a substantial bullish body, a small body near the top, then a bearish body moving back into the first body. Gap requirements and penetration thresholds vary across definitions and must be specified before coding.
 
-**Calculation or rule:** A proposed research variant would require prior upward context, a small middle body, and third close below the first body's midpoint. This variant is not an implemented detector.
+**Calculation or rule:** Implemented variant: preceding five-bar rise >=1 prior ATR; bullish first body >=0.5 ATR; middle body <=30% of first near its upper half; bearish third body >=50% of first closing below first midpoint. Gaps are not required. Detection waits for the third close.
 
 **Hypothetical worked example:** After an illustrative rise: candle1 O104,C110; candle2 O110.5,C111; candle3 O110.5,C106. The first midpoint is107; third close106 is below it. Use the lab to inspect the geometry.
 
@@ -292,19 +292,21 @@ A traditional three-candle bearish reversal candidate after an uptrend: a substa
 
 **Common mistake:** Calling any three candles an Evening Star without prior trend, or assuming a source's entry convention is this simulator's rule.
 
-**Try it yourself:** Identify which candle first makes the complete three-bar shape observable.
-
 **Further reading:** [Zerodha Varsity: Morning and Evening Star](https://zerodha.com/varsity/chapter/multiple-candlestick-patterns-part-3/)
+
+**Implementation reference:** `quant_engine/research.py: contextual_candles`
 
 ## Morning Star
 
-**Category:** Candlestick patterns · **Application status:** Explained; engine extension pending
+**Category:** Candlestick patterns · **Application status:** Contextual detector implemented; statistical validation pending
 
 The traditional bullish counterpart to Evening Star: declining context, a substantial bearish body, a small middle body near the low, then a bullish body recovering into the first body. Precise gaps and penetration need a declared convention.
 
 **Common mistake:** Describing the completed pattern before the third candle has closed.
 
 **Further reading:** [Zerodha Varsity: Morning and Evening Star](https://zerodha.com/varsity/chapter/multiple-candlestick-patterns-part-3/)
+
+**Implementation reference:** `quant_engine/research.py: contextual_candles`
 
 ## Double top, double bottom and neckline
 
@@ -322,11 +324,13 @@ A double bottom has two sufficiently similar lows separated by a meaningful rebo
 
 ## Bullish and bearish divergence
 
-**Category:** Price structure · **Application status:** Explained; engine extension pending
+**Category:** Price structure · **Application status:** Delayed confirmed-pivot RSI and MACD divergence observations implemented
 
 Bullish divergence commonly means price makes a lower low while a chosen momentum measure makes a higher low; bearish divergence reverses those comparisons. The paired pivots, tolerance, spacing and confirmation time must be defined.
 
 **Common mistake:** Pairing whichever price and oscillator points make the hindsight chart look persuasive.
+
+**Implementation reference:** `quant_engine/research.py: momentum_analysis`
 
 ## Position sizing, risk budget and exposure
 
@@ -470,13 +474,15 @@ A market order prioritizes execution over a specified price; a limit constrains 
 
 ## Relative strength versus RSI
 
-**Category:** Foundations · **Application status:** Explained; engine extension pending
+**Category:** Foundations · **Application status:** Two-stock indexed performance ratio; sector/benchmark research pending
 
 Relative strength compares performance with another asset or benchmark, such as stock return minus sector return. RSI instead summarizes the stock's own recent gains and losses. Similar names do not make them interchangeable.
 
 **How to read it:** This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
+
+**Implementation reference:** `quant_engine/comparison.py`
 
 ## WMA — Weighted Moving Average
 
@@ -520,13 +526,15 @@ A trend overlay based on ATR-related bands and state-dependent trailing/flip rul
 
 ## Stochastic oscillator
 
-**Category:** Momentum indicators · **Application status:** Explained; engine extension pending
+**Category:** Momentum indicators · **Application status:** Fast %K14 and three-observation %D; zero range undefined
 
 Compares the close with the recent high-low range: raw %K=100×(close−lowest_low)/(highest_high−lowest_low). Smoothing produces %K/%D variants; a zero range needs a declared policy.
 
 **How to read it:** This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
+
+**Implementation reference:** `quant_engine/indicators.py`
 
 ## Stochastic RSI
 
@@ -540,13 +548,15 @@ Places RSI within its own recent minimum-to-maximum range, rather than placing p
 
 ## ROC — Rate of Change
 
-**Category:** Momentum indicators · **Application status:** Explained; engine extension pending
+**Category:** Momentum indicators · **Application status:** Ten-observation price ROC computed
 
 Measures relative price change over N observations, commonly100×(close/close_N_ago−1). Unlike RSI, it is not bounded between0 and100.
 
 **How to read it:** This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
+
+**Implementation reference:** `quant_engine/indicators.py`
 
 ## Williams %R
 
@@ -770,7 +780,7 @@ A downward impulse followed by a small converging consolidation. Specify boundar
 
 ## Ascending triangle
 
-**Category:** Chart patterns · **Application status:** Explained; engine extension pending
+**Category:** Chart patterns · **Application status:** Frozen confirmed-anchor geometry and break/expiry states implemented; statistical validation pending
 
 Rising swing lows beneath approximately flat upper highs. Tolerances, minimum interactions and breakout criteria determine whether it qualifies; the name does not guarantee an upward break.
 
@@ -778,9 +788,11 @@ Rising swing lows beneath approximately flat upper highs. Tolerances, minimum in
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
 
+**Implementation reference:** `quant_engine/research.py: chart_formations`
+
 ## Descending triangle
 
-**Category:** Chart patterns · **Application status:** Explained; engine extension pending
+**Category:** Chart patterns · **Application status:** Frozen confirmed-anchor geometry and break/expiry states implemented; statistical validation pending
 
 Falling swing highs above approximately flat lower lows. A lower-boundary breach is a separate event from a developing shape.
 
@@ -788,15 +800,19 @@ Falling swing highs above approximately flat lower lows. A lower-boundary breach
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
 
+**Implementation reference:** `quant_engine/research.py: chart_formations`
+
 ## Symmetrical triangle
 
-**Category:** Chart patterns · **Application status:** Explained; engine extension pending
+**Category:** Chart patterns · **Application status:** Frozen confirmed-anchor geometry and break/expiry states implemented; statistical validation pending
 
 Descending highs and ascending lows form converging boundaries. Boundary fitting must use only confirmed available anchors; either breakout direction is possible.
 
 **How to read it:** This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
+
+**Implementation reference:** `quant_engine/research.py: chart_formations`
 
 ## Rising wedge
 
@@ -820,13 +836,15 @@ Both boundaries slope downward while converging. A developing wedge is not the s
 
 ## Rectangle consolidation
 
-**Category:** Chart patterns · **Application status:** Explained; engine extension pending
+**Category:** Chart patterns · **Application status:** Frozen confirmed-anchor geometry and break/expiry states implemented; statistical validation pending
 
 Repeated interactions with approximately horizontal upper and lower boundaries. Define width, minimum duration and independent interactions; bounded history does not guarantee a tradable range.
 
 **How to read it:** This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
+
+**Implementation reference:** `quant_engine/research.py: chart_formations`
 
 ## Price channel
 
@@ -900,7 +918,7 @@ A small body with substantial excursions on both sides. It describes an interval
 
 ## Hammer
 
-**Category:** Candlestick patterns · **Application status:** Explained; engine extension pending
+**Category:** Candlestick patterns · **Application status:** Contextual detector implemented; statistical validation pending
 
 A small body near the upper range with a long lower shadow, interpreted as a bullish-reversal candidate only in appropriate declining context. Exact shadow/body ratios are configurable conventions.
 
@@ -908,9 +926,11 @@ A small body near the upper range with a long lower shadow, interpreted as a bul
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
 
+**Implementation reference:** `quant_engine/research.py: contextual_candles`
+
 ## Hanging Man
 
-**Category:** Candlestick patterns · **Application status:** Explained; engine extension pending
+**Category:** Candlestick patterns · **Application status:** Contextual detector implemented; statistical validation pending
 
 Hammer-like geometry in an advancing context. Its different traditional interpretation illustrates why shape and preceding trend must be separate parts of detection.
 
@@ -918,9 +938,11 @@ Hammer-like geometry in an advancing context. Its different traditional interpre
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
 
+**Implementation reference:** `quant_engine/research.py: contextual_candles`
+
 ## Inverted Hammer
 
-**Category:** Candlestick patterns · **Application status:** Explained; engine extension pending
+**Category:** Candlestick patterns · **Application status:** Contextual detector implemented; statistical validation pending
 
 A small body near the lower range with a long upper shadow following a decline. It needs context/confirmation rather than inheriting a bullish label from shape alone.
 
@@ -928,15 +950,19 @@ A small body near the lower range with a long upper shadow following a decline. 
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
 
+**Implementation reference:** `quant_engine/research.py: contextual_candles`
+
 ## Shooting Star
 
-**Category:** Candlestick patterns · **Application status:** Explained; engine extension pending
+**Category:** Candlestick patterns · **Application status:** Contextual detector implemented; statistical validation pending
 
 Inverted-hammer-like geometry after an advance. A long upper shadow can motivate a rejection hypothesis, but it does not reveal investor identity or guarantee a fall.
 
 **How to read it:** This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
+
+**Implementation reference:** `quant_engine/research.py: contextual_candles`
 
 ## Bullish Marubozu
 
@@ -1361,3 +1387,29 @@ A security-history download contains one stock over many sessions. CLOSE is the 
 **Further reading:** [NSE: daily reports](https://www.nseindia.com/all-reports)
 
 **Implementation reference:** `quant_engine/nse_quotes.py; quant_engine/data.py; tests/test_nse_quotes.py`
+
+## Return correlation and matched intervals
+
+**Category:** Research and statistics · **Application status:** Two-stock Pearson/Spearman return and rolling-correlation workspace
+
+Pearson correlation describes linear co-movement between two return samples, from minus one to plus one. Stock price levels can trend together without providing a useful return relationship. Correlation is not causation, cointegration or a pairs-trading rule.
+
+**Calculation or rule:** Compute each stock's simple returns on its native observation intervals. Pair only matching start and end dates; never forward-fill missing prices. The UI requires ten paired intervals for a coefficient and uses a configurable rolling count of pairs.
+
+**Hypothetical worked example:** If A's Tuesday return starts Monday but B's Tuesday return starts Friday because Monday is absent, those returns are excluded from the paired sample. Two constant return series have undefined correlation, not zero.
+
+**How to read it:** The coefficient depends on period, data basis and sample size. A short sample can be unstable. Spearman compares ranks; this build rounds returns to 12 decimals before ranking to stabilize numerical ties.
+
+**Implementation reference:** `quant_engine/comparison.py; quant_engine/comparison_ui.py`
+
+## Indexed performance and observed-date drawdown
+
+**Category:** Research and statistics · **Application status:** Indexed two-stock performance, relative ratio and common-observation drawdowns
+
+Rebasing two price series to 100 at a common starting observation makes their proportional price changes comparable. Drawdown is current indexed value divided by the maximum so far minus one.
+
+**Hypothetical worked example:** A rises from index100 to110 then falls to88: its observed-date drawdown is 88/110−1=−20%. If B stays at100, A/B relative performance is0.88 at the final point.
+
+**How to read it:** This comparison uses price returns, not dividend-inclusive total returns. Drawdowns use common observed dates and can miss extremes hidden by absent observations; return volatility is per matched interval, without annualization.
+
+**Implementation reference:** `quant_engine/comparison.py`

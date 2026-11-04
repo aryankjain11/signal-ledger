@@ -7,15 +7,17 @@ import pandas as pd
 from . import __version__
 from .data import completed_weeks
 from .indicators import indicators
-from .models import Analysis, Settings, ValidatedData
+from .models import Analysis, Settings, ValidatedData, ResearchRules
+from .research import breakout_events, contextual_candles, chart_formations, momentum_analysis, RULE_VERSION
 from .patterns import candle_events, double_patterns, market_structure, support_resistance, swings
 from .strategy import current_setup
 from .datasets import passport_for_analysis
 
 
-def analyze(data: ValidatedData, settings: Settings) -> Analysis:
+def analyze(data: ValidatedData, settings: Settings, rules: ResearchRules | None = None) -> Analysis:
     if len(data.bars) < 3:
         raise ValueError("Analysis needs at least three completed daily observations; a smaller import is preview-only.")
+    rules = rules or ResearchRules()
     frame = indicators(data.bars)
     if data.metadata.get("execution_restriction"):
         frame.attrs["execution_restriction"] = data.metadata["execution_restriction"]
@@ -44,9 +46,13 @@ def analyze(data: ValidatedData, settings: Settings) -> Analysis:
         "The latest calendar week is excluded conservatively from weekly context.",
         "Pattern rules are heuristic geometric definitions; predictive performance has not been validated.",
         "Corporate actions, spreads, news, event risk and actual order-book liquidity are not verified."]
-    return Analysis(frame, pivots, candle_events(frame) + double_patterns(frame, pivots),
+    momentum, divergences = momentum_analysis(frame, pivots)
+    events = (candle_events(frame) + contextual_candles(frame, rules) + double_patterns(frame, pivots)
+              + breakout_events(frame, rules) + chart_formations(frame, pivots) + divergences)
+    return Analysis(frame, pivots, events,
                     support_resistance(frame, pivots), trend, structure, evidence, weekly,
-                    current_setup(frame, settings), warnings)
+                    current_setup(frame, settings), warnings, momentum,
+                    {"version": RULE_VERSION, **asdict(rules)})
 
 
 def json_safe(value):
@@ -75,6 +81,7 @@ def run_evidence(analysis: Analysis, data: ValidatedData, settings: Settings,
                       "latest_values": analysis.frame.iloc[-1].to_dict(),
                       "pivots": [asdict(p) for p in analysis.pivots],
                       "events": analysis.events, "zones": analysis.zones,
+                      "research_rules": analysis.rules, "momentum": analysis.momentum,
                       "weekly": analysis.weekly, "setup": analysis.setup,
                       "warnings": analysis.warnings, "probability": None})
 
@@ -110,7 +117,7 @@ def report_markdown(analysis: Analysis, symbol: str, adjustment: str) -> str:
     else:
         parts.append("No zones met the clustered-pivot criteria.")
     parts += ["\n## Recent candlestick observations"]
-    candles = [e for e in analysis.events if not e["name"].startswith("Double")][-10:]
+    candles = [e for e in analysis.events if e.get("family") == "candle" or ("family" not in e and not e["name"].startswith("Double"))][-10:]
     parts.extend(f"- {e['name']} on {e['detected_at']}; geometry only." for e in candles)
     if not candles:
         parts.append("No supported candle geometry detected.")
@@ -120,6 +127,13 @@ def report_markdown(analysis: Analysis, symbol: str, adjustment: str) -> str:
                  for e in pattern_events[-20:])
     if not pattern_events:
         parts.append("No double-top/bottom geometries met the configured criteria.")
+    parts += ["\n## Breakout, chart and divergence observations"]
+    expanded = sorted([e for e in analysis.events if e.get("family") in {"breakout", "chart", "momentum"}], key=lambda e: (e["detected_at"], e["id"]))[-20:]
+    parts.extend(f"- {e['name']} · {e['status']} · known {e['detected_at']}. {e['evidence']}" for e in expanded)
+    if not expanded:
+        parts.append("No additional supported observations in this slice.")
+    parts += ["\n## Momentum context"] + analysis.momentum.get("interpretation", [])
+    parts.append(f"Research definition: {analysis.rules}. Descriptive events do not change the existing baseline strategy or supply calibrated probabilities.")
     parts += ["\n## Limitations"] + [f"- {w}" for w in analysis.warnings]
     parts += ["\nNo calibrated success probability is available. Research and decision support only; no guaranteed outcomes."]
     return "\n\n".join(parts)

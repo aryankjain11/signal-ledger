@@ -1,12 +1,12 @@
 # Project status against the original plan
 
-Updated: 2026-11-03
+Updated: 2026-11-04
 
 Current position: working local daily-data research prototype. Parts of original phases 1, 2 and 3 are usable; no complete original phase or final-product acceptance is claimed. Phase 4 research/ML and most phase 5 integration remain pending.
 
 Learning assignments are paused at the owner's request. Product implementation, testing, records and GitHub synchronization continue. Existing reference pages remain available.
 
-Expanded master checklist: 344 work items — 35 done, 16 partial, 281 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
+Expanded master checklist: 349 work items — 40 done, 37 partial, 260 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
 
 This document maps every one of the original five-phase roadmap's 43 implementation bullets (brief §19). Detailed subfeatures and the original acceptance-criteria audit are in MASTER_CHECKLIST.md; the complete brief is ORIGINAL_BRIEF.md.
 
@@ -26,13 +26,13 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 - [ ] **Partial · Support and resistance** — Pivot-cluster zones; dynamic levels, trendlines and advanced scoring pending.
 
-- [ ] **Partial · Technical indicators** — Starter moving averages, RSI, MACD, ATR, Bollinger, OBV and RVOL; complete requested catalogue pending.
+- [ ] **Partial · Technical indicators** — Starter averages/RSI/MACD/ATR/Bollinger/OBV/RVOL plus ROC10 and fast stochastic; complete catalogue pending.
 
-- [ ] **Partial · Candlestick recognition** — Doji and engulfing geometry; the remaining families/context rules pending.
+- [ ] **Partial · Candlestick recognition** — Doji/engulfing plus six contextual shadow/star variants; remaining families and validation pending.
 
-- [ ] **Partial · Basic chart-pattern detection** — Double top/bottom prototype; triangles, head-and-shoulders and other requested patterns pending.
+- [ ] **Partial · Basic chart-pattern detection** — Double top/bottom, triangle/rectangle prototypes and breakout/retest states; head-and-shoulders and broader validation pending.
 
-- [ ] **Partial · Basic volume and momentum analysis** — RSI/MACD/OBV/RVOL; divergence and stronger contextual interpretation pending.
+- [ ] **Partial · Basic volume and momentum analysis** — RSI/MACD/ROC/stochastic context and delayed pivot divergences; broader volume/divergence research pending.
 
 ## Phase 2 · Visual analysis and dashboard
 
@@ -104,7 +104,7 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 - [ ] **Planned · Market data API integration** — Offline uploads only; typing a ticker does not fetch data.
 
-- [ ] **Partial · Enhanced dashboard** — Local research, reference and build-status workspaces; full requested dashboard pending.
+- [ ] **Partial · Enhanced dashboard** — Research, pattern/momentum panels and two-stock comparison/correlation plus reference/build workspaces; full requested dashboard pending.
 
 - [ ] **Planned · Performance monitoring** — No production operational/model-drift monitoring.
 
@@ -117,6 +117,8 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 - [x] Reviewed split/bonus action ledger, replay-aware adjusted research, raw/factor/audit exports and execution restrictions.
 
 - [x] Build journal, detailed checklist and downloadable status records.
+
+- [x] Initial breakout/retest, chart/candle/momentum feature bundle and matched-interval two-stock comparison.
 
 - [ ] Full real-file acceptance for UDiFF report import; separate from security-history CSV support.
 

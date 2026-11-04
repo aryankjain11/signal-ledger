@@ -139,11 +139,11 @@ add("engulfing", "Bullish and bearish engulfing", "Candlestick patterns",
     status="Both body-geometry observations detected; contextual validation pending", code="quant_engine/patterns.py")
 add("evening-star", "Evening Star", "Candlestick patterns",
     "A traditional three-candle bearish reversal candidate after an uptrend: a substantial bullish body, a small body near the top, then a bearish body moving back into the first body. Gap requirements and penetration thresholds vary across definitions and must be specified before coding.",
-    "A proposed research variant would require prior upward context, a small middle body, and third close below the first body's midpoint. This variant is not an implemented detector.",
+    "Implemented variant: preceding five-bar rise >=1 prior ATR; bullish first body >=0.5 ATR; middle body <=30% of first near its upper half; bearish third body >=50% of first closing below first midpoint. Gaps are not required. Detection waits for the third close.",
     "After an illustrative rise: candle1 O104,C110; candle2 O110.5,C111; candle3 O110.5,C106. The first midpoint is107; third close106 is below it. Use the lab to inspect the geometry.",
     "It is a hypothesis of weakening buying pressure, not proof of future decline. The current application does not permit overnight short-stock execution.",
     "Calling any three candles an Evening Star without prior trend, or assuming a source's entry convention is this simulator's rule.",
-    "Education and illustration only; detector pending", "star", exercise="Identify which candle first makes the complete three-bar shape observable.")
+    "Contextual detector implemented; statistical validation pending", "star", code="quant_engine/research.py: contextual_candles")
 add("morning-star", "Morning Star", "Candlestick patterns",
     "The traditional bullish counterpart to Evening Star: declining context, a substantial bearish body, a small middle body near the low, then a bullish body recovering into the first body. Precise gaps and penetration need a declared convention.",
     mistake="Describing the completed pattern before the third candle has closed.", source="star")
@@ -354,7 +354,28 @@ add("nse-quote-export", "NSE stock-history CSV: close, LTP, volume and value", "
     code="quant_engine/nse_quotes.py; quant_engine/data.py; tests/test_nse_quotes.py",
     exercise="Upload an original NSE stock-history CSV through Upload daily data. Find the detected format and warm-up warning, and explain why CLOSE and LTP can differ.")
 
+add("correlation", "Return correlation and matched intervals", "Research and statistics",
+    "Pearson correlation describes linear co-movement between two return samples, from minus one to plus one. Stock price levels can trend together without providing a useful return relationship. Correlation is not causation, cointegration or a pairs-trading rule.",
+    rule="Compute each stock's simple returns on its native observation intervals. Pair only matching start and end dates; never forward-fill missing prices. The UI requires ten paired intervals for a coefficient and uses a configurable rolling count of pairs.",
+    example="If A's Tuesday return starts Monday but B's Tuesday return starts Friday because Monday is absent, those returns are excluded from the paired sample. Two constant return series have undefined correlation, not zero.",
+    interpretation="The coefficient depends on period, data basis and sample size. A short sample can be unstable. Spearman compares ranks; this build rounds returns to 12 decimals before ranking to stabilize numerical ties.",
+    status="Two-stock Pearson/Spearman return and rolling-correlation workspace", code="quant_engine/comparison.py; quant_engine/comparison_ui.py")
+add("indexed-performance", "Indexed performance and observed-date drawdown", "Research and statistics",
+    "Rebasing two price series to 100 at a common starting observation makes their proportional price changes comparable. Drawdown is current indexed value divided by the maximum so far minus one.",
+    example="A rises from index100 to110 then falls to88: its observed-date drawdown is 88/110−1=−20%. If B stays at100, A/B relative performance is0.88 at the final point.",
+    interpretation="This comparison uses price returns, not dividend-inclusive total returns. Drawdowns use common observed dates and can miss extremes hidden by absent observations; return volatility is per matched interval, without annualization.",
+    status="Indexed two-stock performance, relative ratio and common-observation drawdowns", code="quant_engine/comparison.py")
+
 BY_ID = {c["id"]: c for c in CONCEPTS}
+for key in ("hammer", "hanging-man", "inverted-hammer", "shooting-star", "morning-star"):
+    BY_ID[key].update(app_status="Contextual detector implemented; statistical validation pending", code="quant_engine/research.py: contextual_candles")
+for key in ("ascending-triangle", "descending-triangle", "symmetrical-triangle", "rectangle"):
+    BY_ID[key].update(app_status="Frozen confirmed-anchor geometry and break/expiry states implemented; statistical validation pending", code="quant_engine/research.py: chart_formations")
+BY_ID["breakout"].update(app_status="Configurable frozen-range breakout/retest/failure/continuation observations; baseline strategy remains separate", code="quant_engine/research.py: breakout_events")
+BY_ID["divergence"].update(app_status="Delayed confirmed-pivot RSI and MACD divergence observations implemented", code="quant_engine/research.py: momentum_analysis")
+BY_ID["roc"].update(app_status="Ten-observation price ROC computed", code="quant_engine/indicators.py")
+BY_ID["stochastic"].update(app_status="Fast %K14 and three-observation %D; zero range undefined", code="quant_engine/indicators.py")
+BY_ID["relative-strength"].update(app_status="Two-stock indexed performance ratio; sector/benchmark research pending", code="quant_engine/comparison.py")
 BY_ID["timeframe"].update(
     app_status="Daily/prior-week context; bounded NSE CM 2026 calendar and freshness checks",
     code="quant_engine/data.py: completed_weeks; quant_engine/calendar.py")
@@ -363,6 +384,8 @@ BY_ID["git-github"].update(
     code="docs/GITHUB_SYNC.md; .github/workflows/tests.yml",
     exercise="Open the source commit and its Actions run. Explain how a verified file snapshot differs from a passing test result.")
 CURRENT_BEHAVIOR_IDS = {
+    "correlation", "indexed-performance", "relative-strength", "roc", "stochastic", "divergence", "evening-star", "morning-star",
+    "hammer", "hanging-man", "inverted-hammer", "shooting-star", "ascending-triangle", "descending-triangle", "symmetrical-triangle", "rectangle",
     "bhavcopy", "security-identity", "data-passport", "nse-quote-export",
     "ohlcv", "timeframe", "price-return", "adjustments", "trend", "pivot", "zones", "breakout",
     "sma", "ema", "rsi", "macd", "atr", "bollinger", "rvol", "obv", "doji", "engulfing",
@@ -395,7 +418,7 @@ def concept_markdown(concept, builder_details=True):
 
 
 def handbook_markdown():
-    intro = ["# Education and Concepts", "Updated: 2026-11-03",
+    intro = ["# Education and Concepts", "Updated: 2026-11-04",
              f"{len(CONCEPTS)} entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.",
              "All numerical examples are invented teaching examples, explicitly not market observations or performance claims. A traditional pattern description does not demonstrate a trading edge. A glossary entry is not proof that its detector exists.",
              "Start with OHLCV → returns/adjustments → confirmed structure → SMA/EMA → RSI/MACD → ATR/risk → backtesting/leakage → probability calibration. Use the app's Learning lab and `docs/lessons/01_from_prices_to_evidence.md`.",

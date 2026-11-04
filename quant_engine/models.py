@@ -67,6 +67,35 @@ class Analysis:
     weekly: dict
     setup: dict
     warnings: list[str] = field(default_factory=list)
+    momentum: dict = field(default_factory=dict)
+    rules: dict = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class ResearchRules:
+    lookback: int = 20
+    breakout_buffer_atr: float = 0.1
+    min_relative_volume: float = 1.2
+    retest_tolerance_atr: float = 0.25
+    invalidation_atr: float = 0.5
+    retest_window: int = 10
+    continuation_atr: float = 0.5
+    candle_trend_bars: int = 5
+
+    def __post_init__(self):
+        import math
+        if type(self.lookback) is not int or not 5 <= self.lookback <= 252:
+            raise ValueError("Breakout lookback must be 5–252 observations.")
+        if type(self.retest_window) is not int or not 2 <= self.retest_window <= 60:
+            raise ValueError("Retest window must be 2–60 observations.")
+        if type(self.candle_trend_bars) is not int or not 3 <= self.candle_trend_bars <= 30:
+            raise ValueError("Candle context must be 3–30 observations.")
+        for value in (self.breakout_buffer_atr, self.min_relative_volume, self.retest_tolerance_atr,
+                      self.invalidation_atr, self.continuation_atr):
+            if not math.isfinite(value) or not 0 <= value <= 10:
+                raise ValueError("Research thresholds must be finite and between 0 and 10.")
+        if self.invalidation_atr < self.breakout_buffer_atr:
+            raise ValueError("Invalidation buffer must be at least the breakout buffer.")
 
 
 @dataclass

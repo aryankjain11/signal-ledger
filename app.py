@@ -17,6 +17,9 @@ from quant_engine.data_ui import report_import, render_passport
 from quant_engine.actions_ui import action_controls, render_action_audit
 from quant_engine.corporate_actions import apply_actions
 from quant_engine.datasets import canonical_bars_bytes
+from quant_engine.models import ResearchRules
+from quant_engine.research_ui import research_controls, render_research
+from quant_engine.comparison_ui import render_comparison
 
 ROOT = Path(__file__).resolve().parent
 st.set_page_config(page_title="Signal Ledger · Quant research", page_icon="◈", layout="wide")
@@ -31,12 +34,15 @@ st.markdown("""<style>
  .stTabs [data-baseweb="tab-list"] {gap:24px;border-bottom:1px solid #253248}
  </style>""", unsafe_allow_html=True)
 
-PAGES = {"Research dashboard": "research", "Education and Concepts": "education", "Build checklist & log": "build"}
+PAGES = {"Research dashboard": "research", "Compare two stocks": "compare", "Education and Concepts": "education", "Build checklist & log": "build"}
 requested_page = st.query_params.get("page", "research")
 page_names = list(PAGES)
 page_index = list(PAGES.values()).index(requested_page) if requested_page in PAGES.values() else 0
 workspace = st.sidebar.selectbox("Workspace", page_names, index=page_index, key="workspace_page")
 st.query_params["page"] = PAGES[workspace]
+if workspace == "Compare two stocks":
+    render_comparison()
+    st.stop()
 if workspace == "Education and Concepts":
     render_education(ROOT)
     st.stop()
@@ -135,6 +141,7 @@ if adjustment == "Unknown / unverified":
 elif adjustment == "Unadjusted OHLC":
     st.warning("Quoted/unadjusted prices: splits and other corporate actions have not been reconciled. Interpret long-horizon indicators and backtests accordingly.")
 action_ledger, use_adjusted = action_controls(data)
+research_rules = research_controls()
 options = [d.date().isoformat() for d in data.bars.index]
 as_of = st.select_slider("Replay through session · analysis uses only rows through this date", options=options, value=options[-1])
 data.bars = data.bars.loc[:as_of]
@@ -159,12 +166,12 @@ if len(data.bars) < 3:
 settings = Settings(capital=capital, risk_fraction=risk / 100, fee_bps=fees, slippage_bps=slip)
 
 @st.cache_data(show_spinner=False)
-def compute(content_hash, bars, settings_dict, execution_restriction=""):
+def compute(content_hash, bars, settings_dict, execution_restriction="", research_rule_values=None):
     from quant_engine.models import ValidatedData
-    return analyze(ValidatedData(bars, [], content_hash, {"execution_restriction": execution_restriction}), Settings(**settings_dict))
+    return analyze(ValidatedData(bars, [], content_hash, {"execution_restriction": execution_restriction}), Settings(**settings_dict), ResearchRules(**(research_rule_values or {})))
 
 from copy import deepcopy
-analysis = deepcopy(compute(data.source_hash, data.bars, asdict(settings), data.metadata.get("execution_restriction", "")))
+analysis = deepcopy(compute(data.source_hash, data.bars, asdict(settings), data.metadata.get("execution_restriction", ""), asdict(research_rules)))
 analysis.warnings = data.warnings + analysis.warnings
 execution_restriction = data.metadata.get("execution_restriction")
 if execution_restriction:
@@ -178,7 +185,9 @@ columns[3].metric("Relative volume", f"{last.relative_volume:.2f}×" if pd.notna
 st.caption("New to these terms? Open Education and Concepts from the Workspace menu for RSI, MACD, ATR, candlestick patterns, worked examples and practice labs.")
 st.caption(f"{symbol} · {len(frame):,} sessions · as of {as_of} · daily exchange session dates · INR assumed; no currency conversion")
 
-chart_tab, report_tab, backtest_tab, quality_tab = st.tabs(["Chart & structure", "Evidence & trade plan", "Backtest lab", "Data & exports"])
+chart_tab, analytical_tab, report_tab, backtest_tab, quality_tab = st.tabs(["Chart & structure", "Patterns & momentum", "Evidence & trade plan", "Backtest lab", "Data & exports"])
+with analytical_tab:
+    render_research(analysis)
 with chart_tab:
     st.plotly_chart(price_chart(analysis, bands), width="stretch")
     st.caption("Latest 250 sessions shown. Pivots are plotted at formation; hover shows when they became knowable. Shaded zones describe this as-of snapshot, not historical signals.")
