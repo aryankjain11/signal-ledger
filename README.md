@@ -8,9 +8,9 @@ It does not claim a demonstrated trading edge.
 ## Learn while building
 
 Use the sidebar **Workspace** menu to switch between the research dashboard,
-**Education and Concepts**, and **Build checklist & log**. Learning pages work
-without an upload. Start with Lesson 1, then try the RSI, position-sizing and
-synthetic Evening Star labs. The concept library labels what is actually computed
+**Compare two stocks**, **Education and Concepts**, and **Build checklist & log**.
+Reference pages work without an upload. Existing lessons and labs remain available;
+new assignments are paused. The concept library labels what is actually computed
 or detected separately from features that are only explained.
 
 - [Master checklist](docs/MASTER_CHECKLIST.md): 349 tracked items across 21 stages,
@@ -35,8 +35,9 @@ automatically checked off for the learner.
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
 verified, including direct NSE stock-history uploads. Latest local regression:
-201 passed, including the analytical event and stock-comparison cases. Remote
-results are recorded after observation. The separate UDiFF real-report gate remains pending. See
+201 passed, including the analytical event and stock-comparison cases. GitHub
+run 41813021609 also passed all 201 tests (23.83 seconds). All 66 reviewed files
+matched the source commit. The separate UDiFF real-report gate remains pending. See
 [GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
 The local computer's Git client does not currently have a saved GitHub login;
 the connected GitHub tools handle this upload, and no credentials are stored here.

@@ -594,3 +594,24 @@ Final complete regression after the negative-fit/diagnostic/performance changes:
 comparison metrics are displayed as percentages; numerical evidence retains
 fractional return conventions. Browser acceptance and remote publication follow
 after observation. No test result is inferred from the earlier intermediate runs.
+
+Acceptance observed on 2026-11-04:
+- Comparison display follow-up: **9 passed in13.88 seconds**. The complete suite
+  above plus this focused run cover the final numerical/UI source.
+- Live browser: Compare two stocks synthetic pair showed Pearson0.682,
+  Spearman0.654, 149 matched return intervals and150 common price dates. Verified
+  two technical charts and momentum summaries side by side. Research dashboard
+  showed breakout/retest, chart patterns, candlestick context and momentum tabs,
+  with rule/evidence/event-export controls. Saved local screenshots
+  `outputs/stock-comparison-verified.png` and `outputs/patterns-momentum-verified.png`.
+- Published source commit `ce7cd3fcfb0f12c5f3947be2d59e72afde8f53af` on private
+  `main` using an expected-head check. Fetched all66 allow-listed files and matched
+  each remote blob SHA; binary assets were fetched as base64. Source only, no
+  owner market-data files, credentials or runtime screenshots uploaded.
+- GitHub Actions run41813021609 / job126516723649 completed successfully:
+  **201 passed in23.83 seconds**. Final audit records this already observed source
+  result; its own later documentation commit does not claim a predicted CI result.
+- Where we stand: requested first analysis/comparison release works; broader
+  original stages stay Partial. Next feature priorities are event outcome studies
+  and an explicit breakout-retest strategy, followed by strategy comparison and
+  remaining pattern families. Existing learning assignments stay paused.

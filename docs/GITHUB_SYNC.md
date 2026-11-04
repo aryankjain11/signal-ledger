@@ -1,16 +1,26 @@
 # GitHub sync status
 
-Updated: 2026-11-03.
+Updated: 2026-11-04.
 
 - Repository: https://github.com/aryankjain11/signal-ledger
 - Visibility: **private**, verified through the GitHub page and connected metadata.
 - Initial branch: `main`.
 - Initial README commit: `bc09670a45e3776f5fcb47b393d93e685974fe63`.
-- **Latest split/bonus research source: complete and verified.** Commit
+- **Latest analytical/comparison source: complete and verified.** Commit
+  [`ce7cd3fcfb0f12c5f3947be2d59e72afde8f53af`](https://github.com/aryankjain11/signal-ledger/commit/ce7cd3fcfb0f12c5f3947be2d59e72afde8f53af)
+  has **66 reviewed files**, all fetched and blob-SHA matched. Includes causal
+  breakout/retest states, chart formations, contextual candles, momentum and
+  two-stock comparison/correlations. No real uploads or runtime outputs included.
+- **Latest CI:** [run 41813021609](https://github.com/aryankjain11/signal-ledger/actions/runs/41813021609),
+  job 126516723649: **201 passed in23.83 seconds**. Local full regression:
+  **201 passed in94.30 seconds**; final comparison display check **9 passed
+  in13.88 seconds**. Synthetic live-browser acceptance and screenshots completed.
+  This audit records the observed source snapshot; its own commit is later.
+- **Earlier split/bonus research source: complete and verified.** Commit
   [`3c17469bb15ec48dd2d54e628e7f091688f88110`](https://github.com/aryankjain11/signal-ledger/commit/3c17469bb15ec48dd2d54e628e7f091688f88110)
   has 58 reviewed files, all fetched and blob-SHA matched. Private visibility
   remains unchanged; actual uploads and runtime outputs were excluded.
-- **Latest CI:** [run 41683491255](https://github.com/aryankjain11/signal-ledger/actions/runs/41683491255),
+- **Earlier split/bonus CI:** [run 41683491255](https://github.com/aryankjain11/signal-ledger/actions/runs/41683491255),
   job 126082987461: **168 passed in 11.06 seconds**. Final local regression:
   **168 passed in 30.66 seconds**, including 27 corporate-action cases.
   This audit records an already observed source snapshot; its own commit is later.

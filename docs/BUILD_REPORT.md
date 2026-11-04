@@ -166,6 +166,16 @@ cases). Current expanded counts: 349 total, 40 Done, 37 Partial, 260 Planned and
 12 Optional. Original five-phase counts remain 8 Done, 18 Partial and17 Planned;
 the full analytical/pattern/strategy stages are not declared complete.
 
+Observed acceptance on 2026-11-04: final comparison-only check **9 passed in
+13.88 seconds** after the display formatting change. Live browser checks verified
+the four research tabs, momentum evidence, two stock charts and correlation
+workspace using labelled synthetic observations. Screenshots are local runtime
+outputs, excluded from publication. Source commit
+`ce7cd3fcfb0f12c5f3947be2d59e72afde8f53af` contains all **66 reviewed files**,
+each fetched and blob-SHA matched. [GitHub run 41813021609](https://github.com/aryankjain11/signal-ledger/actions/runs/41813021609),
+job 126516723649, passed **201 tests in23.83 seconds**. This documentation audit
+records that observed source snapshot; its own commit is later.
+
 New split/bonus increment: reviewed action-ledger CSV, before/after share ratios,
 ex-date and known-on cutoff policy, optional adjusted OHLCV research view, preserved
 original source and separate research ID/hashes/factor exports. Source declaration
