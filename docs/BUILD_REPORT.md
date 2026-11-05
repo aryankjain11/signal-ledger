@@ -187,6 +187,20 @@ multi-observation high/low fixtures. Focused follow-up: **39 passed in26.80
 seconds**. Final full regression: **240 passed in92.41 seconds** (201 existing
 plus39 event-study cases). Remote and live-browser evidence follow after observation.
 
+Observed browser acceptance: default labelled synthetic study has21 included
+occurrences,6 overlap exclusions and19 complete20-observation outcomes. Its actual
+download parsed successfully:272 occurrence decisions,84 outcome rows,536 control
+rows and24 summary rows; source basis, schema and null incomplete values verified.
+Saved local `outputs/event-study-comparison.png` and `outputs/event-study-occurrence.png`.
+An additional browser click encountered an automatic-review timeout (not a safety
+rejection); one permitted retry after recovery succeeded. No bypass was used.
+
+Publication verified2026-11-06 Asia/Calcutta: source commit
+`d931316367a204664bc618a9e650a47e0cf3f28b`, all70 reviewed files fetched and blob-SHA
+matched, repository private. [GitHub run42098482104](https://github.com/aryankjain11/signal-ledger/actions/runs/42098482104),
+job127494694051, passed **240 tests in15.74 seconds**. This documentation audit
+records an already observed source/CI result; its own commit is later.
+
 Next: a dedicated breakout-retest strategy in the execution simulator, then
 strategy comparison. Target/stop first-hit labels, persistent research history,
 cross-stock point-in-time universes and dependence-aware held-out studies remain

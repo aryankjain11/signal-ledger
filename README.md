@@ -37,8 +37,9 @@ automatically checked off for the learner.
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
 verified, including direct NSE stock-history uploads. Latest local regression:
-**240 passed in92.41 seconds**, including39 event-study cases. Remote acceptance
-is recorded after observation. The separate UDiFF real-report gate remains pending. See
+**240 passed in92.41 seconds**, including39 event-study cases. GitHub run42098482104
+also passed all240 tests in15.74 seconds; all70 reviewed source files matched.
+The separate UDiFF real-report gate remains pending. See
 [GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
 The local computer's Git client does not currently have a saved GitHub login;
 the connected GitHub tools handle this upload, and no credentials are stored here.

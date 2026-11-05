@@ -688,3 +688,39 @@ labeling, outcome math, context feature exports and updated audit anchor counts.
 No further numerical/UI source changes were made after this run. Restarted the
 local app to clear previously imported UI modules before final browser acceptance;
 ordinary page reload had retained the old chart orientation in that process.
+
+## 2026-11-06 · Event-study live acceptance and verified publication
+
+Implementation and full local testing were completed2026-11-05; the following
+publication/verification records use the client's Asia/Calcutta date2026-11-06.
+
+- Live synthetic default:21 included occurrences,6 overlap exclusions,6 event
+  types and19 complete outcomes at20 observations. Verified grouped comparison
+  bars, matching explanations, known-time occurrence chart and percentage metrics.
+  Example one-observation movement−1.51%, MFE1.05%, signed MAE−2.55%,14 matching
+  controls are synthetic fixture observations, not stock-performance claims.
+- Downloaded the actual JSON through the page and parsed it: schema
+  `pattern-outcomes/1`; run915927ac1497a0c132b008ce6d98b3ba1843fd29dab49b2ca9746baae4aabb93;
+  272 occurrence decisions,84 outcome rows,536 control rows and24 summary rows.
+  Verified source basis Synthetic example and null movements for incomplete rows.
+  Kept `outputs/verified-synthetic-study.json` locally, outside the publication list.
+- Saved `outputs/event-study-comparison.png` and `outputs/event-study-occurrence.png`.
+  An additional optional browser action timed out in automatic approval, explicitly
+  not a determination of unsafe action. Continued independent authorized connector
+  work. Browser approval recovered; one allowed retry of occurrence inspection
+  succeeded. No browser security controls or approval checks were bypassed.
+- Published source commit `d931316367a204664bc618a9e650a47e0cf3f28b` on private
+  main with the expected previous-head check, without force. Reconstructed only the
+  reviewed70-file source tree; fetched every file at the resulting commit and
+  matched its Git blob SHA. Source credentials scan passed. No owner uploads,
+  environment, runtime study records or screenshots were committed.
+- Remote Actions run42098482104 / job127494694051 completed successfully:
+  **240 passed in15.74 seconds**. Repository private visibility reconfirmed.
+  The connector's combined-status wrapper omitted Actions checks and its workflow
+  list is PR-only; found the push run through GitHub's visible Actions page, then
+  verified its job/log using the connected GitHub tools.
+- This final documentation audit records the observed source/CI snapshot; its own
+  later commit does not predict its own CI result. Current state: bounded event
+  study complete, broader phase4 research database/inference/validation Partial or
+  Planned as recorded in PROJECT_STATUS.md. Next: versioned breakout-retest
+  execution strategy, then fair strategy comparison. Exercises remain paused.

@@ -1,17 +1,28 @@
 # GitHub sync status
 
-Updated: 2026-11-04.
+Updated: 2026-11-06.
 
 - Repository: https://github.com/aryankjain11/signal-ledger
 - Visibility: **private**, verified through the GitHub page and connected metadata.
 - Initial branch: `main`.
 - Initial README commit: `bc09670a45e3776f5fcb47b393d93e685974fe63`.
-- **Latest analytical/comparison source: complete and verified.** Commit
+- **Latest event-study source: complete and verified.** Commit
+  [`d931316367a204664bc618a9e650a47e0cf3f28b`](https://github.com/aryankjain11/signal-ledger/commit/d931316367a204664bc618a9e650a47e0cf3f28b)
+  has **70 reviewed files**, each fetched and blob-SHA matched. Repository remains
+  private; branch update used the expected previous head. Includes After the pattern,
+  causal forward outcomes, complete-window excursions, matched non-event baseline
+  coverage, overlap/censoring, occurrence inspection and auditable portable records.
+- **Latest CI:** [run 42098482104](https://github.com/aryankjain11/signal-ledger/actions/runs/42098482104),
+  job127494694051, **240 passed in15.74 seconds**. Local full regression on2026-11-05:
+  **240 passed in92.41 seconds**. Publication/remote verification completed2026-11-06
+  Asia/Calcutta. No market-data uploads, runtime JSON/screenshots or credentials
+  included. This audit documents the observed source snapshot; its own commit is later.
+- **Earlier analytical/comparison source: complete and verified.** Commit
   [`ce7cd3fcfb0f12c5f3947be2d59e72afde8f53af`](https://github.com/aryankjain11/signal-ledger/commit/ce7cd3fcfb0f12c5f3947be2d59e72afde8f53af)
   has **66 reviewed files**, all fetched and blob-SHA matched. Includes causal
   breakout/retest states, chart formations, contextual candles, momentum and
   two-stock comparison/correlations. No real uploads or runtime outputs included.
-- **Latest CI:** [run 41813021609](https://github.com/aryankjain11/signal-ledger/actions/runs/41813021609),
+- **Earlier analytical/comparison CI:** [run 41813021609](https://github.com/aryankjain11/signal-ledger/actions/runs/41813021609),
   job 126516723649: **201 passed in23.83 seconds**. Local full regression:
   **201 passed in94.30 seconds**; final comparison display check **9 passed
   in13.88 seconds**. Synthetic live-browser acceptance and screenshots completed.
