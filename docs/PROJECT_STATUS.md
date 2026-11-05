@@ -1,12 +1,12 @@
 # Project status against the original plan
 
-Updated: 2026-11-04
+Updated: 2026-11-05
 
-Current position: working local daily-data research prototype. Parts of original phases 1, 2 and 3 are usable; no complete original phase or final-product acceptance is claimed. Phase 4 research/ML and most phase 5 integration remain pending.
+Current position: working local daily-data research prototype. Parts of original phases 1, 2 and 3 are usable, and phase 4 now includes descriptive pattern-outcome research. No complete original phase or final-product acceptance is claimed. Phase 4 databases/ML/validation and most phase 5 integration remain pending.
 
 Learning assignments are paused at the owner's request. Product implementation, testing, records and GitHub synchronization continue. Existing reference pages remain available.
 
-Expanded master checklist: 349 work items — 40 done, 37 partial, 260 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
+Expanded master checklist: 351 work items — 43 done, 45 partial, 251 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
 
 This document maps every one of the original five-phase roadmap's 43 implementation bullets (brief §19). Detailed subfeatures and the original acceptance-criteria audit are in MASTER_CHECKLIST.md; the complete brief is ORIGINAL_BRIEF.md.
 
@@ -78,13 +78,13 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 - [ ] **Planned · Historical pattern database** — No persisted occurrence/outcome store.
 
-- [ ] **Planned · Pattern-performance analysis** — No validated comparable-cohort pattern study.
+- [ ] **Partial · Pattern-performance analysis** — Auditable single-stock forward outcomes, MFE/MAE, context baselines, overlap/censoring and descriptive distributions; dependent uncertainty and held-out validation pending.
 
 - [ ] **Partial · Feature engineering** — Deterministic indicator/event outputs; versioned training labels/datasets pending.
 
 - [ ] **Planned · Machine learning models** — Not implemented.
 
-- [ ] **Planned · Historical outcome estimation** — Baseline exploratory backtest exists; comparable-pattern outcome estimation pending.
+- [ ] **Partial · Historical outcome estimation** — Versioned 1/5/10/20-observation default pattern-outcome studies and portable records; target/stop labels, database and predictive validation pending.
 
 - [ ] **Planned · Probability calibration** — No success probabilities are supplied.
 
@@ -119,6 +119,8 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 - [x] Build journal, detailed checklist and downloadable status records.
 
 - [x] Initial breakout/retest, chart/candle/momentum feature bundle and matched-interval two-stock comparison.
+
+- [x] After the pattern workspace: causal forward outcomes, MFE/MAE, retrospective context baselines, per-horizon censoring, overlap spacing, occurrence inspection and portable study exports.
 
 - [ ] Full real-file acceptance for UDiFF report import; separate from security-history CSV support.
 

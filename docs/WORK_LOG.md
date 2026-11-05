@@ -615,3 +615,76 @@ Acceptance observed on 2026-11-04:
   original stages stay Partial. Next feature priorities are event outcome studies
   and an explicit breakout-retest strategy, followed by strategy comparison and
   remaining pattern families. Existing learning assignments stay paused.
+
+## 2026-11-05 · After the pattern: descriptive event-outcome research
+
+Authorized milestone: build the accepted event-study feature professionally, with
+finance/coding discipline, continuing documentation and private GitHub publication.
+Exercises remain paused. Completion gate is numerical timing/selection/coverage
+acceptance, replay/UI behavior, auditable exports, synchronized concept/checklist
+records and verified source publication, without claiming empirical investment validity.
+
+- Added `quant_engine/event_study.py`, version `pattern-outcomes/1`, and validated
+  `StudyRules`. Immutable occurrence snapshots distinguish formation from knowledge,
+  preserve lifecycle states, deduplicate copied/same-cohort same-date paths and
+  retain actual knowledge-close price/EMA50/RVOL values. Later failure never removes
+  an initial breakout; neutral events get no invented direction.
+- Implemented fixed observation-horizon movement from next observed open or
+  detection close, bearish alignment, complete-window MFE/signed MAE, null censored
+  outcomes and separate audited raw action-crossing exclusions. Horizons are
+  observed bars, not guaranteed exchange sessions. No prices are filled.
+- Added deterministic maximum-horizon spacing within cohorts before examining
+  maturity, context/date/subtype filters, descriptive mean/median/quartiles/positive
+  frequency, flat counts and small-sample labels. Inter-cohort dependence remains.
+- Added same-stock retrospective non-event pools matched on knowledge-close
+  EMA50/RVOL buckets. Controls may contain future events, are thinned within
+  context pools and are reused transparently. Matched means use identical event
+  coverage, preventing a misleading full-sample versus partial-baseline comparison.
+- Added **After the pattern** workspace reusing the existing input/replay pipeline;
+  form controls, comparison bars, distribution boxes, individual occurrence chart,
+  evidence/audit and JSON/outcome/baseline/summary CSV exports. Cached calculations
+  include rules/events/data identity; portable records are not a history database.
+- Added `docs/EVENT_STUDIES.md` with original formulas, hypothetical examples,
+  assumptions, software/record design, sources and remaining research scope. Four
+  new reference concepts and two expanded entries yield126 concepts. Updated
+  checklist/phase mappings:351 items (43 Done,45 Partial,251 Planned,12 Optional);
+  original43 bullets now8 Done,20 Partial,15 Planned. No original phase is complete.
+- First targeted acceptance: **33 passed in33.39 seconds**. Added two further
+  independent fixtures for matched coverage and missing-date observation horizons,
+  and extended replay/UI coverage; full regression was then started. Record its
+  observed result below rather than inferring a pass from the earlier subset.
+
+Sources checked 2026-11-05: CFA Institute Backtesting and Simulation, and
+EventStudyTools Introduction to event studies. Exact links/interpretation are in
+EVENT_STUDIES.md. The implementation is a descriptive pattern-outcome study, not
+a market-model abnormal-return/causal event study. No new source data, external
+services, orders, calibrated probabilities or invented trading-performance claims.
+
+Remaining: target-before-stop/expiry labels, dependent-data inference, held-out
+validation, cross-stock point-in-time universes and persistent research history.
+Recommended next usable feature is a versioned breakout-retest strategy with
+execution timing, invalidation, exits, expiry and costs, then strategy comparison.
+
+Follow-up verification and corrections:
+- First full run: **235 passed,1 failed in109.38 seconds**. The failing replay UI
+  assertion exposed empty event selection after the available cohort catalogue
+  shrank. Reproduced the state: old event choices disappeared while an earlier
+  bearish-engulfing occurrence remained available; no numerical exception occurred.
+- Preserve valid selected types when the catalogue changes; if none remain, reset
+  to available defaults with an explanation. Clamp event dates to the visible
+  observed range. Added explicit replay assertions and four independent three-bar
+  extreme/reference/direction fixtures. Follow-up event suite: **39 passed
+  in26.80 seconds**.
+- Improved comparison readability with horizontal grouped bars; occurrence charts
+  now have percentage movement/excursion metrics and collapsed exact JSON. Corrected
+  synthetic adjustment labeling to use Synthetic example, rather than the unused
+  unknown declaration, across the shared data flow. Baseline audit distinguishes
+  candidate anchors before spacing from retained anchors.
+- The final full suite and live-browser acceptance follow after observation.
+
+Final full local regression observed: **240 passed in92.41 seconds** (201 existing
+plus39 event-study cases). This includes final replay/form fixes, synthetic basis
+labeling, outcome math, context feature exports and updated audit anchor counts.
+No further numerical/UI source changes were made after this run. Restarted the
+local app to clear previously imported UI modules before final browser acceptance;
+ordinary page reload had retained the old chart orientation in that process.

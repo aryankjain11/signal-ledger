@@ -14,6 +14,8 @@ SOURCES = {
     "star": ("Zerodha Varsity: Morning and Evening Star", "https://zerodha.com/varsity/chapter/multiple-candlestick-patterns-part-3/"),
     "ta": ("Fidelity: technical analysis introduction", "https://www.fidelity.com/learning-center/trading-investing/technical-analysis/what-is-technical-analysis"),
     "overfit": ("Bailey et al.: Probability of Backtest Overfitting", "https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf"),
+    "research-bias": ("CFA Institute: Backtesting and Simulation", "https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/backtesting-and-simulation"),
+    "event-method": ("EventStudyTools: Introduction to event studies", "https://www.eventstudytools.com/introduction-event-study-methodology"),
     "nse": ("NSE: corporate actions", "https://www.nseindia.com/companies-listing/corporate-filings-actions"),
 }
 
@@ -366,7 +368,43 @@ add("indexed-performance", "Indexed performance and observed-date drawdown", "Re
     interpretation="This comparison uses price returns, not dividend-inclusive total returns. Drawdowns use common observed dates and can miss extremes hidden by absent observations; return volatility is per matched interval, without annualization.",
     status="Indexed two-stock performance, relative ratio and common-observation drawdowns", code="quant_engine/comparison.py")
 
+add("forward-outcomes", "Forward outcomes and measurement timing", "Research and statistics",
+    "A forward outcome measures price movement after an observation became knowable. Its reference price and horizon must be declared before interpreting the result. Formation time can precede the first moment the complete pattern was detectable.",
+    rule="For a pattern known at observation t, the default reference is open[t+1]. Horizon h ends at close[t+h]. The alternative reference is close[t]; it is an observational convention, not an available trading fill. Horizons count uploaded observations.",
+    example="Invented example: a setup is known Monday, the next observed open is100, and the close at t+5 is104. The gross five-observation movement is104/100−1=4%. A 1-observation next-open result is the next bar's open-to-close change.",
+    interpretation="Pattern-direction mode negates returns for bearish events. This makes favourable falls positive without simulating short selling, costs or share accounting. Neutral shapes use upward-price mode.",
+    mistake="Measuring from a pivot's formation price, including the detection candle's extreme, or treating gross price movement as realized trading profit.",
+    status="Versioned causal forward-outcome research workspace", source="research-bias", code="quant_engine/event_study.py")
+add("conditional-baseline", "Matched non-event baseline and coverage", "Research and statistics",
+    "A conditional baseline asks what happened on other dates with similar observable conditions. It gives context to a selected historical sample but does not by itself identify what would have happened without the pattern or establish a causal effect.",
+    rule="Match the same uploaded stock and date interval on close versus EMA50 and relative-volume bucket at the decision close. A baseline anchor has no selected eligible event that day; future events remain allowed. Compare each event with its matching pool's mean, then average those differences across covered events.",
+    example="Invented example: two covered event returns are6% and−2%; their context-pool means are2% and1%. The event mean is2%, the event-weighted baseline is1.5%, and the difference is0.5 percentage points. An event lacking enough controls is omitted from both matched means.",
+    interpretation="Controls are reused across events and may overlap their outcomes. This retrospective baseline uses the selected historical interval, including later dates. It is not an earlier-only forecast or the market-model abnormal return used in formal financial event studies.",
+    mistake="Comparing a full-cohort event mean with a baseline covering only some events, or dropping controls because a future pattern occurred.",
+    status="Auditable context-matched baseline pools and coverage counts implemented", source="event-method", code="quant_engine/event_study.py")
+add("event-overlap", "Overlapping event windows and sample dependence", "Research and statistics",
+    "Two signals can share the same future price path, so counting them separately can exaggerate the apparent amount of evidence. Distinct pattern names can also identify closely related observations.",
+    rule="Default thinning keeps the earliest occurrence within each event type/state and requires the next knowledge index to exceed the previous index plus the largest selected horizon. Apply this before checking outcome completeness. Baseline anchors are separately thinned within each context pool.",
+    example="Invented knowledge indices1,2,4,5 with maximum horizon3 retain1 and5. Index4 is rejected because the closed windows share an endpoint. A different event type at index2 can remain and is not independent evidence.",
+    interpretation="Thinning reduces direct window reuse; it does not remove market dependence, cross-cohort overlap or shared controls. Naive independent-sample confidence intervals would overstate precision.",
+    status="Deterministic cohort/context-pool spacing with retained exclusion ledger", code="quant_engine/event_study.py")
+add("sample-dispersion", "Outcome distribution versus statistical uncertainty", "Research and statistics",
+    "Mean, median, quartiles and the fraction of positive observations summarize an observed distribution. A confidence interval concerns uncertainty about an estimated population quantity under stated sampling assumptions; these are different objects.",
+    rule="Show complete outcome counts, mean/median, 25th/75th percentiles, signed excursions and positive fraction. Zero is |movement|<=1e−12; positive means movement>1e−12. No complete outcomes means unavailable metrics. Counts below5 and30 receive descriptive caution labels, not statistical-validity guarantees.",
+    example="Invented outcomes−2%,0%,4% have mean0.6667%, median0%, a positive fraction of1/3, and one flat result. These three observations do not establish a one-third future success probability.",
+    interpretation="The current workspace supplies descriptive dispersion and sample warnings. Dependent-data uncertainty, multiple-testing correction and held-out predictive validation remain future work.",
+    mistake="Calling a box plot a confidence interval or a historical positive fraction a calibrated forecast.",
+    status="Descriptive outcome distributions and small-sample labels implemented", source="research-bias", code="quant_engine/event_study.py; quant_engine/event_study_ui.py")
+
 BY_ID = {c["id"]: c for c in CONCEPTS}
+BY_ID["mfe-mae"].update(
+    rule="Use only complete post-detection windows t+1…t+h. Upward MFE=max(0,max(high)/reference−1), signed MAE=min(0,min(low)/reference−1). Bearish MFE=max(0,1−min(low)/reference), signed MAE=min(0,1−max(high)/reference).",
+    example="Invented reference100, later maximum high108 and minimum low95 give upward MFE8% and signed MAE−5%; bearish MFE5% and signed MAE−8%. Daily OHLC cannot reveal which extreme occurred first.",
+    app_status="Complete-horizon event MFE/signed MAE computed; order execution remains separate", code="quant_engine/event_study.py")
+BY_ID["censoring"].update(
+    rule="A horizon extending beyond replay remains Incomplete horizon. Its return/MFE/MAE are null and it is omitted from averages, never converted to a loss or closed early. Complete raw-price windows crossing a known audited action are separately excluded.",
+    example="An invented setup known two observations before the replay cutoff has a complete1-observation outcome and an incomplete5-observation outcome. These horizons have different complete counts.",
+    app_status="Per-horizon event censoring and audited raw-action exclusions implemented", code="quant_engine/event_study.py")
 for key in ("hammer", "hanging-man", "inverted-hammer", "shooting-star", "morning-star"):
     BY_ID[key].update(app_status="Contextual detector implemented; statistical validation pending", code="quant_engine/research.py: contextual_candles")
 for key in ("ascending-triangle", "descending-triangle", "symmetrical-triangle", "rectangle"):
@@ -384,6 +422,7 @@ BY_ID["git-github"].update(
     code="docs/GITHUB_SYNC.md; .github/workflows/tests.yml",
     exercise="Open the source commit and its Actions run. Explain how a verified file snapshot differs from a passing test result.")
 CURRENT_BEHAVIOR_IDS = {
+    "forward-outcomes", "conditional-baseline", "event-overlap", "sample-dispersion", "mfe-mae", "censoring",
     "correlation", "indexed-performance", "relative-strength", "roc", "stochastic", "divergence", "evening-star", "morning-star",
     "hammer", "hanging-man", "inverted-hammer", "shooting-star", "ascending-triangle", "descending-triangle", "symmetrical-triangle", "rectangle",
     "bhavcopy", "security-identity", "data-passport", "nse-quote-export",
@@ -418,7 +457,7 @@ def concept_markdown(concept, builder_details=True):
 
 
 def handbook_markdown():
-    intro = ["# Education and Concepts", "Updated: 2026-11-04",
+    intro = ["# Education and Concepts", "Updated: 2026-11-05",
              f"{len(CONCEPTS)} entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.",
              "All numerical examples are invented teaching examples, explicitly not market observations or performance claims. A traditional pattern description does not demonstrate a trading edge. A glossary entry is not proof that its detector exists.",
              "Start with OHLCV → returns/adjustments → confirmed structure → SMA/EMA → RSI/MACD → ATR/risk → backtesting/leakage → probability calibration. Use the app's Learning lab and `docs/lessons/01_from_prices_to_evidence.md`.",

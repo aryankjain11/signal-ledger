@@ -150,6 +150,48 @@ where they are useful, rather than hiding all uncertainty in a footer.
 
 ## Verification and limitations
 
+2026-11-05 event-study increment: **After the pattern** is a dedicated workspace
+reusing source declarations, detector rules and replay. Independent numerical
+engine `quant_engine/event_study.py` measures each supported occurrence from its
+knowledge close or next observed open to fixed future observation closes, with
+direction alignment, complete-window MFE/signed MAE and explicit censoring.
+Frozen occurrence snapshots retain actual EMA50/RVOL values and excluded states.
+Per-cohort maximum-horizon spacing, duplicate-path handling and raw audited
+action-crossing exclusions prevent several easy counting/price-unit errors.
+
+Same-stock non-event baseline pools match pre-known EMA50/RVOL buckets and the
+selected historical interval. Future events are allowed. Event-weighted pool
+means are compared only against identically covered events; missing controls
+remain unavailable. Different pools/cohorts and controls versus event windows
+can overlap. This retrospective comparison supplies neither a causal counterfactual
+nor market-adjusted alpha. No independent-sample p-values/confidence bands,
+calibrated forecasts or portfolio compounding are supplied.
+
+The UI provides study-definition forms, summary/comparison bars, distribution
+boxes, a clickable occurrence selector/chart, detection evidence and audit/JSON/CSV
+exports. References and original worked concepts cover forward returns, context
+baselines, overlap, censoring and sample dispersion. No new exercises were added.
+Full formulas and remaining scope are in `EVENT_STUDIES.md`.
+
+Current catalogue: **126 concepts, 351 tasks**:43 Done,45 Partial,251 Planned,
+12 Optional. Original43-bullet plan:8 Done,20 Partial,15 Planned; phase4 now has
+descriptive outcome research, while its database/models/validation remain pending.
+Initial targeted numerical/UI acceptance: **33 passed in33.39 seconds**. Added
+two coverage/missing-date fixtures and extended replay behavior before the full
+regression; its observed result and remote acceptance are recorded after completion.
+
+Observed local acceptance: first complete run **235 passed,1 failed in109.38
+seconds** exposed replay form selection after the available event catalogue changed.
+Corrected selection retention/reset and date clamping; added four independent
+multi-observation high/low fixtures. Focused follow-up: **39 passed in26.80
+seconds**. Final full regression: **240 passed in92.41 seconds** (201 existing
+plus39 event-study cases). Remote and live-browser evidence follow after observation.
+
+Next: a dedicated breakout-retest strategy in the execution simulator, then
+strategy comparison. Target/stop first-hit labels, persistent research history,
+cross-stock point-in-time universes and dependence-aware held-out studies remain
+separate gates. The earlier dated acceptance records below are historical evidence.
+
 2026-11-04 analytical feature bundle: versioned breakout/retest state machine,
 frozen six-anchor triangle/rectangle geometry, six contextual candle variants,
 ROC/fast stochastic, RSI/MACD confirmed-pivot divergences and a dedicated two-stock

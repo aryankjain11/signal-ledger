@@ -8,14 +8,14 @@ It does not claim a demonstrated trading edge.
 ## Learn while building
 
 Use the sidebar **Workspace** menu to switch between the research dashboard,
-**Compare two stocks**, **Education and Concepts**, and **Build checklist & log**.
+**After the pattern**, **Compare two stocks**, **Education and Concepts**, and **Build checklist & log**.
 Reference pages work without an upload. Existing lessons and labs remain available;
 new assignments are paused. The concept library labels what is actually computed
 or detected separately from features that are only explained.
 
-- [Master checklist](docs/MASTER_CHECKLIST.md): 349 tracked items across 21 stages,
+- [Master checklist](docs/MASTER_CHECKLIST.md): 351 tracked items across 21 stages,
   covering the original brief and optional extensions with acceptance gates.
-- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 122 definitions and
+- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 126 definitions and
   notes; worked examples for foundations and current features, concise entries for
   future additions.
 - [Lesson 1](docs/lessons/01_from_prices_to_evidence.md): connected explanations,
@@ -27,6 +27,8 @@ or detected separately from features that are only explained.
   five development phases, with done/partial/pending scope. Learning assignments
   are paused; product development continues.
 - [Build report](docs/BUILD_REPORT.md): architecture, curriculum and current limits.
+- [After the pattern rules](docs/EVENT_STUDIES.md): forward outcomes, known-time
+  references, excursions, matching/coverage, overlap/censoring and research limits.
 
 Each future increment follows learn → specify → build → verify → explain → record.
 The continuing agreement is in [AGENTS.md](AGENTS.md). Understanding is not
@@ -35,9 +37,8 @@ automatically checked off for the learner.
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
 verified, including direct NSE stock-history uploads. Latest local regression:
-201 passed, including the analytical event and stock-comparison cases. GitHub
-run 41813021609 also passed all 201 tests (23.83 seconds). All 66 reviewed files
-matched the source commit. The separate UDiFF real-report gate remains pending. See
+**240 passed in92.41 seconds**, including39 event-study cases. Remote acceptance
+is recorded after observation. The separate UDiFF real-report gate remains pending. See
 [GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
 The local computer's Git client does not currently have a saved GitHub login;
 the connected GitHub tools handle this upload, and no credentials are stored here.
@@ -157,6 +158,12 @@ and 20 completed prior calendar weeks for weekly SMA context.
   includes raw-source SHA-256, as-of date, adjustment declaration, settings, engine
   version, feature values, events and limitations. Backtest JSON adds equity and
   trades. Downloads are records; there is no persistent run database yet.
+- **After the pattern:** a separate workspace with1/5/10/20-observation default
+  forward outcomes, MFE/signed MAE, event/context/date filters, deterministic
+  overlap spacing, per-horizon censoring, auditable same-stock context baselines,
+  comparable coverage, box plots, occurrence charts and portable JSON/CSV records.
+  Default reference is the next observed open after detection. These are gross
+  descriptive price outcomes, not simulated trades or calibrated probabilities.
 
 ## Analytical conventions and limitations
 

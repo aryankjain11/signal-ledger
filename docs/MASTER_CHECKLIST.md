@@ -1,10 +1,10 @@
 # Master implementation and learning checklist
 
-Updated: 2026-11-04
+Updated: 2026-11-05
 
 Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.
 
-349 work items: 40 done, 37 partial, 260 planned, 12 optional / later.
+351 work items: 43 done, 45 partial, 251 planned, 12 optional / later.
 
 Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.
 
@@ -578,25 +578,29 @@ Original brief: 9,14D,14F,17
 
 - [ ] **S11-003** · Planned · Immutable analysis runs and parameter/engine versions
 
-- [ ] **S11-004** · Planned · Occurrence records with market/timeframe/definition/known-time/features
+- [ ] **S11-004** · Partial · Occurrence records with market/timeframe/definition/known-time/features
 
 - [ ] **S11-005** · Planned · Target-before-stop labels with fixed horizon and ambiguity policy
 
-- [ ] **S11-006** · Planned · Successful/failed/expired/censored occurrence counts
+- [ ] **S11-006** · Partial · Successful/failed/expired/censored occurrence counts
 
-- [ ] **S11-007** · Planned · MFE/MAE and average favorable/adverse movement
+- [ ] **S11-007** · Partial · MFE/MAE and average favorable/adverse movement
 
 - [ ] **S11-008** · Planned · Time-to-target and holding-time distributions
 
-- [ ] **S11-009** · Planned · Conditional pattern cohorts and feature combinations
+- [ ] **S11-009** · Partial · Conditional pattern cohorts and feature combinations
 
-- [ ] **S11-010** · Planned · Market-regime and timeframe performance slices
+- [ ] **S11-010** · Partial · Market-regime and timeframe performance slices
 
-- [ ] **S11-011** · Planned · Non-overlapping samples, uncertainty and small-sample warnings
+- [ ] **S11-011** · Partial · Non-overlapping samples, uncertainty and small-sample warnings
 
-- [ ] **S11-012** · Planned · Research-lab filters by symbol, date, regime, subtype and context
+- [ ] **S11-012** · Partial · Research-lab filters by symbol, date, regime, subtype and context
 
-- [ ] **S11-013** · Planned · No historical-performance display without an auditable cohort
+- [x] **S11-013** · Done · No historical-performance display without an auditable cohort
+
+- [x] **S11-014** · Done · Versioned forward-outcome study with known-time references, complete/censored horizons and portable records
+
+- [x] **S11-015** · Done · Same-stock context-matched non-event baselines with explicit comparable coverage
 
 
 ## S12 · Probability models and machine learning
@@ -718,7 +722,7 @@ Original brief: 13.3,14,15,21
 
 - [ ] **S15-005** · Planned · Structured strategy table with all planned parameters
 
-- [ ] **S15-006** · Planned · Pattern Research Lab and backtest configuration UI
+- [ ] **S15-006** · Partial · Pattern Research Lab and backtest configuration UI
 
 - [ ] **S15-007** · Planned · Saved analysis history and realized-outcome comparison
 

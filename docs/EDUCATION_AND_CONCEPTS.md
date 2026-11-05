@@ -1,8 +1,8 @@
 # Education and Concepts
 
-Updated: 2026-11-04
+Updated: 2026-11-05
 
-122 entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.
+126 entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.
 
 All numerical examples are invented teaching examples, explicitly not market observations or performance claims. A traditional pattern description does not demonstrate a trading edge. A glossary entry is not proof that its detector exists.
 
@@ -1176,13 +1176,19 @@ Sharpe scales mean excess return by return volatility; Sortino uses a defined do
 
 ## MFE and MAE
 
-**Category:** Research and statistics · **Application status:** Explained; engine extension pending
+**Category:** Research and statistics · **Application status:** Complete-horizon event MFE/signed MAE computed; order execution remains separate
 
 Maximum favorable/adverse excursion measures the best/worst observed movement during a defined trade/event interval relative to an entry/reference. The units, long/short direction and intrabar ambiguity must be explicit.
+
+**Calculation or rule:** Use only complete post-detection windows t+1…t+h. Upward MFE=max(0,max(high)/reference−1), signed MAE=min(0,min(low)/reference−1). Bearish MFE=max(0,1−min(low)/reference), signed MAE=min(0,1−max(high)/reference).
+
+**Hypothetical worked example:** Invented reference100, later maximum high108 and minimum low95 give upward MFE8% and signed MAE−5%; bearish MFE5% and signed MAE−8%. Daily OHLC cannot reveal which extreme occurred first.
 
 **How to read it:** This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
+
+**Implementation reference:** `quant_engine/event_study.py`
 
 ## Survivorship bias
 
@@ -1236,13 +1242,19 @@ These assess classification/ranking under particular thresholds or across thresh
 
 ## Censoring and maximum holding horizon
 
-**Category:** Research and statistics · **Application status:** Explained; engine extension pending
+**Category:** Research and statistics · **Application status:** Per-horizon event censoring and audited raw-action exclusions implemented
 
 If the outcome horizon extends beyond available data, the outcome may be unknown rather than a failure. Expiry, neither-barrier-hit and forced end-of-data close need distinct documented labels.
+
+**Calculation or rule:** A horizon extending beyond replay remains Incomplete horizon. Its return/MFE/MAE are null and it is omitted from averages, never converted to a loss or closed early. Complete raw-price windows crossing a known audited action are separately excluded.
+
+**Hypothetical worked example:** An invented setup known two observations before the replay cutoff has a complete1-observation outcome and an incomplete5-observation outcome. These horizons have different complete counts.
 
 **How to read it:** This is a curriculum definition. Before implementing a detector or strategy, specify its exact rules and evaluate them on appropriate data.
 
 **Common mistake:** Confusing a traditional interpretation or an educational description with validated predictive performance.
+
+**Implementation reference:** `quant_engine/event_study.py`
 
 ## Market regime and concept drift
 
@@ -1413,3 +1425,71 @@ Rebasing two price series to 100 at a common starting observation makes their pr
 **How to read it:** This comparison uses price returns, not dividend-inclusive total returns. Drawdowns use common observed dates and can miss extremes hidden by absent observations; return volatility is per matched interval, without annualization.
 
 **Implementation reference:** `quant_engine/comparison.py`
+
+## Forward outcomes and measurement timing
+
+**Category:** Research and statistics · **Application status:** Versioned causal forward-outcome research workspace
+
+A forward outcome measures price movement after an observation became knowable. Its reference price and horizon must be declared before interpreting the result. Formation time can precede the first moment the complete pattern was detectable.
+
+**Calculation or rule:** For a pattern known at observation t, the default reference is open[t+1]. Horizon h ends at close[t+h]. The alternative reference is close[t]; it is an observational convention, not an available trading fill. Horizons count uploaded observations.
+
+**Hypothetical worked example:** Invented example: a setup is known Monday, the next observed open is100, and the close at t+5 is104. The gross five-observation movement is104/100−1=4%. A 1-observation next-open result is the next bar's open-to-close change.
+
+**How to read it:** Pattern-direction mode negates returns for bearish events. This makes favourable falls positive without simulating short selling, costs or share accounting. Neutral shapes use upward-price mode.
+
+**Common mistake:** Measuring from a pivot's formation price, including the detection candle's extreme, or treating gross price movement as realized trading profit.
+
+**Further reading:** [CFA Institute: Backtesting and Simulation](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/backtesting-and-simulation)
+
+**Implementation reference:** `quant_engine/event_study.py`
+
+## Matched non-event baseline and coverage
+
+**Category:** Research and statistics · **Application status:** Auditable context-matched baseline pools and coverage counts implemented
+
+A conditional baseline asks what happened on other dates with similar observable conditions. It gives context to a selected historical sample but does not by itself identify what would have happened without the pattern or establish a causal effect.
+
+**Calculation or rule:** Match the same uploaded stock and date interval on close versus EMA50 and relative-volume bucket at the decision close. A baseline anchor has no selected eligible event that day; future events remain allowed. Compare each event with its matching pool's mean, then average those differences across covered events.
+
+**Hypothetical worked example:** Invented example: two covered event returns are6% and−2%; their context-pool means are2% and1%. The event mean is2%, the event-weighted baseline is1.5%, and the difference is0.5 percentage points. An event lacking enough controls is omitted from both matched means.
+
+**How to read it:** Controls are reused across events and may overlap their outcomes. This retrospective baseline uses the selected historical interval, including later dates. It is not an earlier-only forecast or the market-model abnormal return used in formal financial event studies.
+
+**Common mistake:** Comparing a full-cohort event mean with a baseline covering only some events, or dropping controls because a future pattern occurred.
+
+**Further reading:** [EventStudyTools: Introduction to event studies](https://www.eventstudytools.com/introduction-event-study-methodology)
+
+**Implementation reference:** `quant_engine/event_study.py`
+
+## Overlapping event windows and sample dependence
+
+**Category:** Research and statistics · **Application status:** Deterministic cohort/context-pool spacing with retained exclusion ledger
+
+Two signals can share the same future price path, so counting them separately can exaggerate the apparent amount of evidence. Distinct pattern names can also identify closely related observations.
+
+**Calculation or rule:** Default thinning keeps the earliest occurrence within each event type/state and requires the next knowledge index to exceed the previous index plus the largest selected horizon. Apply this before checking outcome completeness. Baseline anchors are separately thinned within each context pool.
+
+**Hypothetical worked example:** Invented knowledge indices1,2,4,5 with maximum horizon3 retain1 and5. Index4 is rejected because the closed windows share an endpoint. A different event type at index2 can remain and is not independent evidence.
+
+**How to read it:** Thinning reduces direct window reuse; it does not remove market dependence, cross-cohort overlap or shared controls. Naive independent-sample confidence intervals would overstate precision.
+
+**Implementation reference:** `quant_engine/event_study.py`
+
+## Outcome distribution versus statistical uncertainty
+
+**Category:** Research and statistics · **Application status:** Descriptive outcome distributions and small-sample labels implemented
+
+Mean, median, quartiles and the fraction of positive observations summarize an observed distribution. A confidence interval concerns uncertainty about an estimated population quantity under stated sampling assumptions; these are different objects.
+
+**Calculation or rule:** Show complete outcome counts, mean/median, 25th/75th percentiles, signed excursions and positive fraction. Zero is |movement|<=1e−12; positive means movement>1e−12. No complete outcomes means unavailable metrics. Counts below5 and30 receive descriptive caution labels, not statistical-validity guarantees.
+
+**Hypothetical worked example:** Invented outcomes−2%,0%,4% have mean0.6667%, median0%, a positive fraction of1/3, and one flat result. These three observations do not establish a one-third future success probability.
+
+**How to read it:** The current workspace supplies descriptive dispersion and sample warnings. Dependent-data uncertainty, multiple-testing correction and held-out predictive validation remain future work.
+
+**Common mistake:** Calling a box plot a confidence interval or a historical positive fraction a calibrated forecast.
+
+**Further reading:** [CFA Institute: Backtesting and Simulation](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/backtesting-and-simulation)
+
+**Implementation reference:** `quant_engine/event_study.py; quant_engine/event_study_ui.py`

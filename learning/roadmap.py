@@ -333,16 +333,18 @@ _add("S11", """
 SQLite schema and migrations with PostgreSQL-compatible interfaces
 Persist symbols, versioned OHLCV and data provenance
 Immutable analysis runs and parameter/engine versions
-Occurrence records with market/timeframe/definition/known-time/features
+~ Occurrence records with market/timeframe/definition/known-time/features
 Target-before-stop labels with fixed horizon and ambiguity policy
-Successful/failed/expired/censored occurrence counts
-MFE/MAE and average favorable/adverse movement
+~ Successful/failed/expired/censored occurrence counts
+~ MFE/MAE and average favorable/adverse movement
 Time-to-target and holding-time distributions
-Conditional pattern cohorts and feature combinations
-Market-regime and timeframe performance slices
-Non-overlapping samples, uncertainty and small-sample warnings
-Research-lab filters by symbol, date, regime, subtype and context
-No historical-performance display without an auditable cohort
+~ Conditional pattern cohorts and feature combinations
+~ Market-regime and timeframe performance slices
+~ Non-overlapping samples, uncertainty and small-sample warnings
+~ Research-lab filters by symbol, date, regime, subtype and context
++ No historical-performance display without an auditable cohort
++ Versioned forward-outcome study with known-time references, complete/censored horizons and portable records
++ Same-stock context-matched non-event baselines with explicit comparable coverage
 """)
 _add("S12", """
 Point-in-time feature store for returns, indicators and market context
@@ -393,7 +395,7 @@ Configurable indicators and overlay visibility
 Technical report covering trend, zones, patterns, momentum and volume
 Explicit bullish/bearish/conflicting evidence and invalidation
 Structured strategy table with all planned parameters
-Pattern Research Lab and backtest configuration UI
+~ Pattern Research Lab and backtest configuration UI
 Saved analysis history and realized-outcome comparison
 Clickable chart annotations synchronized with report evidence
 Downloadable readable HTML/PDF report alongside JSON/CSV
@@ -479,7 +481,7 @@ STAGE_BY_ID = {s[0]: {"id": s[0], "title": s[1], "brief": s[2], "learn": s[3], "
 
 def checklist_markdown():
     counts = {state: sum(t["status"] == state for t in TASKS) for state in STATUS_LABELS}
-    lines = ["# Master implementation and learning checklist", "Updated: 2026-11-04",
+    lines = ["# Master implementation and learning checklist", "Updated: 2026-11-05",
              "Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.",
              f"{len(TASKS)} work items: " + ", ".join(f"{counts[s]} {STATUS_LABELS[s].lower()}" for s in counts) + ".",
              "Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.",

@@ -20,6 +20,7 @@ from quant_engine.datasets import canonical_bars_bytes
 from quant_engine.models import ResearchRules
 from quant_engine.research_ui import research_controls, render_research
 from quant_engine.comparison_ui import render_comparison
+from quant_engine.event_study_ui import render_event_study
 
 ROOT = Path(__file__).resolve().parent
 st.set_page_config(page_title="Signal Ledger · Quant research", page_icon="◈", layout="wide")
@@ -34,7 +35,7 @@ st.markdown("""<style>
  .stTabs [data-baseweb="tab-list"] {gap:24px;border-bottom:1px solid #253248}
  </style>""", unsafe_allow_html=True)
 
-PAGES = {"Research dashboard": "research", "Compare two stocks": "compare", "Education and Concepts": "education", "Build checklist & log": "build"}
+PAGES = {"Research dashboard": "research", "After the pattern": "events", "Compare two stocks": "compare", "Education and Concepts": "education", "Build checklist & log": "build"}
 requested_page = st.query_params.get("page", "research")
 page_names = list(PAGES)
 page_index = list(PAGES.values()).index(requested_page) if requested_page in PAGES.values() else 0
@@ -88,7 +89,7 @@ with st.sidebar:
     st.caption("Indian equities · swing research · INR-denominated uploads · daily bars · no live orders")
 
 st.markdown('<div class="eyebrow">OBSERVE / EXPLAIN / TEST</div>', unsafe_allow_html=True)
-st.title("Price structure, with evidence.")
+st.title("After the pattern" if workspace == "After the pattern" else "Price structure, with evidence.")
 st.markdown('<div class="subtitle">A transparent starting point for technical research. Every observation traces back to your data.</div>', unsafe_allow_html=True)
 
 if is_reports:
@@ -136,6 +137,8 @@ if not is_reports:
         st.error(f"Data could not be analyzed: {exc}")
         st.stop()
 
+if data.metadata.get("is_synthetic"):
+    adjustment = "Synthetic example"
 if adjustment == "Unknown / unverified":
     st.warning("Adjustment status is unverified. Splits and dividends can distort indicators, patterns and backtest results.")
 elif adjustment == "Unadjusted OHLC":
@@ -176,6 +179,9 @@ analysis.warnings = data.warnings + analysis.warnings
 execution_restriction = data.metadata.get("execution_restriction")
 if execution_restriction:
     analysis.setup = {"status": "Research view · execution unavailable", "reason": execution_restriction}
+if workspace == "After the pattern":
+    render_event_study(analysis, data, settings, symbol, adjustment)
+    st.stop()
 frame, last = analysis.frame, analysis.frame.iloc[-1]
 columns = st.columns(4)
 columns[0].metric("Last close", f"{last.close:,.2f}", f"{(last.close / frame.close.iloc[-2] - 1) * 100:+.2f}%")
