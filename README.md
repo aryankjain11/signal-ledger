@@ -56,6 +56,8 @@ structural stop, and audits cancellations/capacity/pending states. Its independe
 session record includes saved bars so a stale setup chart cannot use new prices.
 The baseline simulator remains unchanged. Fair strategy comparison and held-out
 validation are next; neither strategy has a demonstrated trading edge.
+The breakout-retest source has84 verified files; GitHub run43740352903 passed
+all323 tests in49.59 seconds. Publication details are in the sync record.
 The earlier event-study CI run42098482104 passed all240 tests in15.74 seconds;
 the reliability source now has78 verified files and GitHub run43728863777 passed
 all268 tests in23.13 seconds. The later synchronization record is a separate commit.

@@ -956,3 +956,22 @@ Breakout-retest implementation and local acceptance:
   historical-inspection follow-ups. Next: fair baseline-versus-retest comparison
   under a declared protocol, followed by independent chronological validation and
   durable research storage. Private publication/CI are recorded after observation.
+
+Breakout-retest publication acceptance:
+- Published source commit `98f097bf0dce83f735ec24153e6c49104b1b3ec5` on private
+  main with the expected previous head55a80bb and no force.28 files new/modified;
+  final84-file Git tree paths and every blob SHA matched the reviewed local
+  manifest. Verified branch head. Original baseline simulator SHA unchanged;
+  existing tests changed only their Data source selectors where necessary.
+- GitHub Actions run43740352903 / job132891933822 completed successfully:
+  **323 passed in49.59s**, Ubuntu26.04 / Python3.13.18. Inspected completed job
+  and decoded log. Generated handbook/checklist/original-plan files were also
+  directly compared with their shared sources. Credential/source allow-list passed.
+- Packaged84 reviewed files plus SOURCE_MANIFEST.json; ZIP member-integrity and
+  every SHA256 check passed. Actual NSE file, browser JSON downloads, screenshots,
+  environments and credentials excluded. Runtime proof images remain local.
+- Updated README and GITHUB_SYNC with observed source/CI evidence. This final
+  documentation audit is later than the accepted source snapshot and does not
+  claim its own future CI result. Bounded strategy milestone complete; next is fair
+  comparison, then independent validation and durable research storage. No trading
+  edge, full phase completion or learner mastery is claimed. Exercises stay paused.

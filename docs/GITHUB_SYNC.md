@@ -6,6 +6,24 @@ Updated: 2026-11-15.
 - Visibility: **private**, verified through the GitHub page and connected metadata.
 - Initial branch: `main`.
 - Initial README commit: `bc09670a45e3776f5fcb47b393d93e685974fe63`.
+- **Latest breakout-retest source: complete and verified.** Commit
+  [`98f097bf0dce83f735ec24153e6c49104b1b3ec5`](https://github.com/aryankjain11/signal-ledger/commit/98f097bf0dce83f735ec24153e6c49104b1b3ec5)
+  contains **84 reviewed files**. All published tree paths/blob SHAs matched the
+  local source manifest; each changed/new blob was also matched on creation.
+  Private main advanced from55a80bb with an expected-head check, without force.
+  Includes versioned long breakout-retest simulation, causal setup audit, saved
+  original-price inspection, immutable records, rule/concept UI and55 new tests.
+  Original baseline engine unchanged. No real uploads, runtime records/screenshots,
+  environments or credentials were included. Source archive integrity/hash check
+  passed for84 reviewed files plus its manifest.
+- **Breakout-retest CI:** [run43740352903](https://github.com/aryankjain11/signal-ledger/actions/runs/43740352903),
+  job132891933822, **323 passed in49.59s**, Ubuntu26.04 / Python3.13.18.
+  Inspected completed successful job and decoded log. Local full regression:
+  **323 passed in84.15s**; final target-marker presentation check1 passed in4.35s.
+  Browser acceptance included unchanged short NSE input, synthetic decisions/fills,
+  stored-price inspection, stale rules, concept/strategy retention and downloaded
+  record inspection. This later synchronization audit records the observed source
+  and CI snapshot; it does not predict its own subsequent commit's CI.
 - **Latest reliability source: complete and verified.** Commit
   [`6cac2f8be5fc8f04c6d780410f9bf6931713ac88`](https://github.com/aryankjain11/signal-ledger/commit/6cac2f8be5fc8f04c6d780410f9bf6931713ac88)
   contains **78 reviewed files**, each fetched and Git-blob-SHA matched. Repaired
