@@ -49,7 +49,8 @@ and selected observations link to outcome studies. One immutable baseline result
 survives session reruns with original-run downloads; changed calculation inputs
 mark it out of date. Durable save/reopen history remains planned.
 The earlier event-study CI run42098482104 passed all240 tests in15.74 seconds;
-the latest reliability publication/CI evidence is recorded in the sync status.
+the reliability source now has78 verified files and GitHub run43728863777 passed
+all268 tests in23.13 seconds. The later synchronization record is a separate commit.
 The separate UDiFF real-report gate remains pending. See
 [GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
 The local computer's Git client does not currently have a saved GitHub login;

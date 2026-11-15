@@ -6,6 +6,21 @@ Updated: 2026-11-15.
 - Visibility: **private**, verified through the GitHub page and connected metadata.
 - Initial branch: `main`.
 - Initial README commit: `bc09670a45e3776f5fcb47b393d93e685974fe63`.
+- **Latest reliability source: complete and verified.** Commit
+  [`6cac2f8be5fc8f04c6d780410f9bf6931713ac88`](https://github.com/aryankjain11/signal-ledger/commit/6cac2f8be5fc8f04c6d780410f9bf6931713ac88)
+  contains **78 reviewed files**, each fetched and Git-blob-SHA matched. Repaired
+  chart-window bounds and baseline-result continuity, added readiness/recovery and
+  actual counts, task/concept routes and28 reliability tests. Private main updated
+  without force using expected previous head`a482bc7`. No real uploads, runtime
+  outputs, environments, credentials or new screenshots were included.
+- **Reliability CI:** [run43728863777](https://github.com/aryankjain11/signal-ledger/actions/runs/43728863777),
+  job132856650486, **268 passed in23.13s**, Ubuntu26.04 / Python3.13.18.
+  Job and decoded log were inspected. Local full regression: **268 passed in53.80s**;
+  after catalogue regeneration: **15 learning/documentation tests passed in6.46s**.
+  The general GitHub GET connector now exposes push-run discovery by head SHA;
+  the older commit-workflow wrapper's PR-only limitation no longer requires a
+  browser fallback for this check. This later synchronization audit records the
+  observed source/CI snapshot; it does not predict its own subsequent commit's CI.
 - **Latest inspection/documentation snapshot: complete and verified.** Commit
   [`e4f6adccc0e05ec3573f5f74977c8d6b6267430b`](https://github.com/aryankjain11/signal-ledger/commit/e4f6adccc0e05ec3573f5f74977c8d6b6267430b)
   contains72 reviewed files, all fetched and blob-SHA matched. Adds the thorough

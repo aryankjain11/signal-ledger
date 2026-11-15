@@ -853,3 +853,23 @@ Inspection delivery acceptance:
 - Next verification: generated-catalogue regression, source/privacy allow-list,
   private GitHub upload/tree verification and actual remote CI if available.
   These publication results are recorded only after observation below.
+
+Reliability delivery acceptance:
+- Regenerated catalogue/handbook/status consistency and reference/build UI:
+  **15 passed in6.46s** after the catalogue changes. Counts independently checked:
+  355 tasks (47/45/251/12) and128 concepts. Source allow-list/credential scan passed.
+- Published `6cac2f8be5fc8f04c6d780410f9bf6931713ac88` to private main with an
+  expected-head check and no force. All78 source files fetched at that commit and
+  matched to local Git blob SHAs. Changes:24 new/modified reviewed files; original
+  numerical detector/simulator source unchanged. No owner-uploaded data or runtime
+  screenshots/records included.
+- GitHub Actions run43728863777 / job132856650486 completed successfully:
+  **268 passed in23.13s**, Ubuntu26.04 / Python3.13.18. Inspected the completed job
+  and decoded log. General GitHub GET now supports discovering this push run by
+  head SHA; older PR-only workflow-list wrapper remains a separate limitation.
+- Updated sync record and README to reflect these observed results. This final
+  documentation commit follows the verified source snapshot; it does not predict
+  its own remote CI. The milestone is complete at its bounded gates; the next
+  feature is the versioned breakout-retest execution strategy, then fair strategy
+  comparison. Durable history/reopen, independent validation and wider catalogue
+  remain planned. New exercises remain paused.
