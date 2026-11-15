@@ -113,7 +113,7 @@ def test_direct_nse_download_ui_auto_label_close_and_passport(monkeypatch):
     monkeypatch.setattr(st, "file_uploader", lambda *args, **kwargs: uploaded)
     root = Path(__file__).resolve().parents[1]
     app = AppTest.from_file(str(root / "app.py"), default_timeout=30).run()
-    app.radio[0].set_value("Upload daily data").run()
+    next(r for r in app.radio if r.label == "Data source").set_value("Upload daily data").run()
     app.checkbox[0].check().run()
     assert not app.exception
     assert any("NSE stock-history format detected" in s.value for s in app.success)

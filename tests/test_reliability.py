@@ -178,7 +178,7 @@ def test_short_upload_readiness_does_not_claim_ema50_or_baseline_is_available(mo
     uploaded = BytesIO(content);uploaded.name='short.csv'
     monkeypatch.setattr(st,'file_uploader',lambda *args,**kwargs: uploaded)
     app = AppTest.from_file(str(ROOT/'app.py'),default_timeout=60).run()
-    app.radio[0].set_value('Upload daily data').run()
+    next(r for r in app.radio if r.label == "Data source").set_value('Upload daily data').run()
     app.checkbox[0].check().run()
     assert not app.exception
     assert any('29 more observations' in m.value for m in app.markdown)

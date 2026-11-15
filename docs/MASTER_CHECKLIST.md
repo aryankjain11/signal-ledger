@@ -4,7 +4,7 @@ Updated: 2026-11-15
 
 Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.
 
-355 work items: 47 done, 45 partial, 251 planned, 12 optional / later.
+357 work items: 50 done, 48 partial, 247 planned, 12 optional / later.
 
 Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.
 
@@ -447,13 +447,13 @@ Original brief: 11
 
 **Acceptance gate:** Every strategy has a versioned rule specification, deterministic signals, next-action timing, no-trade reasons, replay and cost-aware tests.
 
-- [ ] **S08-001** · Planned · Versioned strategy specification and parameter registry
+- [ ] **S08-001** · Partial · Versioned strategy specification and parameter registry
 
 - [ ] **S08-002** · Planned · Long breakout strategy research validation beyond prototype
 
 - [ ] **S08-003** · Planned · Short/breakdown strategies only for legally supported instruments
 
-- [ ] **S08-004** · Planned · Breakout-retest strategy
+- [x] **S08-004** · Done · Breakout-retest strategy
 
 - [ ] **S08-005** · Planned · Reversal strategies tied to confirmed structures
 
@@ -463,7 +463,7 @@ Original brief: 11
 
 - [ ] **S08-008** · Planned · Market, limit, breakout and pullback order semantics
 
-- [ ] **S08-009** · Planned · Entry ranges, expiry and cancellation conditions
+- [ ] **S08-009** · Partial · Entry ranges, expiry and cancellation conditions
 
 - [ ] **S08-010** · Planned · Market/sector and multi-timeframe confirmation
 
@@ -475,6 +475,10 @@ Original brief: 11
 
 - [ ] **S08-014** · Planned · Structured plan with trigger, invalidation, horizon and evidence
 
+- [x] **S08-015** · Done · Audit each long retest candidate, next-open cancellation, capacity skip and chronological fill/exit
+
+- [x] **S08-016** · Done · Preserve versioned breakout-retest session records, original-price inspection and stale-input exports
+
 
 ## S09 · Risk, position sizing and evidence scores
 
@@ -484,7 +488,7 @@ Original brief: 11.2,11.3,11.4,12
 
 **Acceptance gate:** Costs, price increments, gaps and capital constraints are tested; score components trace to evidence; probabilities require validation.
 
-- [ ] **S09-001** · Planned · Swing/zone/ATR/pattern-invalidation stop methods
+- [ ] **S09-001** · Partial · Swing/zone/ATR/pattern-invalidation stop methods
 
 - [ ] **S09-002** · Planned · Measured-move, prior-level and ATR target methods
 

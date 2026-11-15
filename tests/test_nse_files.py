@@ -178,14 +178,14 @@ def test_report_walkthrough_ui_and_security_switch():
     from pathlib import Path
     root = Path(__file__).resolve().parents[1]
     app = AppTest.from_file(str(root / "app.py"), default_timeout=30).run()
-    app.radio[0].set_value("Synthetic NSE report walkthrough").run()
+    next(r for r in app.radio if r.label == "Data source").set_value("Synthetic NSE report walkthrough").run()
     assert not app.exception
     assert len(app.metric) == 4
     assert app.selectbox(key="report_instrument").value == "DEMOALPHA|EQ"
     app.selectbox(key="report_instrument").set_value("DEMOBETA|EQ").run()
     assert not app.exception
     assert any("DEMOBETA" in m.value for m in app.markdown)
-    app.radio[0].set_value("Import NSE daily reports").run()
+    next(r for r in app.radio if r.label == "Data source").set_value("Import NSE daily reports").run()
     assert not app.exception
     assert any("Upload NSE CM" in i.value for i in app.info)
 
@@ -197,7 +197,7 @@ def test_real_report_upload_confirmation_and_preview(monkeypatch):
     uploaded.name = "a.csv"
     monkeypatch.setattr(st, "file_uploader", lambda *args, **kwargs: [uploaded])
     app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=30).run()
-    app.radio[0].set_value("Import NSE daily reports").run()
+    next(r for r in app.radio if r.label == "Data source").set_value("Import NSE daily reports").run()
     assert any("Confirm that all" in w.value for w in app.warning)
     app.checkbox[0].check().run()
     assert not app.exception
@@ -213,7 +213,7 @@ def test_uploaded_zip_analysis_or_friendly_failure(monkeypatch, content, expecte
     uploaded.name = "reports.zip"
     monkeypatch.setattr(st, "file_uploader", lambda *args, **kwargs: [uploaded])
     app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=30).run()
-    app.radio[0].set_value("Import NSE daily reports").run()
+    next(r for r in app.radio if r.label == "Data source").set_value("Import NSE daily reports").run()
     app.checkbox[0].check().run()
     assert not app.exception
     if expected == "metrics":

@@ -185,7 +185,7 @@ def test_action_upload_ui_adjusted_view_and_execution_block(monkeypatch):
         return uploaded
     monkeypatch.setattr(st, "file_uploader", uploader)
     app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=30).run()
-    app.radio[0].set_value("Upload daily data").run()
+    next(r for r in app.radio if r.label == "Data source").set_value("Upload daily data").run()
     app.checkbox[0].check().run()
     app.checkbox(key="use_action_ledger").check().run()
     app.radio(key="action_price_view").set_value("Split/bonus adjusted research").run()
@@ -213,7 +213,7 @@ def test_view_switch_cache_isolates_execution_policy_when_prices_match(monkeypat
         return uploaded
     monkeypatch.setattr(st, "file_uploader", uploader)
     app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=30).run()
-    app.radio[0].set_value("Upload daily data").run()
+    next(r for r in app.radio if r.label == "Data source").set_value("Upload daily data").run()
     app.checkbox[0].check().run()
     app.selectbox[1].set_value("Unadjusted OHLC").run()
     app.checkbox(key="use_action_ledger").check().run()

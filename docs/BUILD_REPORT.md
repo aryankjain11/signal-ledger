@@ -4,7 +4,39 @@ Updated: 2026-11-15. This is a living project report. The chronological record i
 `WORK_LOG.md`; the comprehensive status list is `MASTER_CHECKLIST.md`. Neither is
 a claim of profitable trading or of the learner having mastered the material.
 
-## Latest increment · research reliability and workflow
+## Latest increment · versioned breakout-retest execution strategy
+
+Backtest lab now offers `long-breakout-retest/1` beside the original fixed baseline.
+It freezes the prior range/ATR at a volume-qualified bullish close above EMA50,
+waits for a later held retest above EMA50, and attempts entry only at the next open.
+The stop freezes below the retest/level; the actual slipped entry determines risk,
+target and cost-aware whole-share sizing. Lost-level, excessive-gap, invalid-stop,
+nonpositive net-reward, zero-share, expiry and capacity decisions are explicit.
+One setup/position is allowed; there are no shorts, leverage or live orders.
+
+`retest_strategy.py` is a pure chronological engine; `retest_records.py` freezes
+rules, source identity, original bars, transitions, decisions and equity/trades;
+`retest_ui.py` provides controls, readable audit tables, saved-price inspection and
+JSON/CSV exports. The existing baseline engine is unchanged. Separate saved session
+slots retain each strategy; changed actual inputs mark the corresponding run stale.
+Pending setups stay pending at cutoff; artificial end liquidations are labelled.
+The selected strategy and its rules survive tested upload/reference/switch routes.
+
+Acceptance: **323 passed in84.15s** (268 existing +55 new); final target-marker
+presentation check **1 passed in4.35s**. Browser covered default synthetic trades,
+cancelled/completed setup charts, no trades on the unchanged21-row NSE file,
+reference/selection retention, stale-rule warning and a real JSON download. Record
+inspection confirmed600 saved bars,5 decisions and4 trades in the synthetic run.
+No market performance is inferred. Exact conventions and omissions are in
+`BREAKOUT_RETEST_STRATEGY.md`.
+
+Current shared catalogue: **131 concepts,357 tasks:50 Done,48 Partial,247 Planned,
+12 Optional**. Original43 phase bullets remain8 Done,20 Partial,15 Planned. Next:
+fair, declared comparison of the two strategies, then independent chronological
+validation and durable saved research. Publication/CI are observed separately in
+`GITHUB_SYNC.md`; later sections preserve earlier acceptance snapshots.
+
+## Prior increment · research reliability and workflow
 
 The 15 November follow-up repairs selected-period chart bounds and completed
 baseline result loss. It adds a visible readiness/recovery summary, actual chart
@@ -357,9 +389,9 @@ Actions availability and the actual workflow run; a workflow file alone is not a
 Learning assignments are paused. Current position is a working daily research
 prototype with bounded data-quality checks, parts of original phases1–3 and
 descriptive event-study research in phase4. Reliability/workflow acceptance above
-is complete. Next: one versioned breakout-retest execution strategy with exact
-trigger, order timing, cancellation, stop/target, expiry, costs and no-trade reasons;
-then fair comparison with the existing baseline. Wider calendars, UDiFF real-file
+is complete, and the first versioned long breakout-retest strategy is implemented.
+Next: fair comparison with the existing baseline under a declared evaluation
+protocol, followed by independent chronological validation. Wider calendars, UDiFF real-file
 acceptance and automatic action feeds remain planned unless they block a selected
 feature. Durable save/reopen and independent chronological validation follow.
 `PROJECT_STATUS.md` maps every original phase item; no phase is claimed complete.

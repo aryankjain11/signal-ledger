@@ -2,7 +2,7 @@
 
 A local quantitative technical-research workbench for **Indian stocks and swing
 trading**. This starting build turns a daily OHLCV file into traceable structure,
-an annotated chart, a deterministic report and one explicit strategy experiment.
+an annotated chart, a deterministic report and two explicit long strategy experiments.
 It does not claim a demonstrated trading edge.
 
 ## Learn while building
@@ -13,9 +13,9 @@ Reference pages work without an upload. Existing lessons and labs remain availab
 new assignments are paused. The concept library labels what is actually computed
 or detected separately from features that are only explained.
 
-- [Master checklist](docs/MASTER_CHECKLIST.md): 355 tracked items across 21 stages,
+- [Master checklist](docs/MASTER_CHECKLIST.md): 357 tracked items across 21 stages,
   covering the original brief and optional extensions with acceptance gates.
-- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 128 definitions and
+- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 131 definitions and
   notes; worked examples for foundations and current features, concise entries for
   future additions.
 - [Lesson 1](docs/lessons/01_from_prices_to_evidence.md): connected explanations,
@@ -34,6 +34,8 @@ or detected separately from features that are only explained.
   retained baseline results, stale-input warnings and connected research/reference routes.
 - [After the pattern rules](docs/EVENT_STUDIES.md): forward outcomes, known-time
   references, excursions, matching/coverage, overlap/censoring and research limits.
+- [Breakout-retest strategy](docs/BREAKOUT_RETEST_STRATEGY.md): versioned next-open
+  execution, structural stop, gap cancellation, setup audit, saved charts and records.
 
 Each future increment follows learn → specify → build → verify → explain → record.
 The continuing agreement is in [AGENTS.md](AGENTS.md). Understanding is not
@@ -42,12 +44,18 @@ automatically checked off for the learner.
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
 verified, including direct NSE stock-history uploads. Latest local regression:
-**268 passed in 53.80 seconds** on 15 November, including 28 reliability cases.
+**323 passed in 84.15 seconds** on 15 November, including 55 new retest-strategy cases.
 Chart boundaries and baseline-result continuity found in the inspection are now
 repaired. Data readiness explains partial history, chart captions show actual counts,
 and selected observations link to outcome studies. One immutable baseline result
 survives session reruns with original-run downloads; changed calculation inputs
 mark it out of date. Durable save/reopen history remains planned.
+Open **Research dashboard → Backtest lab → Breakout-retest v1** for the new
+strategy. It waits for a later held retest, uses one next-open attempt and a frozen
+structural stop, and audits cancellations/capacity/pending states. Its independent
+session record includes saved bars so a stale setup chart cannot use new prices.
+The baseline simulator remains unchanged. Fair strategy comparison and held-out
+validation are next; neither strategy has a demonstrated trading edge.
 The earlier event-study CI run42098482104 passed all240 tests in15.74 seconds;
 the reliability source now has78 verified files and GitHub run43728863777 passed
 all268 tests in23.13 seconds. The later synchronization record is a separate commit.

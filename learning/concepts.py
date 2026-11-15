@@ -8,6 +8,7 @@ FIDELITY = "https://www.fidelity.com/learning-center/trading-investing/technical
 SOURCES = {
     "windowing": ("pandas: windowing operations", "https://pandas.pydata.org/docs/user_guide/window.html"),
     "session-state": ("Streamlit: session state", "https://docs.streamlit.io/develop/concepts/architecture/session-state"),
+    "support-resistance": ("Fidelity: support and resistance", "https://www.fidelity.com/learning-center/trading-investing/technical-analysis/support-and-resistance"),
     "nse-reports": ("NSE: daily reports", "https://www.nseindia.com/all-reports"),
     "nse-formats": ("NSE: formats", "https://www.nseindia.com/static/resources/forms-formats-members"),
     "rsi": ("Fidelity: RSI", FIDELITY + "RSI"),
@@ -413,7 +414,29 @@ add("saved-result", "Saved results, calculation identity and stale inputs", "Res
     mistake="Assuming that a retained result was recomputed, or that session memory is durable storage or independently validated performance.",
     status="Immutable baseline session snapshot, stale-input warning and original-run downloads implemented", source="session-state", code="quant_engine/saved_backtest.py; quant_engine/backtest_ui.py")
 
+add("retest-strategy", "Breakout-retest execution strategy", "Strategies",
+    "A breakout-retest hypothesis waits for price to break a pre-existing level, then revisit and hold it. A strategy must specify what holding means, when that fact becomes known, the next permitted entry, cancellations and exact exits. The shape alone does not prove an edge.",
+    rule="Version long-breakout-retest/1 freezes the prior range high and prior ATR at a volume-qualified close above EMA50. A later band-touching retest must close at/above the level and above EMA50 before expiry. One next-open attempt follows, with structural stop, cost-aware sizing and a fixed gross R target. See the strategy specification for precedence and limits.",
+    example="Hypothetical level ₹100 and frozen ATR ₹2: a retest low ₹99.80 and close ₹101.50 freeze a stop at ₹99.30 with a 0.25 ATR buffer. A later open ₹102, zero costs and 2R target give ₹107.40. You could not know the retest held while buying its earlier ₹99.80 low.",
+    interpretation="Inspect the setup audit, including cancellations, pending setups and capacity skips. The descriptive detector and execution strategy have different scopes. Compare fairly on unseen history before claiming an improvement.",
+    mistake="Treating every Retest held observation as a filled trade, or interpreting synthetic performance as validation.",
+    status="Versioned long strategy, chronological simulator, setup audit, saved charts and portable records implemented; fair comparison/independent validation pending", source="support-resistance", code="quant_engine/retest_strategy.py; quant_engine/retest_ui.py; docs/BREAKOUT_RETEST_STRATEGY.md")
+add("structural-stop", "Structural stop and frozen risk distance", "Risk and execution",
+    "A structural stop uses an observed price level whose loss invalidates the setup under a chosen convention. It differs from a fixed ATR distance below every new entry. Freezing the stop before entry makes opening gaps change the risk distance and position size.",
+    rule="This retest variant uses stop = min(retest low, breakout level) − buffer × frozen breakout ATR. Gross risk per share is actual slipped entry minus that stop. Estimated fees and stop slippage also enter the sizing loss.",
+    example="Hypothetical stop ₹99.30: entry ₹102 risks ₹2.70 gross per share, while entry ₹103.50 risks ₹4.20. With ₹1,000 budget and no fees/volume/cash limits, quantities are 370 and 238 shares. The stop stays ₹99.30.",
+    interpretation="Sizing limits planned stop loss, not the worst possible loss. A gap below the stop can exceed the budget. A stop is a modeled exit convention, not proof of guaranteed execution.",
+    mistake="Moving the stop upward with an entry gap while still calling it the same frozen structural hypothesis.",
+    status="Frozen structural stop and shared cost-aware risk/cash/volume sizing implemented for breakout-retest v1", code="quant_engine/retest_strategy.py; quant_engine/strategy.py: size_position")
+add("entry-cancellation", "Entry cancellation, gap limits and pending setups", "Risk and execution",
+    "Confirmation at a completed close creates a conditional entry, not a fill. At the next allowed open, a setup can have lost its level, become too expensive or permit no whole-share position. A pending setup at dataset end has an unknown future entry, not a losing outcome.",
+    example="Hypothetical retest close ₹101.50, frozen ATR ₹2 and maximum upward gap 1 ATR: open ₹103.50 is allowed by that limit, while ₹103.51 cancels. An open below the ₹100 breakout level also cancels. Neither order retries the following day in this version.",
+    interpretation="Cancellation thresholds, equality rules, expiry and precedence must be fixed before measuring results. Cancelling costly gaps is a hypothesis, not an automatic performance improvement.",
+    mistake="Discarding cancelled setups from the audit, or counting an unobserved next open as a failed trade.",
+    status="Explicit next-open cancellation reasons and pending-at-cutoff semantics implemented", code="quant_engine/retest_strategy.py; docs/BREAKOUT_RETEST_STRATEGY.md")
+
 BY_ID = {c["id"]: c for c in CONCEPTS}
+BY_ID["backtest"].update(app_status="Fixed breakout and versioned structural-stop breakout-retest simulators; exploratory same-dataset results only", code="quant_engine/strategy.py; quant_engine/retest_strategy.py")
 BY_ID["mfe-mae"].update(
     rule="Use only complete post-detection windows t+1…t+h. Upward MFE=max(0,max(high)/reference−1), signed MAE=min(0,min(low)/reference−1). Bearish MFE=max(0,1−min(low)/reference), signed MAE=min(0,1−max(high)/reference).",
     example="Invented reference100, later maximum high108 and minimum low95 give upward MFE8% and signed MAE−5%; bearish MFE5% and signed MAE−8%. Daily OHLC cannot reveal which extreme occurred first.",
@@ -439,6 +462,7 @@ BY_ID["git-github"].update(
     code="docs/GITHUB_SYNC.md; .github/workflows/tests.yml",
     exercise="Open the source commit and its Actions run. Explain how a verified file snapshot differs from a passing test result.")
 CURRENT_BEHAVIOR_IDS = {
+    "retest-strategy", "structural-stop", "entry-cancellation",
     "data-readiness", "saved-result",
     "forward-outcomes", "conditional-baseline", "event-overlap", "sample-dispersion", "mfe-mae", "censoring",
     "correlation", "indexed-performance", "relative-strength", "roc", "stochastic", "divergence", "evening-star", "morning-star",

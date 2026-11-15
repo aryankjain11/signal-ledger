@@ -7,6 +7,11 @@ investment-performance validation. New exercises remain paused.
 
 ## The usable workflow
 
+Later on2026-11-15, [Breakout-retest v1](BREAKOUT_RETEST_STRATEGY.md) was added to
+Backtest lab with a separate session record and saved-price setup inspection.
+References below to that strategy as the next feature describe this earlier
+reliability increment's scope; current next work is fair strategy comparison.
+
 1. Open Research dashboard with the synthetic example or one completed daily file.
    Original NSE security-history CSVs still work without editing.
 2. Read **Data readiness** before interpreting the result. It names the symbol,

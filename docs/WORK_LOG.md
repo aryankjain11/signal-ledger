@@ -873,3 +873,86 @@ Reliability delivery acceptance:
   feature is the versioned breakout-retest execution strategy, then fair strategy
   comparison. Durable history/reopen, independent validation and wider catalogue
   remain planned. New exercises remain paused.
+
+## 2026-11-15 · Breakout-retest strategy implementation begins
+
+- Owner requested the next feature and emphasized correctness. Read continuing
+  agreement, current checklist/log, descriptive detector and baseline simulator.
+  Work is bounded to one versioned long daily strategy with website/audit/exports;
+  fair comparison and independent validation follow separately.
+- Wrote `BREAKOUT_RETEST_STRATEGY.md` before implementation: frozen prior range/ATR,
+  later close-confirmed retest, one next-open attempt, structural stop, gap/level
+  cancellation, target/cost/risk/cash/volume rules, single setup/position capacity,
+  expiry and explicit no-trade/boundary outcomes. Numerical/causal/UI gates remain
+  unaccepted until actual results are recorded below. No live execution or new
+  assignments. Official Fidelity/CFA references checked; exact thresholds are
+  project choices rather than externally validated trading rules.
+
+Breakout-retest implementation and local acceptance:
+- Added pure `retest_strategy.py` with validated immutable RetestRules, frozen
+  prior range/ATR, later close-confirmed retest/EMA50, one next-open attempt,
+  structural stop, actual-fill target and shared cost-aware whole-share sizing.
+  One setup/position; no same-bar restart. Audits rejected trend, lost level,
+  excessive gap, invalid stop, nonpositive net reward, zero quantity, expiry and
+  busy capacity. Observed attempted open and permitted gap limit are retained.
+- Preserved the original `strategy.py` baseline engine unchanged. Reused its
+  sizing convention and matched exit precedence/cost/marked-equity conventions.
+  Pending setups remain pending at cutoff; forced open-position liquidation is
+  explicitly counted and stays out of the natural transition tape. Current state
+  captures the position before that artificial exit. Gaps can exceed planned risk.
+- Added immutable `retest_records.py` schema breakout-retest-run/1 with actual
+  rules/execution settings, source/basis/policy/visible-feature identity, provenance,
+  original prices, decisions, transitions, equity, trades and cutoff state. Identity
+  excludes unrelated descriptive rules and unused baseline stop/lookback settings.
+  Execution policy is checked in engine, builder and UI. Downloads/charts always
+  use the saved snapshot, including when stale; no durable database/reopening claim.
+- Added `retest_ui.py` and strategy selection in Backtest lab, separate session
+  slots, meaningful no-trade/pending explanations, human-readable audit/ledger
+  headings, exact-evidence expander and frozen-price setup inspection. Event-study
+  links select the intended simulator. Added131st–129th concepts for strategy,
+  structural risk and entry cancellation with original hypothetical examples.
+- Initial numerical suite:36 passed/1 failed in2.35s. Empty event output lacked
+  headers in the prefix comparison; fixed stable table schemas for empty exports.
+  After an added boundary case:38 passed in5.48s, with5 pandas null-comparison
+  warnings. Explicit numeric event columns removed the None/NaN mismatch.
+- First combined new suite:52 passed/1 failed in25.35s. The added strategy radio
+  exposed an old positional Data source selector; the test changed the wrong
+  widget. Replaced only those selectors in existing upload/calendar/action tests
+  with the explicit label; no original expectations were relaxed. New plus app/
+  action regression then **84 passed in30.73s**.
+- Broader intermediate checks after new chronology/record cases: **322 passed
+  in75.45s**, then **322 passed in74.31s** after attempted-open audit additions.
+  Browser inspection motivated a smaller cancelled-setup chart window, readable
+  ledger headings and visibility of a target when entry/exit share a date. Frozen
+  level/stop/target display begins when each becomes known rather than projecting
+  execution levels backwards. Source input and numerical trade rules unchanged.
+- Browser reference/upload gates exposed selected-strategy cleanup when its widget
+  was absent. Explicitly preserved that widget key across omitted controls; retest
+  rule values also survive strategy switching. Added a regression for missing-file
+  and reference routes. Other main replay/action state remains a separate broader
+  workspace-persistence scope, not silently claimed complete.
+- Final full suite: **323 passed in84.15s**, all268 existing +55 new. After final
+  target tick color adjustment, focused saved-record/inspection check **1 passed
+  in4.35s**. Tests cover independent P&L/equity arithmetic; risk/cash/prior-volume
+  caps; fixed references; no hindsight entry; every-prefix natural event invariance;
+  same-bar barriers; adverse/favorable gaps; exact expiry/hold/open boundaries;
+  negative/undefined/no-trade cases; execution policy; all strategy-rule identities;
+  immutable strict JSON; stale saved charts; UI switching, replay and concept routes.
+- Browser: default synthetic strategy5 setups/4 trades/1 entry cancellation;
+  inspected cancelled and stopped trade charts, audit/transitions/ledger, changed
+  holding rules/stale warning and restored matching rules, concept and strategy
+  retention. Original unchanged21-row NSE upload ran with0 trades,0 ready-context
+  observations and unavailable win rate; it was not presented as evidence of a
+  losing strategy. Actual downloaded JSON parsed: schema1,600 synthetic bars,
+  5 decisions,4 trades, frozen rules and attempted/maximum open fields present.
+  Runtime download and proof screenshots remain local/excluded. A few browser
+  actions hit transient Streamlit rerun/duplicate-tab states; fresh state and the
+  completed rerun resolved them. No automation workaround changed source data.
+- Generated shared docs; current counts357 tasks (50 Done,48 Partial,247 Planned,
+  12 Optional),131 concepts. S08 breakout-retest gate Done; broader registry/order/
+  stop families remain Partial/Planned. Original43 bullets still8/20/15; no full
+  phase, strategy superiority, calibrated probability or learner mastery claimed.
+- Updated strategy specification, README, current build/context/priorities and
+  historical-inspection follow-ups. Next: fair baseline-versus-retest comparison
+  under a declared protocol, followed by independent chronological validation and
+  durable research storage. Private publication/CI are recorded after observation.

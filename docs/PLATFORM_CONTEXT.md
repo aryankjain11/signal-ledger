@@ -24,15 +24,16 @@ The initial user is an individual researching Indian-stock swing setups from com
 2. Strict OHLCV/date validation, source/visible hashes, passports, replay cutoff and bounded offline NSE CM 2026 quality/freshness assessment.
 3. Manual reviewed split/bonus ledger, optional normalized research view and execution restrictions where share accounting is unavailable. No dividend-inclusive total returns.
 4. Starter fixed indicators; confirmed swings/HH-HL-LH-LL; approximate clustered levels; limited chart/candle families; breakout/retest lifecycle; momentum and delayed confirmed-pivot divergences.
-5. Interactive charts, deterministic report/evidence exports and one long 20-observation breakout strategy simulator with explicit sizing, costs, gaps, stop/target/time exits and no-trade states.
+5. Interactive charts, deterministic report/evidence exports and two long strategy simulators: the fixed breakout baseline plus versioned breakout-retest execution. Both declare sizing/cost/gap/exit assumptions; the retest strategy adds frozen structural risk, one next-open attempt and a complete setup/cancellation audit. Its controls are independent from descriptive chart rules.
 6. Versioned descriptive event studies: knowledge-time references, forward movements, MFE/signed MAE, per-horizon censoring, overlap spacing, retrospective same-stock context baselines, sample/coverage counts, occurrence charts and portable records.
 7. Two-stock common-date indexed performance/drawdown/relative ratio, matched native-interval Pearson/Spearman/rolling correlation, side-by-side analysis and evidence downloads.
-8. Shared128-concept reference library and355-item roadmap with durable build records and a passing automated regression workflow.
+8. Shared131-concept reference library and357-item roadmap with durable build records and a passing automated regression workflow.
 9. Bounded chart geometry, actual displayed counts, visible data readiness/recovery, task/concept links and one immutable baseline session snapshot with stale-input warnings and original-run downloads. This is not durable save/reopen history. Exact rules are in `RESEARCH_RELIABILITY.md`.
+10. Independent immutable retest-strategy session record, saved-price setup inspection, explicit pending/cutoff state, forced-liquidation labels and JSON/CSV decisions/transitions/trade exports. Exact rules and evidence are in `BREAKOUT_RETEST_STRATEGY.md`. Strategy selection and retest controls survive tested strategy/upload/reference routes; this is not full durable workspace storage.
 
 ## What does not exist
 
-The remaining pattern/indicator catalogue; general intraday/monthly analysis; completed multi-timeframe strategy confirmation; dedicated breakout-retest/pullback/reversal execution strategies; fair strategy-comparison framework; persisted pattern/outcome/history database; target-before-stop event labels; dependent-data statistical inference; experiment registry; held-out/walk-forward validation; calibrated probabilities; trained ML models; evidence-bound LLM narration; screenshot ingestion/interpretation; automatic licensed feeds; prospective paper ledger; production accounts/isolation/monitoring. Do not imply these exist from a glossary entry, mathematical name, roadmap item or local chart.
+The remaining pattern/indicator catalogue; general intraday/monthly analysis; completed multi-timeframe strategy confirmation; pullback/reversal and short execution strategies; fair strategy-comparison framework; persisted pattern/outcome/history database; target-before-stop event-study labels; dependent-data statistical inference; experiment registry; held-out/walk-forward validation; calibrated probabilities; trained ML models; evidence-bound LLM narration; screenshot ingestion/interpretation; automatic licensed feeds; prospective paper ledger; production accounts/isolation/monitoring. A strategy's simulated stop/target exits do not complete the broader event-label/database layer. Do not imply missing capabilities exist from a glossary entry, mathematical name, roadmap item or local chart.
 
 ## Research conventions to preserve
 
@@ -64,7 +65,7 @@ The inspection's narrow state probe was not proof of every route. Follow-up brow
 ## Recommended implementation sequence
 
 1. Completed bounded reliability gate: F01/F02, readiness/counts and selected task/reference links; preserve their regression tests.
-2. Build one exact, versioned breakout-retest execution strategy; include trigger, entry chronology, cancellation, invalidation, stop/target, expiry, costs and no-trade reasons.
+2. Completed first versioned long breakout-retest strategy: frozen prior range/ATR, close-confirmed later retest, one next-open attempt, structural stop, target, expiry, gap/cost/capacity cancellations and saved audit/inspection. Preserve its chronology tests and boundary disclosures.
 3. Add fair comparison of that strategy and the existing baseline under a declared evaluation protocol.
 4. Save/reopen immutable datasets, runs and experiment definitions.
 5. Define labels and chronological/overlap/uncertainty/benchmark validation before predictive claims.
@@ -79,7 +80,9 @@ Fresh inspection regression: **240 tests passed in 99.08 seconds** on Python 3.1
 
 Follow-up local regression after reliability source changes: **268 passed in53.80s**, adding28 cases. Browser checks included unchanged21-row NSE data,600-row synthetic data, retained upload/assumptions, stale saved costs, RSI shortcut, keyboard observation selection, prefiltered cohort and baseline-tab route. Publication and actual remote CI observations are recorded separately in `GITHUB_SYNC.md`.
 
-Original43-bullet mapping:8 Done,20 Partial,15 Planned. Expanded355-task mapping:47 Done,45 Partial,251 Planned,12 Optional. No complete original phase is claimed; counts are not effort-weighted completion percentages. Descriptive research is usable while database/model/validation layers remain missing.
+Latest strategy acceptance: **323 passed in84.15s**, adding55 retest cases to268 existing tests; final target-marker presentation check1 passed in4.35s. Browser verified synthetic trades/cancellations, unchanged21-row NSE no-trade behavior, concept/selection retention, stale rules and a real600-bar/5-setup/4-trade JSON download. Original baseline engine remains unchanged. These are software checks, not evidence of economic advantage.
+
+Original43-bullet mapping:8 Done,20 Partial,15 Planned. Expanded357-task mapping:50 Done,48 Partial,247 Planned,12 Optional. No complete original phase is claimed; counts are not effort-weighted completion percentages. Strategies/descriptive research are usable while fair comparison and database/model/validation layers remain missing.
 
 ## Working agreement and file map
 

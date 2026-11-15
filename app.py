@@ -22,6 +22,7 @@ from quant_engine.comparison_ui import render_comparison
 from quant_engine.event_study_ui import render_event_study
 from quant_engine.readiness import render_readiness
 from quant_engine.backtest_ui import render_backtest
+from quant_engine.retest_ui import render_retest_lab
 from quant_engine.workflow_ui import PAGES, navigate, render_navigation, render_reference_links
 
 ROOT = Path(__file__).resolve().parent
@@ -38,6 +39,10 @@ st.markdown("""<style>
  </style>""", unsafe_allow_html=True)
 
 requested_page = st.query_params.get("page", "research")
+# Keep the selected strategy when upload confirmation or reference pages omit
+# its widget. Reassigning detaches it from Streamlit's absent-widget cleanup.
+if "strategy_choice" in st.session_state:
+    st.session_state["strategy_choice"] = st.session_state["strategy_choice"]
 page_names = list(PAGES)
 page_index = list(PAGES.values()).index(requested_page) if requested_page in PAGES.values() else 0
 workspace = st.sidebar.selectbox("Workspace", page_names, index=page_index, key="workspace_page")
@@ -71,8 +76,8 @@ with st.sidebar:
     if source in {"Upload daily data", "Import NSE daily reports"}:
         complete = st.checkbox("Every row is a completed daily session bar", value=False)
     st.divider()
-    st.markdown("**Baseline strategy assumptions**")
-    st.caption("Capital, risk and costs affect the fixed breakout plan/backtest. Event studies measure gross price movement and do not use these monetary inputs.")
+    st.markdown("**Strategy simulation assumptions**")
+    st.caption("Capital, risk and costs affect the fixed breakout and breakout-retest simulations. Event studies measure gross price movement and do not use these monetary inputs.")
     capital = st.number_input("Account capital (INR)", min_value=100.0, value=100_000.0, step=1000.0)
     risk = st.slider("Risk budget per trade (%)", 0.1, 5.0, 1.0, 0.1)
     fees = st.number_input("Estimated total charges per side (bps)", min_value=0.0, max_value=100.0, value=10.0, step=1.0)
@@ -266,7 +271,12 @@ with report_tab:
     st.markdown(report_markdown(analysis, symbol, adjustment))
 
 with backtest_tab:
-    render_backtest(analysis, data, settings, symbol, adjustment)
+    strategy = st.radio("Strategy to test", ["Fixed breakout baseline", "Breakout-retest v1"],
+        horizontal=True, key="strategy_choice")
+    if strategy == "Breakout-retest v1":
+        render_retest_lab(analysis, data, settings, symbol, adjustment)
+    else:
+        render_backtest(analysis, data, settings, symbol, adjustment)
 
 with quality_tab:
     st.subheader("Source and limitations")

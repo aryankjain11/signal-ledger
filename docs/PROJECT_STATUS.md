@@ -6,7 +6,7 @@ Current position: working local daily-data research prototype. Parts of original
 
 Learning assignments are paused at the owner's request. Product implementation, testing, records and GitHub synchronization continue. Existing reference pages remain available.
 
-Expanded master checklist: 355 work items — 47 done, 45 partial, 251 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
+Expanded master checklist: 357 work items — 50 done, 48 partial, 247 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
 
 This document maps every one of the original five-phase roadmap's 43 implementation bullets (brief §19). Detailed subfeatures and the original acceptance-criteria audit are in MASTER_CHECKLIST.md; the complete brief is ORIGINAL_BRIEF.md.
 
@@ -56,9 +56,9 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 ## Phase 3 · Trading strategy generation
 
-- [ ] **Partial · Entry-condition identification** — One explicit long breakout rule; wider strategy catalogue pending.
+- [ ] **Partial · Entry-condition identification** — Fixed breakout and versioned long breakout-retest with later held close, EMA50, next-open cancellations and setup audit; wider catalogue pending.
 
-- [ ] **Partial · Stop-loss calculation** — Fixed-at-entry ATR stop; other stop methods pending.
+- [ ] **Partial · Stop-loss calculation** — Baseline ATR stop plus retest structural stop frozen before entry; wider stop catalogue pending.
 
 - [ ] **Partial · Profit-target calculation** — Fixed reward multiple; structural/alternative targets pending.
 
@@ -70,7 +70,7 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 - [ ] **Planned · Pattern and trend scoring** — No validated score or calibrated probability.
 
-- [ ] **Partial · Structured trading recommendations** — Conditional baseline plan and limitations; broader plan catalogue pending.
+- [ ] **Partial · Structured trading recommendations** — Conditional baseline plan and retest-strategy cutoff state/audit; broader plan catalogue pending. No live orders.
 
 - [x] **Done · No-trade classification** — Explicit unavailable/no-executable-baseline outcomes.
 
@@ -100,7 +100,7 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 - [ ] **Planned · Paper trading** — No prospective paper ledger.
 
-- [ ] **Planned · Analysis history** — One baseline result survives session reruns with stale-input labels and original-run downloads; durable save/reopen/history database still pending.
+- [ ] **Planned · Analysis history** — Separate baseline and retest session records retain original assumptions with stale-input labels; durable save/reopen/history database pending.
 
 - [ ] **Planned · Market data API integration** — Offline uploads only; typing a ticker does not fetch data.
 
@@ -123,6 +123,8 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 - [x] After the pattern workspace: causal forward outcomes, MFE/MAE, retrospective context baselines, per-horizon censoring, overlap spacing, occurrence inspection and portable study exports.
 
 - [x] Research reliability: bounded chart geometry, retained/stale baseline session record, visible readiness/counts and task/concept links. Durable run history remains pending.
+
+- [x] Versioned long breakout-retest strategy: close-confirmed retest, one next-open attempt, structural stop, cost-aware sizing, expiry/cancellation/capacity audit, saved charts and portable records.
 
 - [ ] Full real-file acceptance for UDiFF report import; separate from security-history CSV support.
 

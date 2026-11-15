@@ -1,11 +1,21 @@
 # Feature priorities after the data-foundation increments
 
+Strategy update ·2026-11-15: **Breakout-retest v1 is implemented and accepted**
+as a separate long next-open strategy with frozen structural stop, cost-aware
+sizing, gap/cancellation/expiry rules, setup audit, saved-price charts and records.
+Full local regression:323 passed in84.15s. See `BREAKOUT_RETEST_STRATEGY.md`.
+**Next feature: fair strategy comparison**, with identical relevant data/costs,
+declared execution/coverage conventions and frozen evaluation definitions. It must
+not claim an advantage from unlike samples or repeated filter selection. Independent
+chronological validation and durable research storage remain subsequent gates.
+The earlier recommendations below are retained as design history.
+
 Reliability update ·2026-11-15: selected-period chart bounds, immutable baseline
 session retention/staleness, visible readiness/actual counts and task/reference
 links are implemented and accepted. Full local regression:268 passed in53.80s.
 See `RESEARCH_RELIABILITY.md` for exact scope and limits; the dated inspection is
-historical. The next major feature is the dedicated versioned breakout-retest
-execution strategy, followed by fair strategy comparison. Durable saved history,
+historical. That increment recommended the dedicated breakout-retest strategy;
+the strategy update above now supersedes that next-step recommendation. Durable saved history,
 broader accessibility and other inspection findings remain open.
 
 Status: continuing feature priorities, with bounded implementation updates. Updated 2026-11-15.

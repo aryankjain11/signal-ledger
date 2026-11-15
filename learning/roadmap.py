@@ -275,23 +275,25 @@ Insufficient-history labels per timeframe and indicator
 Boundary, holiday, session-anchor and early-close aggregation tests
 """)
 _add("S08", """
-Versioned strategy specification and parameter registry
+~ Versioned strategy specification and parameter registry
 Long breakout strategy research validation beyond prototype
 Short/breakdown strategies only for legally supported instruments
-Breakout-retest strategy
++ Breakout-retest strategy
 Reversal strategies tied to confirmed structures
 Pullback-entry strategy
 Momentum and trend-following strategies
 Market, limit, breakout and pullback order semantics
-Entry ranges, expiry and cancellation conditions
+~ Entry ranges, expiry and cancellation conditions
 Market/sector and multi-timeframe confirmation
 Multiple profit targets and partial exit rules
 Explicit no-trade decisions and avoid-trade conditions
 Intraday/swing/positional holding-style distinction
 Structured plan with trigger, invalidation, horizon and evidence
++ Audit each long retest candidate, next-open cancellation, capacity skip and chronological fill/exit
++ Preserve versioned breakout-retest session records, original-price inspection and stale-input exports
 """)
 _add("S09", """
-Swing/zone/ATR/pattern-invalidation stop methods
+~ Swing/zone/ATR/pattern-invalidation stop methods
 Measured-move, prior-level and ATR target methods
 Fibonacci extensions as explicitly unvalidated hypotheses
 Gap-aware portfolio stress tests and maximum-loss caveats

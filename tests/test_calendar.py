@@ -135,7 +135,7 @@ def test_quality_upload_ui_surfaces_absent_and_non_session_dates(monkeypatch):
     uploaded.name = "Quote-Equity-DEMO-EQ-19-10-2026-24-10-2026.csv"
     monkeypatch.setattr(st, "file_uploader", lambda *args, **kwargs: uploaded)
     app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=30).run()
-    app.radio[0].set_value("Upload daily data").run()
+    next(r for r in app.radio if r.label == "Data source").set_value("Upload daily data").run()
     app.checkbox[0].check().run()
     assert not app.exception
     assert any("Calendar checks found" in w.value for w in app.warning)

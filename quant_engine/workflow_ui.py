@@ -4,10 +4,12 @@ import streamlit as st
 PAGES = {"Research dashboard": "research", "After the pattern": "events", "Compare two stocks": "compare", "Education and Concepts": "education", "Build checklist & log": "build"}
 
 
-def navigate(workspace, concept=None, research_tab=None):
+def navigate(workspace, concept=None, research_tab=None, strategy=None):
     st.session_state["workspace_page"] = workspace
     if research_tab:
         st.session_state["requested_research_tab"] = research_tab
+    if strategy:
+        st.session_state["strategy_choice"] = strategy
     if concept:
         st.session_state["concept_search"] = ""
         st.session_state["concept_category"] = "All categories"

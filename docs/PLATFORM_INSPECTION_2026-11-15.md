@@ -4,6 +4,12 @@
 
 ## 1. Overall assessment
 
+**Subsequent feature delivery:** a versioned long breakout-retest execution
+strategy is now implemented with next-open chronology, structural stops,
+cancellations, setup audit, saved-price charts and portable records. See
+[its exact rules and acceptance](BREAKOUT_RETEST_STRATEGY.md). The inspection body
+below predates that feature; fair comparison and independent validation remain open.
+
 **Post-inspection follow-up, 15 November:** the later reliability increment repairs
 F01/F02 and the bounded F03/F04 readiness/count scope; F05–F07 receive task/reference
 links and clearer baseline/detector/cost scope. See [implemented rules and current
