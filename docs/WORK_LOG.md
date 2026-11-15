@@ -786,3 +786,70 @@ Inspection delivery acceptance:
 - This final synchronization record references the observed documentation commit;
   its own later commit is an audit, not a prediction of its CI. Open findings are
   documented, not fixed. Original351-task software completion counts are unchanged.
+
+## 2026-11-15 · Research reliability and connected workflow
+
+- Owner authorized the next recommended milestone after the inspection. Bounded
+  scope: chart-window correctness, immutable baseline session retention/staleness,
+  visible data readiness/actual counts and task/reference links. The dedicated
+  breakout-retest strategy remains the next major feature. Exercises stay paused.
+- `charts.py` clips line segments to visible dates, separates original-anchor
+  markers from interpolated drawing vertices, filters unavailable detections and
+  fixes shared date axes with half-day edge padding. The caption uses actual
+  displayed/total counts. Full original coordinates remain in analytical evidence.
+  No detector thresholds or numerical simulator rules changed.
+- Added pure `saved_backtest.py` and UI renderer: immutable original evidence,
+  assumptions, metrics, trades/equity and downloads in one session slot. Identity
+  includes actual baseline inputs/source/replay/basis/policy/settings; display
+  overlays and separate descriptive rules do not invalidate this fixed strategy.
+  Changed inputs retain the old result under an explicit stale warning. New runs
+  remain blocked by execution restrictions. No durable history database is claimed.
+- Added `readiness.py`: actual final-value availability, minimum-history recovery
+  counts, undefined-value reasons, weekly/structure/baseline context, freshness,
+  calendar flags, basis and execution scope. A21-observation input explicitly
+  needs29 more for EMA50; an available calculation is not a trade or source audit.
+- Added task pills, direct concept shortcuts and observation selection → cohort
+  study → fixed-baseline-tab routes. Diagnostic lifecycle states cannot create
+  unsupported studies. Neutral study requests use upward price change. Scope labels
+  distinguish descriptive detector settings, gross event outcomes and cost-bearing
+  baseline simulation. Avoided a default/session-value collision in the study slider.
+- Browser found research sidebar inputs reset after a reference-page visit. Moved
+  their rendering before reference/comparison/checklist branches; uploaded file,
+  completed-bar declaration and monetary assumptions now survive those routes.
+  Non-sidebar replay/rule/action state is not a full saved workspace: documented
+  separately. Comparison labels its independent two-dataset controls explicitly.
+- Added128th/127th shared concepts (readiness and saved/stale results), original
+  examples and four bounded S15 Done gates. Regenerated shared docs. Current counts:
+  **355 tasks:47 Done,45 Partial,251 Planned,12 Optional;128 concepts**. Original
+  43-bullet mapping remains8 Done,20 Partial,15 Planned. Added detailed
+  `RESEARCH_RELIABILITY.md`; updated README, build/context/priorities and the dated
+  inspection's follow-up/erratum without rewriting the historical observations.
+- Tests actually run: initial app/study smoke5 passed in12.56s; first new suite
+  27 passed/1 failed in19.09s because the test chose the first checkbox (an action
+  ledger), not Show Bollinger bands. Corrected the selector by label;28 passed
+  in18.47s. The original audit supplemental probe had the same interaction-label
+  mistake. Correctly labelled reproduction against pre-change publisheda482bc7
+  confirmed completed-trade output before the overlay toggle and none after,
+  with zero app exceptions. The finding was valid; initial interaction evidence
+  was inaccurate. Erratum is explicit in the inspection and reliability document.
+- Subsequent restricted test attempts stalled before application execution in
+  Python Windows asyncio/socketpair initialization. Full-suite result retrieval
+  from an earlier session was unavailable; no pass was inferred from empty cache.
+  A run permitted local communication: **268 passed in53.80s** (all240 prior
+  cases plus28 new reliability cases). Closed only the identified stalled pytest
+  processes. This was an execution-environment problem, not an app failure or an
+  approval-service capacity/safety rejection.
+- Browser checks:600-row synthetic analysis, overlay/cost-stale retained record,
+  visible original10-bps assumptions alongside current25-bps input, top navigation,
+  direct RSI article, original unchanged21-row NSE upload, partial readiness and
+  true21-of21 caption, upload retention on Education round trip, keyboard-selected
+  observation cohort and baseline-tab handoff. The synthetic fixture's5 trades
+  demonstrate software only. Real upload rows/screenshots were not published.
+  Two synthetic proof screenshots stay in excluded `outputs/reliability-2026-11-15/`.
+  Actual mobile/accessibility and production concurrency remain unverified.
+- Reference checks: official Streamlit session-state and pandas windowing docs,
+  linked in `RESEARCH_RELIABILITY.md`. Application-specific counts/identities are
+  documented as tested project conventions rather than library trading rules.
+- Next verification: generated-catalogue regression, source/privacy allow-list,
+  private GitHub upload/tree verification and actual remote CI if available.
+  These publication results are recorded only after observation below.

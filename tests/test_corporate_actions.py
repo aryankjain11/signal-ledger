@@ -193,7 +193,7 @@ def test_action_upload_ui_adjusted_view_and_execution_block(monkeypatch):
     app.selectbox[1].set_value("Unadjusted OHLC").run()
     assert not app.exception
     assert any("adjusted research view" in i.value for i in app.info)
-    assert app.button[0].disabled
+    assert app.button(key="run_baseline").disabled
     assert any("execution unavailable" in h.value for h in app.subheader)
     assert any("Corporate-action audit" in e.label for e in app.expander)
     app.select_slider[0].set_value("2026-06-03").run()
@@ -218,9 +218,9 @@ def test_view_switch_cache_isolates_execution_policy_when_prices_match(monkeypat
     app.selectbox[1].set_value("Unadjusted OHLC").run()
     app.checkbox(key="use_action_ledger").check().run()
     app.select_slider[0].set_value("2026-06-03").run()
-    assert not app.button[0].disabled
+    assert not app.button(key="run_baseline").disabled
     app.radio(key="action_price_view").set_value("Split/bonus adjusted research").run()
-    assert app.button[0].disabled
+    assert app.button(key="run_baseline").disabled
     app.radio(key="action_price_view").set_value("Original prices").run()
-    assert not app.exception and not app.button[0].disabled
+    assert not app.exception and not app.button(key="run_baseline").disabled
     assert not any("execution unavailable" in h.value for h in app.subheader)

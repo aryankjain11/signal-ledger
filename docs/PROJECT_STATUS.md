@@ -1,12 +1,12 @@
 # Project status against the original plan
 
-Updated: 2026-11-05
+Updated: 2026-11-15
 
 Current position: working local daily-data research prototype. Parts of original phases 1, 2 and 3 are usable, and phase 4 now includes descriptive pattern-outcome research. No complete original phase or final-product acceptance is claimed. Phase 4 databases/ML/validation and most phase 5 integration remain pending.
 
 Learning assignments are paused at the owner's request. Product implementation, testing, records and GitHub synchronization continue. Existing reference pages remain available.
 
-Expanded master checklist: 351 work items — 43 done, 45 partial, 251 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
+Expanded master checklist: 355 work items — 47 done, 45 partial, 251 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
 
 This document maps every one of the original five-phase roadmap's 43 implementation bullets (brief §19). Detailed subfeatures and the original acceptance-criteria audit are in MASTER_CHECKLIST.md; the complete brief is ORIGINAL_BRIEF.md.
 
@@ -36,7 +36,7 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 ## Phase 2 · Visual analysis and dashboard
 
-- [x] **Done · Interactive candlestick charts** — Plotly zoom, hover and replay.
+- [x] **Done · Interactive candlestick charts** — Plotly zoom, hover and replay; geometry clipped to the displayed period, with actual observation counts.
 
 - [x] **Done · Volume visualisation** — Daily share-volume bars.
 
@@ -52,7 +52,7 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 - [ ] **Planned · Image-based chart interpretation** — No screenshot analysis yet.
 
-- [ ] **Partial · Interactive chart annotations** — Hover reveals evidence; editing annotations/history pending.
+- [ ] **Partial · Interactive chart annotations** — Hover reveals evidence; observation rows link to event cohorts. Chart editing and durable annotation history pending.
 
 ## Phase 3 · Trading strategy generation
 
@@ -100,11 +100,11 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 - [ ] **Planned · Paper trading** — No prospective paper ledger.
 
-- [ ] **Planned · Analysis history** — No saved-run database/history workflow.
+- [ ] **Planned · Analysis history** — One baseline result survives session reruns with stale-input labels and original-run downloads; durable save/reopen/history database still pending.
 
 - [ ] **Planned · Market data API integration** — Offline uploads only; typing a ticker does not fetch data.
 
-- [ ] **Partial · Enhanced dashboard** — Research, pattern/momentum panels and two-stock comparison/correlation plus reference/build workspaces; full requested dashboard pending.
+- [ ] **Partial · Enhanced dashboard** — Five task-linked workspaces, readiness/recovery summary, direct concept help, retained baseline snapshot and two-stock comparison; broader dashboard pending.
 
 - [ ] **Planned · Performance monitoring** — No production operational/model-drift monitoring.
 
@@ -121,6 +121,8 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 - [x] Initial breakout/retest, chart/candle/momentum feature bundle and matched-interval two-stock comparison.
 
 - [x] After the pattern workspace: causal forward outcomes, MFE/MAE, retrospective context baselines, per-horizon censoring, overlap spacing, occurrence inspection and portable study exports.
+
+- [x] Research reliability: bounded chart geometry, retained/stale baseline session record, visible readiness/counts and task/concept links. Durable run history remains pending.
 
 - [ ] Full real-file acceptance for UDiFF report import; separate from security-history CSV support.
 

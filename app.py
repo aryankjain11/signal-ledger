@@ -7,10 +7,9 @@ import pandas as pd
 import streamlit as st
 
 from quant_engine.analysis import analyze, json_safe, report_markdown, run_evidence
-from quant_engine.charts import price_chart
+from quant_engine.charts import price_chart, chart_window_caption
 from quant_engine.data import load_bars
 from quant_engine.models import Settings
-from quant_engine.strategy import backtest
 from learning.pages import render_education, render_build_journal
 from quant_engine.datasets import Instrument, attach_passport
 from quant_engine.data_ui import report_import, render_passport
@@ -21,6 +20,9 @@ from quant_engine.models import ResearchRules
 from quant_engine.research_ui import research_controls, render_research
 from quant_engine.comparison_ui import render_comparison
 from quant_engine.event_study_ui import render_event_study
+from quant_engine.readiness import render_readiness
+from quant_engine.backtest_ui import render_backtest
+from quant_engine.workflow_ui import PAGES, navigate, render_navigation, render_reference_links
 
 ROOT = Path(__file__).resolve().parent
 st.set_page_config(page_title="Signal Ledger · Quant research", page_icon="◈", layout="wide")
@@ -35,22 +37,12 @@ st.markdown("""<style>
  .stTabs [data-baseweb="tab-list"] {gap:24px;border-bottom:1px solid #253248}
  </style>""", unsafe_allow_html=True)
 
-PAGES = {"Research dashboard": "research", "After the pattern": "events", "Compare two stocks": "compare", "Education and Concepts": "education", "Build checklist & log": "build"}
 requested_page = st.query_params.get("page", "research")
 page_names = list(PAGES)
 page_index = list(PAGES.values()).index(requested_page) if requested_page in PAGES.values() else 0
 workspace = st.sidebar.selectbox("Workspace", page_names, index=page_index, key="workspace_page")
 st.query_params["page"] = PAGES[workspace]
-if workspace == "Compare two stocks":
-    render_comparison()
-    st.stop()
-if workspace == "Education and Concepts":
-    render_education(ROOT)
-    st.stop()
-if workspace == "Build checklist & log":
-    render_build_journal(ROOT)
-    st.stop()
-
+render_navigation(workspace)
 with st.sidebar:
     st.markdown("### ◈ Signal Ledger")
     st.caption("TECHNICAL RESEARCH WORKBENCH · v0.1")
@@ -79,7 +71,8 @@ with st.sidebar:
     if source in {"Upload daily data", "Import NSE daily reports"}:
         complete = st.checkbox("Every row is a completed daily session bar", value=False)
     st.divider()
-    st.markdown("**Research assumptions**")
+    st.markdown("**Baseline strategy assumptions**")
+    st.caption("Capital, risk and costs affect the fixed breakout plan/backtest. Event studies measure gross price movement and do not use these monetary inputs.")
     capital = st.number_input("Account capital (INR)", min_value=100.0, value=100_000.0, step=1000.0)
     risk = st.slider("Risk budget per trade (%)", 0.1, 5.0, 1.0, 0.1)
     fees = st.number_input("Estimated total charges per side (bps)", min_value=0.0, max_value=100.0, value=10.0, step=1.0)
@@ -87,6 +80,19 @@ with st.sidebar:
     st.caption("1 basis point = 0.01%. Enter estimated brokerage, STT, exchange charges, GST, SEBI charges and stamp duty as a blended per-side rate. Actual charges can differ by side and transaction type; no statutory schedule is built in.")
     bands = st.checkbox("Show Bollinger bands")
     st.caption("Indian equities · swing research · INR-denominated uploads · daily bars · no live orders")
+
+# Render research inputs on every workspace so Streamlit retains their widget state,
+# including the local file handle. Reference/checklist pages still need no data.
+if workspace == "Compare two stocks":
+    st.caption("The sidebar retains your single-stock research context. Choose the two comparison datasets below; baseline capital and costs do not affect comparison statistics.")
+    render_comparison()
+    st.stop()
+if workspace == "Education and Concepts":
+    render_education(ROOT)
+    st.stop()
+if workspace == "Build checklist & log":
+    render_build_journal(ROOT)
+    st.stop()
 
 st.markdown('<div class="eyebrow">OBSERVE / EXPLAIN / TEST</div>', unsafe_allow_html=True)
 st.title("After the pattern" if workspace == "After the pattern" else "Price structure, with evidence.")
@@ -179,6 +185,8 @@ analysis.warnings = data.warnings + analysis.warnings
 execution_restriction = data.metadata.get("execution_restriction")
 if execution_restriction:
     analysis.setup = {"status": "Research view · execution unavailable", "reason": execution_restriction}
+render_readiness(analysis, data, symbol, adjustment)
+render_reference_links()
 if workspace == "After the pattern":
     render_event_study(analysis, data, settings, symbol, adjustment)
     st.stop()
@@ -188,15 +196,17 @@ columns[0].metric("Last close", f"{last.close:,.2f}", f"{(last.close / frame.clo
 columns[1].metric("Confirmed structure", analysis.trend.replace(" structure", ""))
 columns[2].metric("RSI · 14 sessions", f"{last.rsi_14:.1f}" if pd.notna(last.rsi_14) else "Warming up")
 columns[3].metric("Relative volume", f"{last.relative_volume:.2f}×" if pd.notna(last.relative_volume) else "Warming up")
-st.caption("New to these terms? Open Education and Concepts from the Workspace menu for RSI, MACD, ATR, candlestick patterns, worked examples and practice labs.")
+st.caption("Use the quick references above or Education and Concepts for RSI, MACD, ATR, candlestick patterns and worked examples.")
 st.caption(f"{symbol} · {len(frame):,} sessions · as of {as_of} · daily exchange session dates · INR assumed; no currency conversion")
 
-chart_tab, analytical_tab, report_tab, backtest_tab, quality_tab = st.tabs(["Chart & structure", "Patterns & momentum", "Evidence & trade plan", "Backtest lab", "Data & exports"])
+tab_names = ["Chart & structure", "Patterns & momentum", "Evidence & trade plan", "Backtest lab", "Data & exports"]
+requested_tab = st.session_state.pop("requested_research_tab", None)
+chart_tab, analytical_tab, report_tab, backtest_tab, quality_tab = st.tabs(tab_names, default=requested_tab if requested_tab in tab_names else None)
 with analytical_tab:
     render_research(analysis)
 with chart_tab:
     st.plotly_chart(price_chart(analysis, bands), width="stretch")
-    st.caption("Latest 250 sessions shown. Pivots are plotted at formation; hover shows when they became knowable. Shaded zones describe this as-of snapshot, not historical signals.")
+    st.caption(chart_window_caption(analysis))
     left, right = st.columns([1.2, 1])
     with left:
         st.markdown("#### What the data says")
@@ -220,9 +230,26 @@ with chart_tab:
                    for e in sorted(analysis.events, key=lambda e: e["detected_at"], reverse=True)[:40]]
         observations = pd.DataFrame(visible)
         observations.columns = ["Observation", "Status", "Formed on", "Knowable on", "Price", "Evidence"]
-        st.dataframe(observations, hide_index=True, width="stretch")
+        from hashlib import sha256
+        pick_key = "observation_pick_" + sha256(canonical_bars_bytes(data.bars) + json.dumps(analysis.rules, sort_keys=True).encode()).hexdigest()[:16]
+        choice = st.dataframe(observations, hide_index=True, width="stretch", on_select="rerun", selection_mode="single-row", key=pick_key)
+        picked = choice.selection.rows
+        chosen_event = sorted(analysis.events, key=lambda e: e["detected_at"], reverse=True)[:40][picked[0]] if picked and 0 <= picked[0] < len(visible) else None
+        if chosen_event:
+            from quant_engine.event_study import occurrence_ledger
+            row = occurrence_ledger(analysis.frame, [chosen_event]).iloc[0]
+            def open_study(cohort, direction):
+                st.session_state["requested_study_cohort"] = cohort
+                st.session_state["requested_study_direction"] = int(direction)
+                navigate("After the pattern")
+            st.button("Study this observation type", key="study_observation", disabled=not bool(row.eligible),
+                      on_click=open_study, args=(row.cohort, row.direction))
+            if not row.eligible:
+                st.caption("This diagnostic lifecycle state stays in the audit. Select a breakout, retest or geometric observation to study outcomes.")
+        st.caption("Select an observation row to study its event type. Formation dates, knowledge dates and full coordinates remain in the exported evidence.")
     else:
         st.caption("No supported geometries detected.")
+    st.button("Explore historical outcomes", key="explore_outcomes", on_click=navigate, args=("After the pattern",))
 
 with report_tab:
     st.subheader(analysis.setup["status"])
@@ -239,30 +266,7 @@ with report_tab:
     st.markdown(report_markdown(analysis, symbol, adjustment))
 
 with backtest_tab:
-    st.subheader("A testable hypothesis, not a forecast")
-    st.write("Enter at the next session's open after a close above the prior 20 highs, above EMA50, with relative volume ≥ 1.2. Fix a 2 ATR stop and 2R target at entry; hold at most 10 sessions.")
-    st.caption("One long position; no leverage. Size is capped by cash, risk budget and 1% of prior-session volume. Slippage and fees apply on both sides. If stop and target touch in one bar, stop wins. Gaps can exceed the risk budget. Open positions close at the end of the dataset.")
-    if execution_restriction:
-        st.warning(execution_restriction)
-    if st.button("Run exploratory backtest", type="primary", disabled=bool(execution_restriction)):
-        result = backtest(frame, settings)
-        metrics = result.metrics
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Completed trades", metrics["trades"])
-        c2.metric("Net return", f"{metrics['total_return']:.2%}")
-        c3.metric("Maximum drawdown", f"{metrics['max_drawdown']:.2%}")
-        c4.metric("Historical win rate", f"{metrics['historical_win_fraction']:.1%}" if metrics["trades"] else "Unavailable")
-        st.line_chart(result.equity[["equity"]])
-        st.caption(f"Gross close-to-close buy & hold comparison: {metrics['gross_buy_hold_return']:.2%}; excludes costs and uses different exposure. Equity includes estimated liquidation costs while a position is open.")
-        if not result.trades.empty:
-            st.dataframe(result.trades, hide_index=True, width="stretch")
-            st.download_button("Download trade ledger", result.trades.to_csv(index=False), "trades.csv", "text/csv")
-        st.download_button("Download backtest record", json.dumps(json_safe({
-            "analysis": run_evidence(analysis, data, settings, symbol, adjustment),
-            "metrics": metrics, "trades": result.trades.to_dict("records"),
-            "equity": result.equity.reset_index().to_dict("records")}), indent=2, allow_nan=False),
-            "backtest.json", "application/json")
-        st.warning(metrics["validation"])
+    render_backtest(analysis, data, settings, symbol, adjustment)
 
 with quality_tab:
     st.subheader("Source and limitations")

@@ -1,8 +1,8 @@
 # Education and Concepts
 
-Updated: 2026-11-05
+Updated: 2026-11-15
 
-126 entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.
+128 entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.
 
 All numerical examples are invented teaching examples, explicitly not market observations or performance claims. A traditional pattern description does not demonstrate a trading edge. A glossary entry is not proof that its detector exists.
 
@@ -1493,3 +1493,39 @@ Mean, median, quartiles and the fraction of positive observations summarize an o
 **Further reading:** [CFA Institute: Backtesting and Simulation](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/backtesting-and-simulation)
 
 **Implementation reference:** `quant_engine/event_study.py; quant_engine/event_study_ui.py`
+
+## Data readiness and indicator warm-up
+
+**Category:** Data quality · **Application status:** Visible replay-aware calculation readiness and recovery counts implemented
+
+A valid price file can still contain too little history for a calculation. Availability means the calculation is defined at the selected cutoff; it does not establish accurate source data, a qualifying trade or predictive value.
+
+**Calculation or rule:** This engine requires 50 observations for EMA50 and 15 closes for RSI14 (14 changes). Relative volume uses the previous 20 volumes, so it first becomes available on observation 21. A zero denominator can remain undefined even with sufficient history.
+
+**Hypothetical worked example:** A hypothetical valid 21-row file can show RSI and relative volume while EMA50 needs 29 more completed observations. Adding 29 calendar days does not necessarily add 29 trading observations, and an available EMA50 still does not guarantee a breakout.
+
+**How to read it:** Read the recovery table together with freshness, calendar flags, adjustment declaration and execution restrictions. These are separate checks.
+
+**Common mistake:** Treating an unavailable calculation as zero, a failed strategy or proof that the upload is invalid.
+
+**Further reading:** [pandas: windowing operations](https://pandas.pydata.org/docs/user_guide/window.html)
+
+**Implementation reference:** `quant_engine/readiness.py; tests/test_reliability.py`
+
+## Saved results, calculation identity and stale inputs
+
+**Category:** Research engineering · **Application status:** Immutable baseline session snapshot, stale-input warning and original-run downloads implemented
+
+A result snapshot preserves the assumptions and outputs of one calculation. A stale result belongs to earlier inputs; it remains evidence of that earlier run and must not be presented as a calculation for the current inputs.
+
+**Calculation or rule:** The baseline identity includes strategy version, source and visible-feature hashes, settings, symbol, price basis and execution policy. Display overlays do not enter that identity. Each rerun replaces the single session snapshot; its downloads retain its original assumptions.
+
+**Hypothetical worked example:** In a hypothetical run using 10 bps charges per side, changing the sidebar to 25 bps leaves the old result labelled out of date and its download still says 10 bps. Running again computes a new record using 25 bps. Toggling Bollinger bands alone retains the current record.
+
+**How to read it:** Download JSON and the trade ledger for a permanent copy. The current app stores one result in browser-session memory; reopening an archived record and database history remain planned.
+
+**Common mistake:** Assuming that a retained result was recomputed, or that session memory is durable storage or independently validated performance.
+
+**Further reading:** [Streamlit: session state](https://docs.streamlit.io/develop/concepts/architecture/session-state)
+
+**Implementation reference:** `quant_engine/saved_backtest.py; quant_engine/backtest_ui.py`

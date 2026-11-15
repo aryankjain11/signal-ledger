@@ -4,6 +4,21 @@
 
 ## 1. Overall assessment
 
+**Post-inspection follow-up, 15 November:** the later reliability increment repairs
+F01/F02 and the bounded F03/F04 readiness/count scope; F05–F07 receive task/reference
+links and clearer baseline/detector/cost scope. See [implemented rules and current
+acceptance](RESEARCH_RELIABILITY.md). The body below records the earlier inspection,
+not current claims that repaired defects remain open. Other findings remain.
+
+**Evidence correction:** the original supplemental F02 probe selected the first
+checkbox, which enabled an action ledger rather than toggling Bollinger bands.
+The stated overlay interaction was inaccurate. A later label-based reproduction
+against published pre-change `a482bc7` confirmed the backtest result disappearing
+after the actual overlay change, with zero exceptions. The finding was valid;
+the new regression checks use the labelled control. Also, the inspection's narrow
+Research/Compare state probe did not establish all-workspace retention: a later
+browser check found reference-page input resets, now repaired for sidebar inputs.
+
 Signal Ledger is a working, local technical-research prototype for Indian-stock swing research using daily uploaded prices. It can turn a supported file into indicators, confirmed price structure, a limited set of pattern observations, charts, a conditional baseline trade plan and an exploratory backtest. It also supports descriptive pattern-outcome studies and two-stock comparisons. Its numerical foundations are more developed than its end-to-end user experience.
 
 It is useful today for an individual who already understands basic technical analysis and is willing to inspect assumptions. A beginner can learn from its reference library, but still needs help connecting the controls and tables into a coherent research process. It is not yet the complete AI-powered, statistically validated research and strategy platform described in the original brief.

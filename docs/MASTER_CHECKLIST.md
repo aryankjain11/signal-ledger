@@ -1,10 +1,10 @@
 # Master implementation and learning checklist
 
-Updated: 2026-11-05
+Updated: 2026-11-15
 
 Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.
 
-351 work items: 43 done, 45 partial, 251 planned, 12 optional / later.
+355 work items: 47 done, 45 partial, 251 planned, 12 optional / later.
 
 Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.
 
@@ -737,6 +737,14 @@ Original brief: 13.3,14,15,21
 - [ ] **S15-012** · Planned · Currency/precision/units and local-time explanations
 
 - [x] **S15-013** · Done · Two-stock CSV/NSE comparison, matched-interval correlations and side-by-side analysis
+
+- [x] **S15-014** · Done · Bound displayed chart geometry to the observed period while preserving complete evidence
+
+- [x] **S15-015** · Done · Retain one immutable baseline session result, mark changed calculation inputs stale and preserve its exports
+
+- [x] **S15-016** · Done · Show replay-aware data readiness, recovery counts and actual displayed observation counts
+
+- [x] **S15-017** · Done · Connect task navigation, selected observations, outcome studies, baseline lab and direct concept references
 
 
 ## S16 · Prospective paper trading

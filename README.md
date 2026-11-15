@@ -7,15 +7,15 @@ It does not claim a demonstrated trading edge.
 
 ## Learn while building
 
-Use the sidebar **Workspace** menu to switch between the research dashboard,
+Use **Research steps** or the sidebar **Workspace** menu to switch between the research dashboard,
 **After the pattern**, **Compare two stocks**, **Education and Concepts**, and **Build checklist & log**.
 Reference pages work without an upload. Existing lessons and labs remain available;
 new assignments are paused. The concept library labels what is actually computed
 or detected separately from features that are only explained.
 
-- [Master checklist](docs/MASTER_CHECKLIST.md): 351 tracked items across 21 stages,
+- [Master checklist](docs/MASTER_CHECKLIST.md): 355 tracked items across 21 stages,
   covering the original brief and optional extensions with acceptance gates.
-- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 126 definitions and
+- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 128 definitions and
   notes; worked examples for foundations and current features, concise entries for
   future additions.
 - [Lesson 1](docs/lessons/01_from_prices_to_evidence.md): connected explanations,
@@ -30,6 +30,8 @@ or detected separately from features that are only explained.
 - [Platform inspection · 15 November](docs/PLATFORM_INSPECTION_2026-11-15.md):
   full vision/current-state review, observed workflows, issues and acceptance gates.
 - [Continuation brief](docs/PLATFORM_CONTEXT.md): compact context for future human/AI collaborators.
+- [Research reliability](docs/RESEARCH_RELIABILITY.md): bounded charts, readiness/recovery,
+  retained baseline results, stale-input warnings and connected research/reference routes.
 - [After the pattern rules](docs/EVENT_STUDIES.md): forward outcomes, known-time
   references, excursions, matching/coverage, overlap/censoring and research limits.
 
@@ -40,10 +42,14 @@ automatically checked off for the learner.
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
 verified, including direct NSE stock-history uploads. Latest local regression:
-**240 passed in 99.08 seconds** on 15 November, including 39 event-study cases.
-The earlier feature CI run42098482104 passed all240 tests in15.74 seconds.
-The inspection/documentation snapshot contains72 verified files; see its report
-for newly reproduced issues that remain open despite the existing regression pass.
+**268 passed in 53.80 seconds** on 15 November, including 28 reliability cases.
+Chart boundaries and baseline-result continuity found in the inspection are now
+repaired. Data readiness explains partial history, chart captions show actual counts,
+and selected observations link to outcome studies. One immutable baseline result
+survives session reruns with original-run downloads; changed calculation inputs
+mark it out of date. Durable save/reopen history remains planned.
+The earlier event-study CI run42098482104 passed all240 tests in15.74 seconds;
+the latest reliability publication/CI evidence is recorded in the sync status.
 The separate UDiFF real-report gate remains pending. See
 [GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
 The local computer's Git client does not currently have a saved GitHub login;

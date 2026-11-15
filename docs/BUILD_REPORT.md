@@ -1,8 +1,28 @@
 # Signal Ledger · build and learning report
 
-Updated: 2026-11-04. This is a living project report. The chronological record is
+Updated: 2026-11-15. This is a living project report. The chronological record is
 `WORK_LOG.md`; the comprehensive status list is `MASTER_CHECKLIST.md`. Neither is
 a claim of profitable trading or of the learner having mastered the material.
+
+## Latest increment · research reliability and workflow
+
+The 15 November follow-up repairs selected-period chart bounds and completed
+baseline result loss. It adds a visible readiness/recovery summary, actual chart
+counts, task navigation, direct reference articles and observation → study →
+baseline links. A frozen baseline JSON/CSV record retains its original inputs;
+calculation changes make it explicitly stale. This is one browser-session result,
+not a saved-history database. Numerical detectors and simulator rules are unchanged.
+
+Full local regression: **268 passed in53.80s**, including28 new reliability cases.
+Browser acceptance covered the600-row synthetic example, unchanged21-row NSE file,
+reference/upload retention, stale costs, observation keyboard selection/cohort
+prefill and the baseline-tab route. See `RESEARCH_RELIABILITY.md` for exact rules,
+test-environment diagnosis, original F02 probe correction and remaining limits.
+The catalogue now has **128 concepts,355 tasks:47 Done,45 Partial,251 Planned,
+12 Optional**. The43 original phase bullets remain8 Done,20 Partial,15 Planned;
+no phase or independent investment validation is complete. Later sections record
+historical increments and their then-current counts. Remote publication/CI evidence
+belongs in `GITHUB_SYNC.md`; local tests do not predict its result.
 
 ## Purpose and scope
 
@@ -335,8 +355,11 @@ Actions availability and the actual workflow run; a workflow file alone is not a
 ## Next implementation work
 
 Learning assignments are paused. Current position is a working daily research
-prototype, with bounded data-quality checks and parts of original phases 1–3.
-Next data gates are broader historical calendar coverage, UDiFF real-report
-acceptance and corporate-action policies/fixtures. Then continue structure,
-indicators and pattern/strategy families before statistical/model layers.
+prototype with bounded data-quality checks, parts of original phases1–3 and
+descriptive event-study research in phase4. Reliability/workflow acceptance above
+is complete. Next: one versioned breakout-retest execution strategy with exact
+trigger, order timing, cancellation, stop/target, expiry, costs and no-trade reasons;
+then fair comparison with the existing baseline. Wider calendars, UDiFF real-file
+acceptance and automatic action feeds remain planned unless they block a selected
+feature. Durable save/reopen and independent chronological validation follow.
 `PROJECT_STATUS.md` maps every original phase item; no phase is claimed complete.

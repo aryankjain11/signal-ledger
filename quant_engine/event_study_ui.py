@@ -76,6 +76,13 @@ def render_event_study(analysis, data, settings, symbol, adjustment):
     preferred = available.loc[available.state.isin(["Breakout", "Breakdown", "Retest held"])
         | available.name.isin(["Morning Star", "Evening Star"]), "cohort"].unique().tolist()
     defaults = sorted(preferred) or [c for c in cohorts if not c.endswith("+0")][:5] or cohorts[:5]
+    requested = st.session_state.pop("requested_study_cohort", None)
+    requested_direction = st.session_state.pop("requested_study_direction", 1)
+    if requested in cohorts:
+        st.session_state["study_cohorts"] = [requested]
+        if requested_direction == 0:
+            st.session_state["study_perspective"] = "Upward price change"
+        st.info("Studying the selected observation type: " + cohort_label(requested) + ". The current study filters and overlap policy still apply.")
     dates = frame.index.strftime("%Y-%m-%d").tolist()
     previous = st.session_state.get("study_available_cohorts")
     if previous is not None and previous != cohorts:
@@ -90,10 +97,12 @@ def render_event_study(analysis, data, settings, symbol, adjustment):
     previous_period = st.session_state.get("study_period")
     if previous_period:
         remaining = [date for date in dates if previous_period[0] <= date <= previous_period[1]]
-        st.session_state["study_period"] = (remaining[0], remaining[-1]) if remaining else (dates[0], dates[-1])
+        clamped = (remaining[0], remaining[-1]) if remaining else (dates[0], dates[-1])
+        if tuple(previous_period) != clamped:
+            st.session_state["study_period"] = clamped
     with st.form("event_study_form"):
         st.markdown("**Study definition**")
-        selected = st.multiselect("Event types to study", cohorts, default=defaults,
+        selected = st.multiselect("Event types to study", cohorts, default=None if "study_cohorts" in st.session_state else defaults,
             format_func=cohort_label, key="study_cohorts")
         left, right = st.columns(2)
         reference = left.selectbox("Measurement reference", ["Next observed open", "Detection close"], key="study_reference",
@@ -107,7 +116,7 @@ def render_event_study(analysis, data, settings, symbol, adjustment):
         volume = right.selectbox("Relative volume at detection", ["All", *VOLUME_LABELS], key="study_volume")
         controls = left.number_input("Minimum matching baseline observations", 1, 100, 5, key="study_min_controls")
         period = st.select_slider("Event date range (outcomes may extend beyond this interval)", options=dates,
-            value=(dates[0], dates[-1]), key="study_period")
+            **({} if "study_period" in st.session_state else {"value": (dates[0], dates[-1])}), key="study_period")
         st.caption("Horizons count uploaded observations, not calendar days. Replay above limits all available outcomes. Settings apply when you run the study.")
         st.form_submit_button("Run event study", type="primary")
     if not selected or not horizons:
@@ -212,3 +221,7 @@ def render_event_study(analysis, data, settings, symbol, adjustment):
         st.caption("Exports retain fractions, exact configuration, event ledger, source/visible-data hashes and baseline observations. Files are saved on demand; a database and saved-study history remain planned.")
     with st.expander("Concepts used on this page"):
         st.markdown("**Forward return:** end close divided by the stated reference minus one. A 1-observation next-open study measures the next bar's open-to-close movement.\n\n**Direction:** bearish alignment negates the price change; it does not simulate an executable short trade. Neutral shapes require upward-price mode.\n\n**Censoring:** a horizon beyond replay is unknown and excluded from averages, rather than counted as a loss.\n\n**Sample mean versus expectancy:** the average of this selected gross historical sample is not after-cost expected trading profit.\n\n**Baseline coverage:** the difference uses only complete events with enough matching controls; its event mean can differ from the full-cohort mean.\n\n**Research bias:** changing filters after seeing outcomes is exploratory selection. Save the definition, then evaluate it on unseen history before claiming predictive evidence. See Education and Concepts for worked definitions.")
+    from .workflow_ui import navigate
+    st.button("Test the fixed breakout baseline", key="study_to_baseline", on_click=navigate,
+              args=("Research dashboard",), kwargs={"research_tab": "Backtest lab"})
+    st.caption("The current simulator tests one fixed long-breakout strategy. It does not trade every studied observation; a dedicated breakout-retest execution strategy is still planned.")

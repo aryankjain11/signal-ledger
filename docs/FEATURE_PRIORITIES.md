@@ -1,12 +1,14 @@
 # Feature priorities after the data-foundation increments
 
-Inspection recommendation ·2026-11-15: before the next major strategy feature,
-repair selected-period chart bounds and completed-backtest result retention, then
-improve data readiness and workflow clarity. The dedicated breakout-retest strategy
-remains the next major feature. See `PLATFORM_INSPECTION_2026-11-15.md` for evidence,
-priorities and measurable gates; these proposed repairs have not been implemented.
+Reliability update ·2026-11-15: selected-period chart bounds, immutable baseline
+session retention/staleness, visible readiness/actual counts and task/reference
+links are implemented and accepted. Full local regression:268 passed in53.80s.
+See `RESEARCH_RELIABILITY.md` for exact scope and limits; the dated inspection is
+historical. The next major feature is the dedicated versioned breakout-retest
+execution strategy, followed by fair strategy comparison. Durable saved history,
+broader accessibility and other inspection findings remain open.
 
-Status: continuing feature priorities, with bounded implementation updates. Updated 2026-11-05.
+Status: continuing feature priorities, with bounded implementation updates. Updated 2026-11-15.
 
 2026-11-04 implementation update: the initial breakout/retest detector, triangle/
 rectangle and contextual candle families, momentum/divergence panels and two-stock

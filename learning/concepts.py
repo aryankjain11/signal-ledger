@@ -6,6 +6,8 @@ examples are hypothetical. 'Explained' and 'computed/detected' are separate stat
 
 FIDELITY = "https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/"
 SOURCES = {
+    "windowing": ("pandas: windowing operations", "https://pandas.pydata.org/docs/user_guide/window.html"),
+    "session-state": ("Streamlit: session state", "https://docs.streamlit.io/develop/concepts/architecture/session-state"),
     "nse-reports": ("NSE: daily reports", "https://www.nseindia.com/all-reports"),
     "nse-formats": ("NSE: formats", "https://www.nseindia.com/static/resources/forms-formats-members"),
     "rsi": ("Fidelity: RSI", FIDELITY + "RSI"),
@@ -396,6 +398,21 @@ add("sample-dispersion", "Outcome distribution versus statistical uncertainty", 
     mistake="Calling a box plot a confidence interval or a historical positive fraction a calibrated forecast.",
     status="Descriptive outcome distributions and small-sample labels implemented", source="research-bias", code="quant_engine/event_study.py; quant_engine/event_study_ui.py")
 
+add("data-readiness", "Data readiness and indicator warm-up", "Data quality",
+    "A valid price file can still contain too little history for a calculation. Availability means the calculation is defined at the selected cutoff; it does not establish accurate source data, a qualifying trade or predictive value.",
+    rule="This engine requires 50 observations for EMA50 and 15 closes for RSI14 (14 changes). Relative volume uses the previous 20 volumes, so it first becomes available on observation 21. A zero denominator can remain undefined even with sufficient history.",
+    example="A hypothetical valid 21-row file can show RSI and relative volume while EMA50 needs 29 more completed observations. Adding 29 calendar days does not necessarily add 29 trading observations, and an available EMA50 still does not guarantee a breakout.",
+    interpretation="Read the recovery table together with freshness, calendar flags, adjustment declaration and execution restrictions. These are separate checks.",
+    mistake="Treating an unavailable calculation as zero, a failed strategy or proof that the upload is invalid.",
+    status="Visible replay-aware calculation readiness and recovery counts implemented", source="windowing", code="quant_engine/readiness.py; tests/test_reliability.py")
+add("saved-result", "Saved results, calculation identity and stale inputs", "Research engineering",
+    "A result snapshot preserves the assumptions and outputs of one calculation. A stale result belongs to earlier inputs; it remains evidence of that earlier run and must not be presented as a calculation for the current inputs.",
+    rule="The baseline identity includes strategy version, source and visible-feature hashes, settings, symbol, price basis and execution policy. Display overlays do not enter that identity. Each rerun replaces the single session snapshot; its downloads retain its original assumptions.",
+    example="In a hypothetical run using 10 bps charges per side, changing the sidebar to 25 bps leaves the old result labelled out of date and its download still says 10 bps. Running again computes a new record using 25 bps. Toggling Bollinger bands alone retains the current record.",
+    interpretation="Download JSON and the trade ledger for a permanent copy. The current app stores one result in browser-session memory; reopening an archived record and database history remain planned.",
+    mistake="Assuming that a retained result was recomputed, or that session memory is durable storage or independently validated performance.",
+    status="Immutable baseline session snapshot, stale-input warning and original-run downloads implemented", source="session-state", code="quant_engine/saved_backtest.py; quant_engine/backtest_ui.py")
+
 BY_ID = {c["id"]: c for c in CONCEPTS}
 BY_ID["mfe-mae"].update(
     rule="Use only complete post-detection windows t+1…t+h. Upward MFE=max(0,max(high)/reference−1), signed MAE=min(0,min(low)/reference−1). Bearish MFE=max(0,1−min(low)/reference), signed MAE=min(0,1−max(high)/reference).",
@@ -422,6 +439,7 @@ BY_ID["git-github"].update(
     code="docs/GITHUB_SYNC.md; .github/workflows/tests.yml",
     exercise="Open the source commit and its Actions run. Explain how a verified file snapshot differs from a passing test result.")
 CURRENT_BEHAVIOR_IDS = {
+    "data-readiness", "saved-result",
     "forward-outcomes", "conditional-baseline", "event-overlap", "sample-dispersion", "mfe-mae", "censoring",
     "correlation", "indexed-performance", "relative-strength", "roc", "stochastic", "divergence", "evening-star", "morning-star",
     "hammer", "hanging-man", "inverted-hammer", "shooting-star", "ascending-triangle", "descending-triangle", "symmetrical-triangle", "rectangle",
@@ -457,7 +475,7 @@ def concept_markdown(concept, builder_details=True):
 
 
 def handbook_markdown():
-    intro = ["# Education and Concepts", "Updated: 2026-11-05",
+    intro = ["# Education and Concepts", "Updated: 2026-11-15",
              f"{len(CONCEPTS)} entries. Source of truth: `learning/concepts.py`; the app and this handbook share it.",
              "All numerical examples are invented teaching examples, explicitly not market observations or performance claims. A traditional pattern description does not demonstrate a trading edge. A glossary entry is not proof that its detector exists.",
              "Start with OHLCV → returns/adjustments → confirmed structure → SMA/EMA → RSI/MACD → ATR/risk → backtesting/leakage → probability calibration. Use the app's Learning lab and `docs/lessons/01_from_prices_to_evidence.md`.",

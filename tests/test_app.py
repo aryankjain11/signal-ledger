@@ -9,7 +9,7 @@ def test_dashboard_demo_replay_and_backtest_flow():
     app = AppTest.from_file(str(ROOT / "app.py"), default_timeout=30).run()
     assert not app.exception
     assert app.title[0].value == "Price structure, with evidence."
-    app.button[0].click().run()
+    app.button(key="run_baseline").click().run()
     assert not app.exception
     assert any(m.label == "Completed trades" for m in app.metric)
     app.select_slider[0].set_value("2023-01-10").run()

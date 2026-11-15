@@ -19,7 +19,7 @@ PHASES = [
         ("partial", "Basic volume and momentum analysis", "RSI/MACD/ROC/stochastic context and delayed pivot divergences; broader volume/divergence research pending."),
     ]),
     ("2", "Visual analysis and dashboard", [
-        ("done", "Interactive candlestick charts", "Plotly zoom, hover and replay."),
+        ("done", "Interactive candlestick charts", "Plotly zoom, hover and replay; geometry clipped to the displayed period, with actual observation counts."),
         ("done", "Volume visualisation", "Daily share-volume bars."),
         ("done", "Technical indicator overlays", "Supported averages/bands and indicator panels."),
         ("partial", "Pattern annotations", "Supported events and pivots; full pattern catalogue pending."),
@@ -27,7 +27,7 @@ PHASES = [
         ("planned", "Trendlines", "Causal trendline/channel fitting not implemented."),
         ("planned", "Screenshot uploads", "No image-ingestion workflow yet."),
         ("planned", "Image-based chart interpretation", "No screenshot analysis yet."),
-        ("partial", "Interactive chart annotations", "Hover reveals evidence; editing annotations/history pending."),
+        ("partial", "Interactive chart annotations", "Hover reveals evidence; observation rows link to event cohorts. Chart editing and durable annotation history pending."),
     ]),
     ("3", "Trading strategy generation", [
         ("partial", "Entry-condition identification", "One explicit long breakout rule; wider strategy catalogue pending."),
@@ -54,9 +54,9 @@ PHASES = [
         ("planned", "LLM-powered interpretation", "Reports are deterministic; no LLM provider is connected."),
         ("partial", "Comprehensive research reports", "Starter Markdown/JSON exports; broader integrated research report pending."),
         ("planned", "Paper trading", "No prospective paper ledger."),
-        ("planned", "Analysis history", "No saved-run database/history workflow."),
+        ("planned", "Analysis history", "One baseline result survives session reruns with stale-input labels and original-run downloads; durable save/reopen/history database still pending."),
         ("planned", "Market data API integration", "Offline uploads only; typing a ticker does not fetch data."),
-        ("partial", "Enhanced dashboard", "Research, pattern/momentum panels and two-stock comparison/correlation plus reference/build workspaces; full requested dashboard pending."),
+        ("partial", "Enhanced dashboard", "Five task-linked workspaces, readiness/recovery summary, direct concept help, retained baseline snapshot and two-stock comparison; broader dashboard pending."),
         ("planned", "Performance monitoring", "No production operational/model-drift monitoring."),
     ]),
 ]
@@ -69,7 +69,7 @@ def progress_rows():
 
 def progress_markdown():
     counts = Counter(t["status"] for t in TASKS)
-    lines = ["# Project status against the original plan", "Updated: 2026-11-05",
+    lines = ["# Project status against the original plan", "Updated: 2026-11-15",
         "Current position: working local daily-data research prototype. Parts of original phases 1, 2 and 3 are usable, and phase 4 now includes descriptive pattern-outcome research. No complete original phase or final-product acceptance is claimed. Phase 4 databases/ML/validation and most phase 5 integration remain pending.",
         "Learning assignments are paused at the owner's request. Product implementation, testing, records and GitHub synchronization continue. Existing reference pages remain available.",
         f"Expanded master checklist: {len(TASKS)} work items — {counts['done']} done, {counts['partial']} partial, {counts['planned']} planned, {counts['optional']} optional. Counts are not effort estimates or a meaningful project-completion percentage.",
@@ -85,6 +85,7 @@ def progress_markdown():
         "- [x] Build journal, detailed checklist and downloadable status records.",
         "- [x] Initial breakout/retest, chart/candle/momentum feature bundle and matched-interval two-stock comparison.",
         "- [x] After the pattern workspace: causal forward outcomes, MFE/MAE, retrospective context baselines, per-horizon censoring, overlap spacing, occurrence inspection and portable study exports.",
+        "- [x] Research reliability: bounded chart geometry, retained/stale baseline session record, visible readiness/counts and task/concept links. Durable run history remains pending.",
         "- [ ] Full real-file acceptance for UDiFF report import; separate from security-history CSV support.",
         "- [ ] Wider historical calendars; automatic corporate-action feeds, dividends/total returns and share-accounting backtests.",
         "- [ ] Continue structure/indicator improvements, then one pattern/strategy family at a time.",
