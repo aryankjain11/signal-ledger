@@ -10,6 +10,7 @@ from .analysis import json_safe
 from .datasets import passport_for_analysis
 from .event_study import (StudyRules, TREND_LABELS, VOLUME_LABELS, build_study,
                           occurrence_ledger, study_record)
+from .ui_state import valid_selection, date_control, workspace_tabs
 
 
 @st.cache_data(show_spinner=False)
@@ -37,6 +38,25 @@ def summary_display(summary):
         "matched_events": "Events with baseline", "matched_event_mean": "Matched event mean (%)",
         "matched_baseline_mean": "Matched baseline mean (%)", "difference_from_baseline": "Difference (percentage points)",
         "sample_note": "Sample note"})
+
+
+def movement_label(perspective):
+    return "Direction-aligned gross movement (%)" if perspective == "Pattern direction" else "Gross upward price change (%)"
+
+
+def comparison_chart(summary, horizon, perspective):
+    s=summary.loc[summary.horizon.eq(horizon)]
+    labels=[cohort_label(c).replace(" · ","<br>",1) for c in s.cohort]
+    evidence=s[["matched_events","complete","selected"]].to_numpy()
+    fig=go.Figure()
+    for column,name,color in (("matched_event_mean","Events with baseline","#36d6a4"),
+        ("matched_baseline_mean","Matched non-event baseline","#6ca6ff")):
+        fig.add_bar(y=labels,x=s[column]*100,orientation="h",name=name,marker_color=color,customdata=evidence,
+            hovertemplate="%{y}<br>Gross mean %{x:.2f}%<br>Matched events %{customdata[0]}<br>Complete events %{customdata[1]} / selected %{customdata[2]}<extra></extra>")
+    fig.update_layout(template="plotly_dark",height=max(400,90*len(s)),barmode="group",
+        xaxis_title=movement_label(perspective),title=f"{horizon} observations after detection · matched-event coverage",
+        legend=dict(orientation="h",y=1.12),margin=dict(t=100,b=45),yaxis=dict(autorange="reversed",automargin=True))
+    return fig
 
 
 def event_detail_chart(frame, occurrence, outcome, horizon):
@@ -94,29 +114,22 @@ def render_event_study(analysis, data, settings, symbol, adjustment):
         elif retained != old:
             st.session_state["study_cohorts"] = retained
     st.session_state["study_available_cohorts"] = cohorts
-    previous_period = st.session_state.get("study_period")
-    if previous_period:
-        remaining = [date for date in dates if previous_period[0] <= date <= previous_period[1]]
-        clamped = (remaining[0], remaining[-1]) if remaining else (dates[0], dates[-1])
-        if tuple(previous_period) != clamped:
-            st.session_state["study_period"] = clamped
     with st.form("event_study_form"):
         st.markdown("**Study definition**")
         selected = st.multiselect("Event types to study", cohorts, default=None if "study_cohorts" in st.session_state else defaults,
-            format_func=cohort_label, key="study_cohorts")
+            format_func=cohort_label, key="study_cohorts",persist_state="session")
         left, right = st.columns(2)
         reference = left.selectbox("Measurement reference", ["Next observed open", "Detection close"], key="study_reference",
-            help="Next open excludes the overnight move from the knowledge close. Detection close is an observational reference, not an assumed available fill.")
+            help="Next open excludes the overnight move from the knowledge close. Detection close is an observational reference, not an assumed available fill.",persist_state="session")
         perspective = right.selectbox("Outcome perspective", ["Pattern direction", "Upward price change"], key="study_perspective",
-            help="Pattern direction makes falls positive for bearish observations. Neutral patterns can be studied using upward price change.")
-        horizons = left.multiselect("Horizons (observations after detection)", [1, 2, 3, 5, 10, 20, 40, 60], default=[1, 5, 10, 20], key="study_horizons")
+            help="Pattern direction makes falls positive for bearish observations. Neutral patterns can be studied using upward price change.",persist_state="session")
+        horizons = left.multiselect("Horizons (observations after detection)", [1, 2, 3, 5, 10, 20, 40, 60], default=[1, 5, 10, 20], key="study_horizons",persist_state="session")
         overlap = right.selectbox("Overlapping observations", ["Thin within cohort", "Keep all"], key="study_overlap",
-            help="Thinning keeps the earliest occurrence, then requires spacing greater than the largest selected horizon. Other event types can still overlap.")
-        trend = left.selectbox("Trend at detection", ["All", *TREND_LABELS], key="study_trend")
-        volume = right.selectbox("Relative volume at detection", ["All", *VOLUME_LABELS], key="study_volume")
-        controls = left.number_input("Minimum matching baseline observations", 1, 100, 5, key="study_min_controls")
-        period = st.select_slider("Event date range (outcomes may extend beyond this interval)", options=dates,
-            **({} if "study_period" in st.session_state else {"value": (dates[0], dates[-1])}), key="study_period")
+            help="Thinning keeps the earliest occurrence, then requires spacing greater than the largest selected horizon. Other event types can still overlap.",persist_state="session")
+        trend = left.selectbox("Trend at detection", ["All", *TREND_LABELS], key="study_trend",persist_state="session")
+        volume = right.selectbox("Relative volume at detection", ["All", *VOLUME_LABELS], key="study_volume",persist_state="session")
+        controls = left.number_input("Minimum matching baseline observations", 1, 100, 5, key="study_min_controls",persist_state="session")
+        period = date_control("Event date range (outcomes may extend beyond this interval)", dates,key="study_period",context=data.source_hash,ranged=True)
         st.caption("Horizons count uploaded observations, not calendar days. Replay above limits all available outcomes. Settings apply when you run the study.")
         st.form_submit_button("Run event study", type="primary")
     if not selected or not horizons:
@@ -151,32 +164,28 @@ def render_event_study(analysis, data, settings, symbol, adjustment):
     c.metric("Event types represented", selected_rows.cohort.nunique())
     longest = result.summary.loc[result.summary.horizon.eq(max(horizons))]
     d.metric(f"Complete at {max(horizons)} observations", int(longest.complete.sum()))
-    summary_tab, distribution_tab, detail_tab, audit_tab = st.tabs([
-        "Outcome comparison", "Distribution & excursions", "Inspect an occurrence", "Audit & exports"])
+    st.caption("Positive direction-aligned movement means a rise for bullish events and a fall for bearish events. Upward-price mode always measures rises as positive. These are gross observations, not executable short returns or trading win rates.")
+    for key in ("study_chart_horizon","study_distribution_horizon","study_occurrence_horizon"):
+        valid_selection(key,sorted(horizons),max(horizons))
+    summary_tab, distribution_tab, detail_tab, audit_tab = workspace_tabs([
+        "Outcome comparison", "Distribution & excursions", "Inspect an occurrence", "Audit & exports"],key="study_active_tab")
     with summary_tab:
         st.caption("Each row is a separate event type/state and horizon. Positive outcomes are observed frequencies, not trade win rates or future probabilities. Returns and excursions below are percentages.")
         st.dataframe(summary_display(result.summary), hide_index=True, width="stretch")
         if not result.summary.empty:
-            h = st.selectbox("Comparison horizon", sorted(horizons), index=len(horizons)-1, key="study_chart_horizon")
-            s = result.summary.loc[result.summary.horizon.eq(h)]
-            labels = [cohort_label(c).replace(" · ", "<br>", 1) for c in s.cohort]
-            fig = go.Figure()
-            fig.add_bar(y=labels, x=s.matched_event_mean * 100, orientation="h", name="Events with baseline", marker_color="#36d6a4", customdata=s.matched_events,
-                hovertemplate="%{y}<br>Mean %{x:.2f}%<br>Matched events %{customdata}<extra></extra>")
-            fig.add_bar(y=labels, x=s.matched_baseline_mean * 100, orientation="h", name="Matched non-event baseline", marker_color="#6ca6ff")
-            fig.update_layout(template="plotly_dark", height=max(400, 90 * len(s)), barmode="group", xaxis_title="Mean gross price movement (%)",
-                legend=dict(orientation="h", y=1.12), margin=dict(t=70, b=45), yaxis=dict(autorange="reversed", automargin=True))
+            h = st.selectbox("Comparison horizon", sorted(horizons), index=len(horizons)-1, key="study_chart_horizon",persist_state="session")
+            fig = comparison_chart(result.summary,h,perspective)
             st.plotly_chart(fig, width="stretch", key="event_study_comparison")
         st.write("Baseline: non-event dates in this stock and event-date range, matched to each occurrence's EMA50 and relative-volume bucket. Both bars use the same events with sufficient controls. Controls can be reused and their outcome windows can overlap other pools or events.")
         st.caption("A missing baseline stays unavailable. The baseline uses the whole selected historical interval and is retrospective; it is not an earlier-only live forecast or a market/sector-adjusted return model.")
     with distribution_tab:
         if not result.outcomes.empty:
-            h = st.selectbox("Distribution horizon", sorted(horizons), index=len(horizons)-1, key="study_distribution_horizon")
+            h = st.selectbox("Distribution horizon", sorted(horizons), index=len(horizons)-1, key="study_distribution_horizon",persist_state="session")
             complete = result.outcomes.loc[result.outcomes.horizon.eq(h) & result.outcomes.outcome_state.eq("Complete")]
             fig = go.Figure()
             for cohort, group in complete.groupby("cohort", sort=True):
-                fig.add_trace(go.Box(y=group.forward_return * 100, name=cohort_label(cohort), boxpoints="all", jitter=.25, pointpos=0))
-            fig.update_layout(template="plotly_dark", height=470, yaxis_title="Gross price movement (%)", showlegend=False)
+                fig.add_trace(go.Box(y=group.forward_return * 100, name=cohort_label(cohort)+f" · n={len(group)}", boxpoints="all", jitter=.25, pointpos=0))
+            fig.update_layout(template="plotly_dark", height=470, yaxis_title=movement_label(perspective), title=f"{h} observations after detection · complete outcomes only",showlegend=False)
             st.plotly_chart(fig, width="stretch", key="event_study_distribution")
             st.dataframe(summary_display(result.summary.loc[result.summary.horizon.eq(h)])[["Event type", "Complete", "Median MFE (%)", "Median signed MAE (%)", "Sample note"]], hide_index=True, width="stretch")
         st.write("MFE is the largest favourable high/low excursion from the reference, floored at zero. Signed MAE is the worst adverse excursion, capped at zero. The detection candle is excluded. Daily bars cannot tell which extreme happened first or whether an order could fill there.")
@@ -185,9 +194,10 @@ def render_event_study(analysis, data, settings, symbol, adjustment):
         if not selected_rows.empty:
             keys = selected_rows.event_key.tolist()
             lookup = selected_rows.set_index("event_key")
+            valid_selection("study_occurrence",keys)
             key = st.selectbox("Occurrence", keys,
-                format_func=lambda k: f"{lookup.loc[k, 'known_at']} · {cohort_label(lookup.loc[k, 'cohort'])}", key="study_occurrence")
-            h = st.selectbox("Occurrence horizon", sorted(horizons), key="study_occurrence_horizon")
+                format_func=lambda k: f"{lookup.loc[k, 'known_at']} · {cohort_label(lookup.loc[k, 'cohort'])}", key="study_occurrence",persist_state="session")
+            h = st.selectbox("Occurrence horizon", sorted(horizons), key="study_occurrence_horizon",persist_state="session")
             occurrence = lookup.loc[key].to_dict()
             outcome = result.outcomes.loc[result.outcomes.event_key.eq(key) & result.outcomes.horizon.eq(h)].iloc[0].to_dict()
             st.write(f"Formed {occurrence['formed_at']} · knowable {occurrence['known_at']} · {outcome['outcome_state']}.")

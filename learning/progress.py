@@ -56,7 +56,7 @@ PHASES = [
         ("planned", "Paper trading", "No prospective paper ledger."),
         ("planned", "Analysis history", "Separate baseline and retest session records retain original assumptions with stale-input labels; durable save/reopen/history database pending."),
         ("planned", "Market data API integration", "Offline uploads only; typing a ticker does not fetch data."),
-        ("partial", "Enhanced dashboard", "Five task-linked workspaces, readiness/recovery summary, direct concept help, retained baseline snapshot and two-stock comparison; broader dashboard pending."),
+        ("partial", "Enhanced dashboard", "Five task-linked workspaces, readiness, session-retained files/dates/settings, recovery controls, reference-first concepts, readable ledgers and directional outcome labels; durable history and broader accessibility/dashboard work pending."),
         ("planned", "Performance monitoring", "No production operational/model-drift monitoring."),
     ]),
 ]
@@ -69,7 +69,7 @@ def progress_rows():
 
 def progress_markdown():
     counts = Counter(t["status"] for t in TASKS)
-    lines = ["# Project status against the original plan", "Updated: 2026-11-15",
+    lines = ["# Project status against the original plan", "Updated: 2026-11-16",
         "Current position: working local daily-data research prototype. Parts of original phases 1, 2 and 3 are usable, and phase 4 now includes descriptive pattern-outcome research. No complete original phase or final-product acceptance is claimed. Phase 4 databases/ML/validation and most phase 5 integration remain pending.",
         "Learning assignments are paused at the owner's request. Product implementation, testing, records and GitHub synchronization continue. Existing reference pages remain available.",
         f"Expanded master checklist: {len(TASKS)} work items — {counts['done']} done, {counts['partial']} partial, {counts['planned']} planned, {counts['optional']} optional. Counts are not effort estimates or a meaningful project-completion percentage.",
@@ -87,6 +87,8 @@ def progress_markdown():
         "- [x] After the pattern workspace: causal forward outcomes, MFE/MAE, retrospective context baselines, per-horizon censoring, overlap spacing, occurrence inspection and portable study exports.",
         "- [x] Research reliability: bounded chart geometry, retained/stale baseline session record, visible readiness/counts and task/concept links. Durable run history remains pending.",
         "- [x] Versioned long breakout-retest strategy: close-confirmed retest, one next-open attempt, structural stop, cost-aware sizing, expiry/cancellation/capacity audit, saved charts and portable records.",
+        "- [x] Bounded usability review: session file/date/rule continuity, exact-input confirmation, explicit clear/latest/all-date recovery, scoped controls, searchable reference-first concepts and clearer outcome/ledger presentation.",
+        "- [ ] Fair baseline-versus-retest comparison under a declared common evaluation protocol, then independent chronological validation.",
         "- [ ] Full real-file acceptance for UDiFF report import; separate from security-history CSV support.",
         "- [ ] Wider historical calendars; automatic corporate-action feeds, dividends/total returns and share-accounting backtests.",
         "- [ ] Continue structure/indicator improvements, then one pattern/strategy family at a time.",

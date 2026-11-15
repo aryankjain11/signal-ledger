@@ -409,6 +409,10 @@ Currency/precision/units and local-time explanations
 + Retain one immutable baseline session result, mark changed calculation inputs stale and preserve its exports
 + Show replay-aware data readiness, recovery counts and actual displayed observation counts
 + Connect task navigation, selected observations, outcome studies, baseline lab and direct concept references
++ Preserve research replay/rules/tabs and committed study/comparison settings across reference visits within the session
++ Retain upload bytes through omitted pickers with explicit clear and exact-file completion confirmation
++ Recover retired selections and source-specific observed-date ranges with synchronized latest/all-date reset controls
++ Scope advanced controls and present reference-first concepts, readable trade ledgers and directional sample-labelled outcome charts
 """)
 _add("S16", """
 Record each proposed paper setup before its outcome exists
@@ -487,7 +491,7 @@ STAGE_BY_ID = {s[0]: {"id": s[0], "title": s[1], "brief": s[2], "learn": s[3], "
 
 def checklist_markdown():
     counts = {state: sum(t["status"] == state for t in TASKS) for state in STATUS_LABELS}
-    lines = ["# Master implementation and learning checklist", "Updated: 2026-11-15",
+    lines = ["# Master implementation and learning checklist", "Updated: 2026-11-16",
              "Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.",
              f"{len(TASKS)} work items: " + ", ".join(f"{counts[s]} {STATUS_LABELS[s].lower()}" for s in counts) + ".",
              "Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.",

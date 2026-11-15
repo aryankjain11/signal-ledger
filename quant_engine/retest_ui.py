@@ -11,7 +11,7 @@ from .workflow_ui import navigate
 
 
 def retest_controls():
-    with st.expander("Breakout-retest strategy rules", expanded=True):
+    with st.expander("Breakout-retest strategy rules", expanded="saved_retest_run" not in st.session_state):
         st.caption("These controls belong only to this execution strategy. The chart's descriptive analysis controls and the fixed baseline remain separate.")
         cols = st.columns(3)
         specs = [("lookback", "Prior range (observations)", 5, 252, 20, 1),
@@ -28,7 +28,7 @@ def retest_controls():
         remembered = st.session_state.get("retest_rule_values", {})
         for i, (name, label, low, high, default, step) in enumerate(specs):
             values[name] = cols[i % 3].number_input(label, min_value=low, max_value=high,
-                value=remembered.get(name, default), step=step, key=f"retest_rule_{name}")
+                value=remembered.get(name, default), step=step, key=f"retest_rule_{name}",persist_state="session")
         st.session_state["retest_rule_values"] = values
     return RetestRules(**values)
 
@@ -118,7 +118,7 @@ def render_retest_lab(analysis, data, settings, symbol, adjustment):
         st.line_chart(equity.set_index('date')[['equity']])
         st.caption("Equity marks held shares at estimated net liquidation value. End-of-file exits are included above and labelled separately in the ledger. No benchmark superiority is claimed.")
         trades=pd.DataFrame(record['trades'],columns=record['trade_columns'])
-        columns=['breakout_date','retest_date','entry_date','exit_date','entry','stop','target','quantity','planned_risk','pnl','realized_r','reason','forced_cutoff_exit']
+        columns=['entry_date','exit_date','quantity','pnl','reason','entry','stop','target','planned_risk','realized_r','breakout_date','retest_date','forced_cutoff_exit']
         labels={'breakout_date':'Breakout close','retest_date':'Retest close','entry_date':'Entry date','exit_date':'Exit date',
             'entry':'Entry fill','stop':'Stop threshold','target':'Target threshold','quantity':'Shares','planned_risk':'Planned loss (INR)',
             'pnl':'Net P&L (INR)','realized_r':'Net P&L / planned loss','reason':'Exit reason','forced_cutoff_exit':'Forced cutoff exit'}

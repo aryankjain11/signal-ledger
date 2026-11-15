@@ -24,11 +24,13 @@ from quant_engine.readiness import render_readiness
 from quant_engine.backtest_ui import render_backtest
 from quant_engine.retest_ui import render_retest_lab
 from quant_engine.workflow_ui import PAGES, navigate, render_navigation, render_reference_links
+from quant_engine.ui_state import (retained_upload, completed_confirmation,
+    date_control, reset_dates, workspace_tabs, preserve_tab_state)
 
 ROOT = Path(__file__).resolve().parent
 st.set_page_config(page_title="Signal Ledger · Quant research", page_icon="◈", layout="wide")
 st.markdown("""<style>
- .block-container {padding-top:4rem; max-width:1500px}
+ .block-container {padding-top:2.6rem; max-width:1500px}
  h1 {letter-spacing:-1.5px; font-weight:650!important}
  .eyebrow {color:#36d6a4;font-size:12px;letter-spacing:2px;font-weight:700}
  .subtitle {color:#97a7bf;font-size:17px;margin-bottom:22px}
@@ -39,10 +41,7 @@ st.markdown("""<style>
  </style>""", unsafe_allow_html=True)
 
 requested_page = st.query_params.get("page", "research")
-# Keep the selected strategy when upload confirmation or reference pages omit
-# its widget. Reassigning detaches it from Streamlit's absent-widget cleanup.
-if "strategy_choice" in st.session_state:
-    st.session_state["strategy_choice"] = st.session_state["strategy_choice"]
+preserve_tab_state()
 page_names = list(PAGES)
 page_index = list(PAGES.values()).index(requested_page) if requested_page in PAGES.values() else 0
 workspace = st.sidebar.selectbox("Workspace", page_names, index=page_index, key="workspace_page")
@@ -52,19 +51,20 @@ with st.sidebar:
     st.markdown("### ◈ Signal Ledger")
     st.caption("TECHNICAL RESEARCH WORKBENCH · v0.1")
     st.divider()
-    source = st.radio("Data source", ["Synthetic walkthrough", "Upload daily data", "Synthetic NSE report walkthrough", "Import NSE daily reports"])
+    source = st.radio("Data source", ["Synthetic walkthrough", "Upload daily data", "Synthetic NSE report walkthrough", "Import NSE daily reports"],key="data_source",persist_state="session")
     upload = None
     report_uploads = None
     is_reports = source in {"Synthetic NSE report walkthrough", "Import NSE daily reports"}
     if source == "Upload daily data":
-        upload = st.file_uploader("OHLCV file", type=["csv", "xlsx"])
+        upload = retained_upload("OHLCV file", type=["csv", "xlsx"], key="research_upload")
         st.caption("NSE stock-history downloads work directly: keep the original CSV, columns and filename. Dates and Indian comma formatting are recognized automatically.")
     elif source == "Import NSE daily reports":
-        report_uploads = st.file_uploader("Daily UDiFF reports (preview)", type=["csv", "zip"], accept_multiple_files=True, key="nse_reports")
-    symbol = st.text_input("Research label", "SYNTHETIC" if source.startswith("Synthetic") else "NSE / YOUR SYMBOL", max_chars=40)
+        report_uploads = retained_upload("Daily UDiFF reports (preview)", type=["csv", "zip"], accept_multiple_files=True, key="nse_reports")
+    symbol = st.text_input("Research label", "SYNTHETIC" if source.startswith("Synthetic") else "NSE / YOUR SYMBOL", max_chars=40,
+        help="A label for the current file, not a quote lookup. The app does not fetch stock data when you type a symbol.")
     declared_provider, declared_exchange = "User-supplied file; provider not stated", "Unknown"
     if not is_reports:
-        adjustment = st.selectbox("Price adjustment basis", ["Unknown / unverified", "Consistently adjusted OHLC", "Unadjusted OHLC"])
+        adjustment = "Synthetic example" if source.startswith("Synthetic") else st.selectbox("Price adjustment basis", ["Unknown / unverified", "Consistently adjusted OHLC", "Unadjusted OHLC"])
         if source == "Upload daily data":
             with st.expander("Data source declaration"):
                 declared_provider = st.text_input("Provider/source label", value=declared_provider, key="declared_provider")
@@ -74,15 +74,16 @@ with st.sidebar:
         st.caption("UDiFF preview: select the security from report fields after upload. Prices remain as quoted; adjustments and origin are not independently verified.")
     complete = True
     if source in {"Upload daily data", "Import NSE daily reports"}:
-        complete = st.checkbox("Every row is a completed daily session bar", value=False)
+        complete = completed_confirmation("Every row is a completed daily session bar", upload if source == "Upload daily data" else report_uploads, key="research_complete")
     st.divider()
-    st.markdown("**Strategy simulation assumptions**")
-    st.caption("Capital, risk and costs affect the fixed breakout and breakout-retest simulations. Event studies measure gross price movement and do not use these monetary inputs.")
-    capital = st.number_input("Account capital (INR)", min_value=100.0, value=100_000.0, step=1000.0)
-    risk = st.slider("Risk budget per trade (%)", 0.1, 5.0, 1.0, 0.1)
-    fees = st.number_input("Estimated total charges per side (bps)", min_value=0.0, max_value=100.0, value=10.0, step=1.0)
-    slip = st.number_input("Slippage per side (bps)", min_value=0.0, max_value=100.0, value=5.0, step=1.0)
-    st.caption("1 basis point = 0.01%. Enter estimated brokerage, STT, exchange charges, GST, SEBI charges and stamp duty as a blended per-side rate. Actual charges can differ by side and transaction type; no statutory schedule is built in.")
+    with st.expander("Simulation capital, risk and costs"):
+        st.caption("These inputs affect both strategy simulations. Historical outcome studies and stock comparisons do not use them.")
+        capital = st.number_input("Account capital (INR)", min_value=100.0, value=100_000.0, step=1000.0, key="simulation_capital", persist_state="session")
+        risk = st.slider("Risk budget per trade (%)", 0.1, 5.0, 1.0, 0.1, key="simulation_risk", persist_state="session")
+        fees = st.number_input("Estimated total charges per side (bps)", min_value=0.0, max_value=100.0, value=10.0, step=1.0, key="simulation_fees", persist_state="session")
+        slip = st.number_input("Slippage per side (bps)", min_value=0.0, max_value=100.0, value=5.0, step=1.0, key="simulation_slippage", persist_state="session")
+        st.caption("1 basis point = 0.01%. Enter brokerage, taxes and other charges as a blended per-side estimate. Actual charges can differ by side and transaction; no statutory schedule is built in.")
+    st.caption(f"Simulation: ₹{capital:,.0f} · risk {risk:g}% · charges {fees:g} + slippage {slip:g} bps/side")
     bands = st.checkbox("Show Bollinger bands")
     st.caption("Indian equities · swing research · INR-denominated uploads · daily bars · no live orders")
 
@@ -101,7 +102,7 @@ if workspace == "Build checklist & log":
 
 st.markdown('<div class="eyebrow">OBSERVE / EXPLAIN / TEST</div>', unsafe_allow_html=True)
 st.title("After the pattern" if workspace == "After the pattern" else "Price structure, with evidence.")
-st.markdown('<div class="subtitle">A transparent starting point for technical research. Every observation traces back to your data.</div>', unsafe_allow_html=True)
+st.caption("Use your daily file or explore the demo. Inspect the chart, study historical outcomes, then test a strategy under explicit costs and risk assumptions.")
 
 if is_reports:
     if source == "Import NSE daily reports" and report_uploads and not complete:
@@ -154,10 +155,14 @@ if adjustment == "Unknown / unverified":
     st.warning("Adjustment status is unverified. Splits and dividends can distort indicators, patterns and backtest results.")
 elif adjustment == "Unadjusted OHLC":
     st.warning("Quoted/unadjusted prices: splits and other corporate actions have not been reconciled. Interpret long-horizon indicators and backtests accordingly.")
-action_ledger, use_adjusted = action_controls(data)
-research_rules = research_controls()
+with st.sidebar:
+    action_ledger, use_adjusted = action_controls(data)
+    research_rules = research_controls()
 options = [d.date().isoformat() for d in data.bars.index]
-as_of = st.select_slider("Replay through session · analysis uses only rows through this date", options=options, value=options[-1])
+as_of = date_control("Replay through session · analysis uses only rows through this date", options, key="research_cutoff", context=data.source_hash)
+if as_of != options[-1]:
+    st.caption("Historical replay is active. Later uploaded observations are excluded from this analysis.")
+    st.button("Use latest uploaded bar", key="latest_research_bar", on_click=reset_dates, args=("research_cutoff",options))
 data.bars = data.bars.loc[:as_of]
 original_visible_csv = canonical_bars_bytes(data.bars)
 action_factors = None
@@ -206,7 +211,7 @@ st.caption(f"{symbol} · {len(frame):,} sessions · as of {as_of} · daily excha
 
 tab_names = ["Chart & structure", "Patterns & momentum", "Evidence & trade plan", "Backtest lab", "Data & exports"]
 requested_tab = st.session_state.pop("requested_research_tab", None)
-chart_tab, analytical_tab, report_tab, backtest_tab, quality_tab = st.tabs(tab_names, default=requested_tab if requested_tab in tab_names else None)
+chart_tab, analytical_tab, report_tab, backtest_tab, quality_tab = workspace_tabs(tab_names, key="research_active_tab", requested=requested_tab)
 with analytical_tab:
     render_research(analysis)
 with chart_tab:
@@ -272,7 +277,7 @@ with report_tab:
 
 with backtest_tab:
     strategy = st.radio("Strategy to test", ["Fixed breakout baseline", "Breakout-retest v1"],
-        horizontal=True, key="strategy_choice")
+        horizontal=True, key="strategy_choice", persist_state="session")
     if strategy == "Breakout-retest v1":
         render_retest_lab(analysis, data, settings, symbol, adjustment)
     else:

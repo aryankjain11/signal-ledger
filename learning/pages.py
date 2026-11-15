@@ -10,6 +10,7 @@ from quant_engine.strategy import size_position
 from .concepts import CONCEPTS, BY_ID, concept_markdown, find_concepts, handbook_markdown
 from .roadmap import TASKS, STAGE_BY_ID, STATUS_LABELS, checklist_markdown
 from .progress import progress_rows, progress_markdown
+from quant_engine.ui_state import workspace_tabs, valid_selection
 
 
 def rsi_from_averages(gain, loss):
@@ -26,7 +27,9 @@ def render_education(root: Path):
     st.caption(f"{len(CONCEPTS)} searchable entries · hypothetical examples · explicit implementation status")
     st.info("Knowing a pattern's name is different from having a detector, a strategy, or evidence that it works. Each entry tells you what is actually implemented.")
     reference_requested = st.session_state.pop("reference_requested", False)
-    start, library, lab = st.tabs(["Start here", "Concept library", "Learning lab"], default="Concept library" if reference_requested else None)
+    if "education_active_tab" not in st.session_state or reference_requested:
+        st.session_state["education_active_tab"]="Concept library"
+    start, library, lab = workspace_tabs(["Start here", "Concept library", "Learning lab"],key="education_active_tab")
     with start:
         st.subheader("Your learning route")
         route = [
@@ -42,7 +45,7 @@ def render_education(root: Path):
         for title, description in route:
             with st.expander(title):
                 st.write(description)
-        st.markdown("**First practical milestone:** explain one candle, calculate an average and true range, then replay a pivot. You do not need to memorize every pattern before building.")
+        st.caption("These reference routes and older lessons are optional. New exercises and assignments remain paused.")
         lesson = (root / "docs" / "lessons" / "01_from_prices_to_evidence.md").read_text(encoding="utf-8")
         with st.expander("Lesson 1 · From prices to evidence"):
             st.markdown(lesson)
@@ -54,19 +57,24 @@ def render_education(root: Path):
         st.download_button("Download the complete concepts handbook", handbook_markdown(), "education-and-concepts.md", "text/markdown")
         st.caption("Exercises are for you to complete. The project does not automatically mark a lesson as understood.")
     with library:
-        query = st.text_input("Search concepts", placeholder="Try RSI, MACD, Evening Star, gap risk…", key="concept_search")
-        category = st.selectbox("Concept category", ["All categories"] + sorted({c["category"] for c in CONCEPTS}), key="concept_category")
-        scope = st.selectbox("Application coverage", ["All implementation states", "Has current engine behavior"], key="concept_scope")
+        query = st.text_input("Search concepts", placeholder="Try RSI, MACD, Evening Star, gap risk…", key="concept_search",persist_state="session")
+        category = st.selectbox("Concept category", ["All categories"] + sorted({c["category"] for c in CONCEPTS}), key="concept_category",persist_state="session")
+        scope = st.selectbox("Application coverage", ["All implementation states", "Has current engine behavior"], key="concept_scope",persist_state="session")
+        def reset_search():
+            st.session_state.update(concept_search="",concept_category="All categories",concept_scope="All implementation states",chosen_concept="rsi")
+        if query or category!="All categories" or scope!="All implementation states":
+            st.button("Clear concept filters",key="clear_concept_filters",on_click=reset_search)
         matches = find_concepts(query, category, scope)
         st.caption(f"{len(matches)} matching concepts. Compact glossary entries will gain longer lessons when we implement their feature.")
         if not matches:
             st.warning("No matching concepts. Try a shorter name or a different category.")
         else:
             ids = [c["id"] for c in matches]
+            valid_selection("chosen_concept",ids,"rsi")
             chosen = st.selectbox("Choose a concept", ids, index=ids.index("rsi") if "rsi" in ids else 0,
-                                  format_func=lambda key: BY_ID[key]["title"], key="chosen_concept")
+                                  format_func=lambda key: BY_ID[key]["title"], key="chosen_concept",persist_state="session")
             concept = BY_ID[chosen]
-            st.markdown(concept_markdown(concept, builder_details=False))
+            st.markdown(concept_markdown(concept, builder_details=False, include_exercise=False))
             if concept["code"]:
                 with st.expander("For builders · connect the concept to the code"):
                     st.code(concept["code"], language="text")

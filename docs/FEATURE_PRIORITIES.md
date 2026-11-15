@@ -1,5 +1,11 @@
 # Feature priorities after the data-foundation increments
 
+Usability update ·2026-11-16: the requested workflow audit adds session-retained
+files/dates/settings, explicit recovery, exact-input confirmation and clearer
+controls/reference/outcome presentation. See `USABILITY_REVIEW_2026-11-16.md`.
+It changes no numerical engine and does not replace the next feature below:
+**fair strategy comparison**, then independent validation and durable research.
+
 Strategy update ·2026-11-15: **Breakout-retest v1 is implemented and accepted**
 as a separate long next-open strategy with frozen structural stop, cost-aware
 sizing, gap/cancellation/expiry rules, setup audit, saved-price charts and records.

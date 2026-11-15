@@ -1,12 +1,12 @@
 # Project status against the original plan
 
-Updated: 2026-11-15
+Updated: 2026-11-16
 
 Current position: working local daily-data research prototype. Parts of original phases 1, 2 and 3 are usable, and phase 4 now includes descriptive pattern-outcome research. No complete original phase or final-product acceptance is claimed. Phase 4 databases/ML/validation and most phase 5 integration remain pending.
 
 Learning assignments are paused at the owner's request. Product implementation, testing, records and GitHub synchronization continue. Existing reference pages remain available.
 
-Expanded master checklist: 357 work items — 50 done, 48 partial, 247 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
+Expanded master checklist: 361 work items — 54 done, 48 partial, 247 planned, 12 optional. Counts are not effort estimates or a meaningful project-completion percentage.
 
 This document maps every one of the original five-phase roadmap's 43 implementation bullets (brief §19). Detailed subfeatures and the original acceptance-criteria audit are in MASTER_CHECKLIST.md; the complete brief is ORIGINAL_BRIEF.md.
 
@@ -104,7 +104,7 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 
 - [ ] **Planned · Market data API integration** — Offline uploads only; typing a ticker does not fetch data.
 
-- [ ] **Partial · Enhanced dashboard** — Five task-linked workspaces, readiness/recovery summary, direct concept help, retained baseline snapshot and two-stock comparison; broader dashboard pending.
+- [ ] **Partial · Enhanced dashboard** — Five task-linked workspaces, readiness, session-retained files/dates/settings, recovery controls, reference-first concepts, readable ledgers and directional outcome labels; durable history and broader accessibility/dashboard work pending.
 
 - [ ] **Planned · Performance monitoring** — No production operational/model-drift monitoring.
 
@@ -125,6 +125,10 @@ Calendar scope: offline NSE CM 2026 snapshot with specified amendments and speci
 - [x] Research reliability: bounded chart geometry, retained/stale baseline session record, visible readiness/counts and task/concept links. Durable run history remains pending.
 
 - [x] Versioned long breakout-retest strategy: close-confirmed retest, one next-open attempt, structural stop, cost-aware sizing, expiry/cancellation/capacity audit, saved charts and portable records.
+
+- [x] Bounded usability review: session file/date/rule continuity, exact-input confirmation, explicit clear/latest/all-date recovery, scoped controls, searchable reference-first concepts and clearer outcome/ledger presentation.
+
+- [ ] Fair baseline-versus-retest comparison under a declared common evaluation protocol, then independent chronological validation.
 
 - [ ] Full real-file acceptance for UDiFF report import; separate from security-history CSV support.
 

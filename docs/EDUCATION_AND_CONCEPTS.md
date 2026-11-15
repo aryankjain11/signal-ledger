@@ -1516,7 +1516,7 @@ A valid price file can still contain too little history for a calculation. Avail
 
 ## Saved results, calculation identity and stale inputs
 
-**Category:** Research engineering · **Application status:** Immutable baseline session snapshot, stale-input warning and original-run downloads implemented
+**Category:** Research engineering · **Application status:** Immutable strategy session snapshots, stale-input warnings, original-run downloads and bounded workspace continuity implemented; durable history pending
 
 A result snapshot preserves the assumptions and outputs of one calculation. A stale result belongs to earlier inputs; it remains evidence of that earlier run and must not be presented as a calculation for the current inputs.
 
@@ -1524,13 +1524,13 @@ A result snapshot preserves the assumptions and outputs of one calculation. A st
 
 **Hypothetical worked example:** In a hypothetical run using 10 bps charges per side, changing the sidebar to 25 bps leaves the old result labelled out of date and its download still says 10 bps. Running again computes a new record using 25 bps. Toggling Bollinger bands alone retains the current record.
 
-**How to read it:** Download JSON and the trade ledger for a permanent copy. The current app stores one result in browser-session memory; reopening an archived record and database history remain planned.
+**How to read it:** Download JSON and the trade ledger for a permanent copy. Baseline and retest have separate session result slots. Files, replay dates and selected research settings now survive tested reference visits within the same live session; clearing a file forgets its session copy, and replacing input files resets their completed-bar declaration. This continuity does not reopen archived records or create database history.
 
 **Common mistake:** Assuming that a retained result was recomputed, or that session memory is durable storage or independently validated performance.
 
 **Further reading:** [Streamlit: session state](https://docs.streamlit.io/develop/concepts/architecture/session-state)
 
-**Implementation reference:** `quant_engine/saved_backtest.py; quant_engine/backtest_ui.py`
+**Implementation reference:** `quant_engine/saved_backtest.py; quant_engine/retest_records.py; quant_engine/ui_state.py`
 
 ## Breakout-retest execution strategy
 

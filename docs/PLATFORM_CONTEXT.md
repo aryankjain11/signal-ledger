@@ -1,6 +1,6 @@
 # Signal Ledger · platform context and continuation brief
 
-Last reviewed: **2026-11-15, Asia/Calcutta**. This is a handoff, not a declaration that the full project is complete. Read [the detailed inspection](PLATFORM_INSPECTION_2026-11-15.md), then verify current source and records before changing implementation.
+Last reviewed: **2026-11-16, Asia/Calcutta**. This is a handoff, not a declaration that the full project is complete. Read [the detailed inspection](PLATFORM_INSPECTION_2026-11-15.md) and [usability follow-up](USABILITY_REVIEW_2026-11-16.md), then verify current source and records before changing implementation.
 
 ## Product identity and purpose
 
@@ -27,9 +27,10 @@ The initial user is an individual researching Indian-stock swing setups from com
 5. Interactive charts, deterministic report/evidence exports and two long strategy simulators: the fixed breakout baseline plus versioned breakout-retest execution. Both declare sizing/cost/gap/exit assumptions; the retest strategy adds frozen structural risk, one next-open attempt and a complete setup/cancellation audit. Its controls are independent from descriptive chart rules.
 6. Versioned descriptive event studies: knowledge-time references, forward movements, MFE/signed MAE, per-horizon censoring, overlap spacing, retrospective same-stock context baselines, sample/coverage counts, occurrence charts and portable records.
 7. Two-stock common-date indexed performance/drawdown/relative ratio, matched native-interval Pearson/Spearman/rolling correlation, side-by-side analysis and evidence downloads.
-8. Shared131-concept reference library and357-item roadmap with durable build records and a passing automated regression workflow.
+8. Shared131-concept reference library and361-item roadmap with durable build records and an automated regression workflow. Reference opens directly to searchable concepts; existing labs remain optional and new exercises are paused.
 9. Bounded chart geometry, actual displayed counts, visible data readiness/recovery, task/concept links and one immutable baseline session snapshot with stale-input warnings and original-run downloads. This is not durable save/reopen history. Exact rules are in `RESEARCH_RELIABILITY.md`.
 10. Independent immutable retest-strategy session record, saved-price setup inspection, explicit pending/cutoff state, forced-liquidation labels and JSON/CSV decisions/transitions/trade exports. Exact rules and evidence are in `BREAKOUT_RETEST_STRATEGY.md`. Strategy selection and retest controls survive tested strategy/upload/reference routes; this is not full durable workspace storage.
+11. Session-only upload-byte retention through omitted pickers, exact-file confirmation, research/study/comparison setting retention, observed-date recovery, explicit clear/latest/all-date controls, compact advanced controls, readable trade ledgers and gross/directional/sample-labelled outcome plots. See the usability follow-up for the tested boundaries; permanent history remains absent.
 
 ## What does not exist
 
@@ -56,17 +57,17 @@ The remaining pattern/indicator catalogue; general intraday/monthly analysis; co
 
 **F03/F04, bounded scope complete:** readiness and actual plotted counts appear near the main result. The original NSE example still has21 bars and partial readiness despite valid ingestion; EMA50 recovery is29 observations. Full source authenticity/provider verification remains outside this gate.
 
-**F05–F07, partially addressed:** task pills, direct reference articles, observation-to-cohort/baseline links and explicit monetary/detector-versus-strategy scope are implemented. Universal term help and broader polish remain. **F08–F09:** further gross/directional/sample-coverage presentation improvements remain planned.
+**F05–F07, partially addressed:** task pills, direct reference articles, observation-to-cohort/baseline links, scoped/collapsed advanced controls and explicit monetary/detector-versus-strategy scope are implemented. Universal term help and broader polish remain. **F08–F09, bounded presentation follow-up implemented:** outcome axes/titles identify gross direction/horizon, matched/complete/selected hover coverage and actual distribution counts. Broader inference/validation remains planned.
 
-The event date selector now supplies a default only when there is no session value; repeated navigation checks pass. Optional learning prompts and some historical wording still need presentation review; dense charts/tables need accessibility and actual small-screen evaluation. No valid phone-width test was obtained because the browser continued to report1280×720 after the attempted override. Do not claim mobile QA passed.
+Observed-date controls now keep per-source context, declare single/range mode and explicitly synchronize programmatic resets with the frontend. Retired dates and selections recover safely. Concept search defaults to the library and displayed articles omit exercise prompts. Dense charts/tables still need broader accessibility and actual small-screen evaluation. No valid phone-width test was obtained in the prior inspection because the browser continued to report1280×720 after the attempted override; this follow-up does not certify mobile QA.
 
-The inspection's narrow state probe was not proof of every route. Follow-up browser checks exposed sidebar resets after visiting Education. Research sidebar widgets are now rendered on every workspace and retained, including the uploaded file and baseline assumptions. Replay and non-sidebar rule/action controls are not a complete durable workspace-state implementation; database/reopen acceptance remains planned.
+The inspection's narrow state probe was not proof of every route. The latest follow-up repairs tested replay/rule/action/comparison/reference routes, retaining file bytes outside ephemeral picker state and ignoring retired cleanup callbacks. Completion confirmation belongs to exact input files. Replay, selected tabs and committed study/comparison settings persist within the live session. This does not guarantee survival of refresh/restart/reconnect, archive reopening or database history.
 
 ## Recommended implementation sequence
 
 1. Completed bounded reliability gate: F01/F02, readiness/counts and selected task/reference links; preserve their regression tests.
 2. Completed first versioned long breakout-retest strategy: frozen prior range/ATR, close-confirmed later retest, one next-open attempt, structural stop, target, expiry, gap/cost/capacity cancellations and saved audit/inspection. Preserve its chronology tests and boundary disclosures.
-3. Add fair comparison of that strategy and the existing baseline under a declared evaluation protocol.
+3. Completed bounded workflow/usability follow-up; preserve its session-state, file-clear, date-render and readable-presentation gates. Add fair comparison of the two strategies under a declared evaluation protocol next.
 4. Save/reopen immutable datasets, runs and experiment definitions.
 5. Define labels and chronological/overlap/uncertainty/benchmark validation before predictive claims.
 6. Expand pattern/indicator/timeframe families one bounded feature at a time; add prospective paper tracking.
@@ -82,7 +83,7 @@ Follow-up local regression after reliability source changes: **268 passed in53.8
 
 Latest strategy acceptance: **323 passed in84.15s**, adding55 retest cases to268 existing tests; final target-marker presentation check1 passed in4.35s. Browser verified synthetic trades/cancellations, unchanged21-row NSE no-trade behavior, concept/selection retention, stale rules and a real600-bar/5-setup/4-trade JSON download. Original baseline engine remains unchanged. These are software checks, not evidence of economic advantage.
 
-Original43-bullet mapping:8 Done,20 Partial,15 Planned. Expanded357-task mapping:50 Done,48 Partial,247 Planned,12 Optional. No complete original phase is claimed; counts are not effort-weighted completion percentages. Strategies/descriptive research are usable while fair comparison and database/model/validation layers remain missing.
+Latest usability full regression: **336 passed in211.85s** (323 prior +13 new). Browser evidence is in `WORK_LOG.md` and `USABILITY_REVIEW_2026-11-16.md`; observed publication/CI are in `GITHUB_SYNC.md`. Numerical engines are unchanged. Original43-bullet mapping:8 Done,20 Partial,15 Planned. Expanded361-task mapping:54 Done,48 Partial,247 Planned,12 Optional. No complete original phase is claimed; counts are not effort-weighted completion percentages. Strategies/descriptive research are usable while fair comparison and database/model/validation layers remain missing.
 
 ## Working agreement and file map
 

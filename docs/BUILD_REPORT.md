@@ -1,10 +1,40 @@
 # Signal Ledger · build and learning report
 
-Updated: 2026-11-15. This is a living project report. The chronological record is
+Updated: 2026-11-16. This is a living project report. The chronological record is
 `WORK_LOG.md`; the comprehensive status list is `MASTER_CHECKLIST.md`. Neither is
 a claim of profitable trading or of the learner having mastered the material.
 
-## Latest increment · versioned breakout-retest execution strategy
+## Latest increment · researcher workflow and usability audit
+
+The 15–16 November audit repaired lost replay/comparison/rule context and upload
+cleanup across reference visits. Session-only immutable file copies, retired-picker
+guards, exact-input completed-bar confirmation, valid date/selection recovery and
+explicit clear/latest/all-date actions now support the tested routes. A browser
+check caught and repaired a separate latest-date slider/analysis mismatch.
+
+Collapsed advanced controls, a concise workflow description and visible monetary
+assumptions make the dashboard easier to scan. The concept library opens directly
+with search and clear filters; displayed articles omit paused exercise prompts.
+Trade tables put entry/exit/shares/P&L first. Outcome plots explicitly name gross
+direction-aligned/upward movement, horizon and actual matched/complete/selected
+sample coverage. Numerical engines and raw export schemas are unchanged.
+
+See `USABILITY_REVIEW_2026-11-16.md` for findings, browser/automated evidence,
+test mistakes corrected, state/privacy contracts and remaining friction. The
+final post-fix full suite passed **336 tests in211.85s**, all323 prior cases plus13
+new usability cases. Private publication and observed CI belong in `GITHUB_SYNC.md`.
+Browser verified two real synthetic uploads surviving a reference visit, retained
+window10, explicit file clear, a parsed comparison download, Evening Star search
+and synchronized latest date/600 observations. This is bounded workflow acceptance,
+not mobile/accessibility/security certification or validation of trading results.
+
+Current catalogue: **131 concepts,361 tasks:54 Done,48 Partial,247 Planned,
+12 Optional**. Original43 phase bullets remain **8 Done,20 Partial,15 Planned**.
+Fair strategy comparison is still the next feature; independent chronological
+validation and durable saved research remain subsequent gates. Session continuity
+does not persist/reopen a browser-session history database. Exercises stay paused.
+
+## Prior increment · versioned breakout-retest execution strategy
 
 Backtest lab now offers `long-breakout-retest/1` beside the original fixed baseline.
 It freezes the prior range/ATR at a volume-qualified bullish close above EMA50,

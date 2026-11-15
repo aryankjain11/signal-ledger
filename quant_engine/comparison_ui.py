@@ -11,12 +11,13 @@ from .comparison import compare_stocks, synthetic_pair
 from .data import load_bars
 from .datasets import Instrument, attach_passport
 from .models import Settings
+from .ui_state import retained_upload, completed_confirmation, date_control, reset_dates, workspace_tabs
 
 
 def render_comparison():
     st.title("Compare two stocks")
     st.write("Compare price performance, risk, momentum and return correlation over the same observation window.")
-    mode = st.radio("Comparison data", ["Synthetic pair", "Upload two stocks"], key="comparison_mode", horizontal=True)
+    mode = st.radio("Comparison data", ["Synthetic pair", "Upload two stocks"], key="comparison_mode", horizontal=True, persist_state="session")
     data, labels = [], []
     synthetic = mode == "Synthetic pair"
     if synthetic:
@@ -38,14 +39,14 @@ def render_comparison():
             with col:
                 label = "A" if i == 0 else "B"
                 st.subheader(f"Stock {label}")
-                files.append(st.file_uploader(f"Stock {label} daily CSV/XLSX", type=["csv", "xlsx"], key=f"compare_upload_{label}"))
-                entered_labels.append(st.text_input(f"Stock {label} label (fallback)", f"Stock-{label}", key=f"compare_label_{label}"))
-                declarations.append(st.selectbox(f"Stock {label} price basis", ["Unknown / unverified", "Unadjusted OHLC", "Consistently adjusted OHLC"], key=f"compare_basis_{label}"))
+                files.append(retained_upload(f"Stock {label} daily CSV/XLSX", type=["csv", "xlsx"], key=f"compare_upload_{label}"))
+                entered_labels.append(st.text_input(f"Stock {label} label (fallback)", f"Stock-{label}", key=f"compare_label_{label}", persist_state="session"))
+                declarations.append(st.selectbox(f"Stock {label} price basis", ["Unknown / unverified", "Unadjusted OHLC", "Consistently adjusted OHLC"], key=f"compare_basis_{label}", persist_state="session"))
         st.caption("Native NSE stock-history CSVs are accepted unchanged. This comparison does not import UDiFF ZIPs or apply an action ledger.")
         if not all(files):
             st.info("Upload both stocks to compare them.")
             return
-        if not st.checkbox("Both files contain completed daily INR observations", key="compare_complete"):
+        if not completed_confirmation("Both files contain completed daily INR observations",files,key="compare_complete"):
             st.warning("Confirm completed daily observations before comparison.")
             return
         try:
@@ -69,8 +70,10 @@ def render_comparison():
         st.error("The two stocks need at least two common observation dates.")
         return
     options = common.strftime("%Y-%m-%d").tolist()
-    start, end = st.select_slider("Shared comparison period", options=options, value=(options[0], options[-1]), key="comparison_period")
-    window = int(st.number_input("Rolling correlation window (matched intervals)", min_value=5, max_value=252, value=20, key="correlation_window"))
+    context = '|'.join(d.source_hash for d in data)
+    start, end = date_control("Shared comparison period",options,key="comparison_period",context=context,ranged=True)
+    st.button("Use all shared dates",key="all_comparison_dates",on_click=reset_dates,args=("comparison_period",options))
+    window = int(st.number_input("Rolling correlation window (matched intervals)", min_value=5, max_value=252, value=20, key="correlation_window",persist_state="session"))
     try:
         pair = compare_stocks(data[0].bars.loc[start:end], data[1].bars.loc[start:end], window=window)
     except ValueError as exc:
@@ -92,8 +95,8 @@ def render_comparison():
     metrics["stock"] = labels
     for column in ("period_price_return", "observed_date_max_drawdown", "matched_interval_volatility"):
         metrics[column] = metrics[column] * 100
-    st.dataframe(metrics.rename(columns={"stock": "Stock", "period_price_return": "Period price return (%)", "observed_date_max_drawdown": "Observed-date drawdown (%)", "matched_interval_volatility": "Matched-interval return volatility (%)"}), hide_index=True, width="stretch")
-    performance, correlation, technical, exports = st.tabs(["Performance & risk", "Correlation", "Side-by-side analysis", "Comparison exports"])
+    st.dataframe(metrics.rename(columns={"stock": "Stock", "period_price_return": "Period price return (%)", "observed_date_max_drawdown": "Observed-date drawdown (%)", "matched_interval_volatility": "Matched-interval return volatility (%)", "start_close":"Starting close", "end_close":"Ending close", "observations":"Common prices", "native_observations":"Source observations"}), hide_index=True, width="stretch")
+    performance, correlation, technical, exports = workspace_tabs(["Performance & risk", "Correlation", "Side-by-side analysis", "Comparison exports"],key="comparison_active_tab")
     def lines(frame, title, percent=False):
         fig = go.Figure()
         for i, column in enumerate(frame):
@@ -113,6 +116,8 @@ def render_comparison():
         fig = go.Figure(go.Scatter(x=pair.rolling.index, y=pair.rolling, name="Rolling return correlation", mode="lines"))
         fig.update_layout(title=f"Rolling correlation · {window} matched intervals", template="plotly_dark", height=330, yaxis_range=[-1, 1])
         st.plotly_chart(fig, width="stretch")
+        if pair.rolling.notna().sum() == 0:
+            st.info(f"Rolling correlation is unavailable for this window. It needs {window} matched, nonconstant return intervals. Select more shared dates or reduce the rolling window.")
         scatter = go.Figure(go.Scatter(x=pair.returns.A, y=pair.returns.B, mode="markers", text=pair.returns.index.strftime("%Y-%m-%d")))
         scatter.update_layout(title="Matched return scatter", xaxis_title=labels[0], yaxis_title=labels[1], template="plotly_dark", height=330)
         scatter.update_xaxes(tickformat=".1%")
@@ -140,7 +145,7 @@ def render_comparison():
                 st.plotly_chart(price_chart(shown), width="stretch", key=f"comparison_technical_{i}")
                 recent = sorted([e for e in analysis.events if e["detected_at"] >= start], key=lambda e: e["detected_at"], reverse=True)[:10]
                 if recent:
-                    st.dataframe(pd.DataFrame([{k: e.get(k) for k in ("name", "status", "detected_at")} for e in recent]), hide_index=True, width="stretch")
+                    st.dataframe(pd.DataFrame([{k: e.get(k) for k in ("name", "status", "detected_at")} for e in recent]).rename(columns={"name":"Observation","status":"State","detected_at":"Knowable on"}), hide_index=True, width="stretch")
     with exports:
         evidence = {"comparison": summary, "labels": labels, "source_passports": [d.metadata for d in data]}
         st.download_button("Download comparison evidence", json.dumps(json_safe(evidence), indent=2, allow_nan=False), "comparison.json", "application/json")

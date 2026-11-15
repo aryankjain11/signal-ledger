@@ -10,10 +10,10 @@ from .models import ResearchRules
 
 def research_controls():
     with st.expander("Analysis rules · breakout and retest"):
-        lookback = int(st.number_input("Reference range lookback", 5, 252, 20, key="research_lookback"))
-        volume = st.number_input("Minimum breakout relative volume", 0.0, 10.0, 1.2, .1, key="research_rvol")
-        buffer = st.number_input("Breakout close buffer (prior ATR)", 0.0, .5, .1, .05, key="research_buffer")
-        window = int(st.number_input("Retest expiry (observations after break)", 2, 60, 10, key="research_expiry"))
+        lookback = int(st.number_input("Reference range lookback", 5, 252, 20, key="research_lookback", persist_state="session"))
+        volume = st.number_input("Minimum breakout relative volume", 0.0, 10.0, 1.2, .1, key="research_rvol", persist_state="session")
+        buffer = st.number_input("Breakout close buffer (prior ATR)", 0.0, .5, .1, .05, key="research_buffer", persist_state="session")
+        window = int(st.number_input("Retest expiry (observations after break)", 2, 60, 10, key="research_expiry", persist_state="session"))
         st.caption("Reference level and previous-bar ATR freeze at the break. Retests require a later touch and a close holding the level. Failure takes precedence; expiry is evaluated before a new retest on the deadline bar. These events do not replace the baseline strategy.")
     return ResearchRules(lookback=lookback, min_relative_volume=volume, breakout_buffer_atr=buffer, retest_window=window)
 

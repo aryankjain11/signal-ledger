@@ -32,24 +32,23 @@ def render_readiness(analysis, data, symbol, adjustment):
     n = len(analysis.frame)
     missing = [r["Calculation"] for r in rows if r["Status"] != "Available"]
     quality = data.metadata.get("data_quality", {})
-    st.subheader("Data readiness")
     st.write(f"**{symbol}** · {n:,} observations · {analysis.frame.index[0].date()}–{analysis.frame.index[-1].date()} · price basis: **{adjustment}**")
     if missing:
-        st.info("Partial analysis available. Not ready: " + ", ".join(missing) + ".")
+        st.info(f"Partial analysis available: {len(missing)} calculations/context checks unavailable. Open Data readiness below for the reasons.")
     else:
-        st.success("Listed calculations are available at this cutoff. Availability does not validate a trading opportunity or the source's accuracy.")
+        st.caption("Listed calculations are available. This does not validate the source or identify a trading opportunity.")
     if n < 50:
         st.write(f"EMA50 needs **{50-n} more observations** (50 total). The fixed breakout baseline needs EMA50 plus its price, ATR and volume conditions; available indicators do not guarantee a signal.")
-    st.caption("Freshness: " + quality.get("freshness", "Unverified") + ". Calendar: " + quality.get("calendar_status", "Unverified"))
-    if quality.get("latest_ready_session"):
-        st.caption(f"Latest expected completed session: {quality['latest_ready_session']} · lag: {quality.get('lag_sessions', 'unverified')} session(s). Historical uploads may be intentional.")
     flags = {key: len(quality.get(key, [])) for key in ("missing_expected_dates", "unexpected_dates", "future_dates", "unsupported_dates", "zero_volume_dates") if quality.get(key)}
-    if flags:
-        st.warning("Review flags: " + "; ".join(f"{k.replace('_', ' ')}: {v}" for k, v in flags.items()) + ". No rows were filled or removed.")
-    if adjustment == "Unknown / unverified":
-        st.caption("Adjustment declaration is unverified. Review splits/dividends before interpreting long-period price comparisons.")
     if data.metadata.get("execution_restriction"):
         st.warning(data.metadata["execution_restriction"])
-    with st.expander("Calculation availability and recovery steps"):
+    with st.expander("Data readiness · calculation availability and recovery steps"):
+        st.caption("Freshness: " + quality.get("freshness", "Unverified") + ". Calendar: " + quality.get("calendar_status", "Unverified"))
+        if quality.get("latest_ready_session"):
+            st.caption(f"Latest expected completed session: {quality['latest_ready_session']} · lag: {quality.get('lag_sessions', 'unverified')} session(s). Historical uploads may be intentional.")
+        if flags:
+            st.warning("Review flags: " + "; ".join(f"{k.replace('_', ' ')}: {v}" for k, v in flags.items()) + ". No rows were filled or removed.")
+        if adjustment == "Unknown / unverified":
+            st.caption("Adjustment declaration is unverified. Review splits/dividends before interpreting long-period price comparisons.")
         st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
         st.caption("Counts refer to observed completed bars, not calendar days. Sufficient history is not a guarantee of a qualifying pattern, a trade or reliable source data.")

@@ -410,9 +410,9 @@ add("saved-result", "Saved results, calculation identity and stale inputs", "Res
     "A result snapshot preserves the assumptions and outputs of one calculation. A stale result belongs to earlier inputs; it remains evidence of that earlier run and must not be presented as a calculation for the current inputs.",
     rule="The baseline identity includes strategy version, source and visible-feature hashes, settings, symbol, price basis and execution policy. Display overlays do not enter that identity. Each rerun replaces the single session snapshot; its downloads retain its original assumptions.",
     example="In a hypothetical run using 10 bps charges per side, changing the sidebar to 25 bps leaves the old result labelled out of date and its download still says 10 bps. Running again computes a new record using 25 bps. Toggling Bollinger bands alone retains the current record.",
-    interpretation="Download JSON and the trade ledger for a permanent copy. The current app stores one result in browser-session memory; reopening an archived record and database history remain planned.",
+    interpretation="Download JSON and the trade ledger for a permanent copy. Baseline and retest have separate session result slots. Files, replay dates and selected research settings now survive tested reference visits within the same live session; clearing a file forgets its session copy, and replacing input files resets their completed-bar declaration. This continuity does not reopen archived records or create database history.",
     mistake="Assuming that a retained result was recomputed, or that session memory is durable storage or independently validated performance.",
-    status="Immutable baseline session snapshot, stale-input warning and original-run downloads implemented", source="session-state", code="quant_engine/saved_backtest.py; quant_engine/backtest_ui.py")
+    status="Immutable strategy session snapshots, stale-input warnings, original-run downloads and bounded workspace continuity implemented; durable history pending", source="session-state", code="quant_engine/saved_backtest.py; quant_engine/retest_records.py; quant_engine/ui_state.py")
 
 add("retest-strategy", "Breakout-retest execution strategy", "Strategies",
     "A breakout-retest hypothesis waits for price to break a pre-existing level, then revisit and hold it. A strategy must specify what holding means, when that fact becomes known, the next permitted entry, cancellations and exact exits. The shape alone does not prove an edge.",
@@ -483,12 +483,12 @@ def find_concepts(query="", category="All categories", implementation="All imple
             and (not query or query in " ".join(str(c[k]) for k in ("title", "definition", "rule", "example")).casefold())]
 
 
-def concept_markdown(concept, builder_details=True):
+def concept_markdown(concept, builder_details=True, include_exercise=True):
     c = concept
     lines = [f"## {c['title']}", f"**Category:** {c['category']} · **Application status:** {c['app_status']}", c["definition"]]
     for key, label in (("rule", "Calculation or rule"), ("example", "Hypothetical worked example"),
                        ("interpretation", "How to read it"), ("mistake", "Common mistake"), ("exercise", "Try it yourself")):
-        if c[key]:
+        if c[key] and (key != "exercise" or include_exercise):
             lines += [f"**{label}:** {c[key]}"]
     if c["source"]:
         title, url = SOURCES[c["source"]]

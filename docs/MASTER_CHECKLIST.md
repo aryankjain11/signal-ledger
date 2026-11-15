@@ -1,10 +1,10 @@
 # Master implementation and learning checklist
 
-Updated: 2026-11-15
+Updated: 2026-11-16
 
 Source of truth: `learning/roadmap.py`. Regenerate with `python scripts/export_learning_docs.py`.
 
-357 work items: 50 done, 48 partial, 247 planned, 12 optional / later.
+361 work items: 54 done, 48 partial, 247 planned, 12 optional / later.
 
 Done means the named software gate is evidenced; it does not mean profitable trading or learner mastery. Partial items intentionally remain unchecked. Optional extensions are outside the core completion gate.
 
@@ -749,6 +749,14 @@ Original brief: 13.3,14,15,21
 - [x] **S15-016** · Done · Show replay-aware data readiness, recovery counts and actual displayed observation counts
 
 - [x] **S15-017** · Done · Connect task navigation, selected observations, outcome studies, baseline lab and direct concept references
+
+- [x] **S15-018** · Done · Preserve research replay/rules/tabs and committed study/comparison settings across reference visits within the session
+
+- [x] **S15-019** · Done · Retain upload bytes through omitted pickers with explicit clear and exact-file completion confirmation
+
+- [x] **S15-020** · Done · Recover retired selections and source-specific observed-date ranges with synchronized latest/all-date reset controls
+
+- [x] **S15-021** · Done · Scope advanced controls and present reference-first concepts, readable trade ledgers and directional sample-labelled outcome charts
 
 
 ## S16 · Prospective paper trading

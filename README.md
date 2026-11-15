@@ -13,7 +13,7 @@ Reference pages work without an upload. Existing lessons and labs remain availab
 new assignments are paused. The concept library labels what is actually computed
 or detected separately from features that are only explained.
 
-- [Master checklist](docs/MASTER_CHECKLIST.md): 357 tracked items across 21 stages,
+- [Master checklist](docs/MASTER_CHECKLIST.md): 361 tracked items across 21 stages,
   covering the original brief and optional extensions with acceptance gates.
 - [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 131 definitions and
   notes; worked examples for foundations and current features, concise entries for
@@ -30,6 +30,8 @@ or detected separately from features that are only explained.
 - [Platform inspection · 15 November](docs/PLATFORM_INSPECTION_2026-11-15.md):
   full vision/current-state review, observed workflows, issues and acceptance gates.
 - [Continuation brief](docs/PLATFORM_CONTEXT.md): compact context for future human/AI collaborators.
+- [Usability review · 16 November](docs/USABILITY_REVIEW_2026-11-16.md): tested
+  journeys, repaired context/upload/date loss, clearer presentation and open limits.
 - [Research reliability](docs/RESEARCH_RELIABILITY.md): bounded charts, readiness/recovery,
   retained baseline results, stale-input warnings and connected research/reference routes.
 - [After the pattern rules](docs/EVENT_STUDIES.md): forward outcomes, known-time
@@ -43,8 +45,15 @@ automatically checked off for the learner.
 
 The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
 The source, tests, synthetic sample and learning documents have been uploaded and
-verified, including direct NSE stock-history uploads. Latest local regression:
-**323 passed in 84.15 seconds** on 15 November, including 55 new retest-strategy cases.
+verified, including direct NSE stock-history uploads. The latest workflow audit
+keeps files, replay/rules, committed study/comparison settings and selected tabs
+across tested reference visits within the live session. Clear/latest/all-date
+actions recover context; replacing files requires completed-bar confirmation again.
+Controls are more compact, concepts open directly to search, trade tables use
+readable headings and outcome plots label gross direction/horizon/sample coverage.
+Final local regression: **336 passed in211.85s** on16 November, including13 new
+usability cases. See the sync record for observed remote CI.
+Prior strategy regression: **323 passed in84.15s** on15 November.
 Chart boundaries and baseline-result continuity found in the inspection are now
 repaired. Data readiness explains partial history, chart captions show actual counts,
 and selected observations link to outcome studies. One immutable baseline result

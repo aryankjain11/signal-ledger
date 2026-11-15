@@ -41,7 +41,11 @@ def render_backtest(analysis, data, settings, symbol, adjustment):
     st.line_chart(equity.set_index("date")[["equity"]])
     st.caption(f"Gross close-to-close buy & hold: {metrics['gross_buy_hold_return']:.2%}; different exposure and no costs. Equity includes estimated liquidation costs while a position is open.")
     if record["trades"]:
-        st.dataframe(pd.DataFrame(record["trades"]), hide_index=True, width="stretch")
+        trades=pd.DataFrame(record["trades"])
+        shown=[c for c in ("entry_date","exit_date","quantity","pnl","reason","entry","stop","target","planned_risk","holding_sessions","signal_date") if c in trades]
+        st.dataframe(trades[shown].rename(columns={"signal_date":"Signal close","entry_date":"Entry date","exit_date":"Exit date",
+            "entry":"Entry fill","stop":"Stop threshold","target":"Target threshold","quantity":"Shares",
+            "planned_risk":"Planned loss (INR)","pnl":"Net P&L (INR)","holding_sessions":"Holding observations","reason":"Exit reason"}), hide_index=True, width="stretch")
         st.download_button("Download trade ledger", saved.trades_csv, "trades.csv", "text/csv", key="saved_trades_download")
     else:
         st.info("No completed trades in this saved run. Review history and the exact baseline conditions; unavailable context is not a negative trade outcome.")

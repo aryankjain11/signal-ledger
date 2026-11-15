@@ -975,3 +975,89 @@ Breakout-retest publication acceptance:
   claim its own future CI result. Bounded strategy milestone complete; next is fair
   comparison, then independent validation and durable research storage. No trading
   edge, full phase completion or learner mastery is claimed. Exercises stay paused.
+
+### 2026-11-15–16 · user-flow audit and bounded usability improvements
+
+- Request: inspect whether the site works as intended and reduce the researcher's
+  effort. Kept this a workflow/reliability increment; fair strategy comparison
+  remains the next feature. Read continuing project instructions and current
+  inspection, checklist, build records and source before editing. All five
+  workspaces inspected. No subagents, new exercises, paid services or live orders.
+- Fresh baseline: **323 passed in90.96s**. Browser reproduced research replay
+  17 April becoming18 April after Education and comparison window10 resetting20.
+  Source/automated probes also exposed omitted file-picker and action state risks.
+- Added `ui_state.py`: immutable in-session upload copies, exact filename/content
+  confirmation signatures, retired-picker generations and render/workspace/source
+  guards, explicit clear, per-source observed-date context/clamping, date reset,
+  valid-option guards and selected-tab preservation. Kept source files unchanged.
+- Retained research/descriptive rules, strategy selection/rules, committed study
+  definitions, comparison mode/window/labels/basis/ranges and relevant tabs through
+  tested reference routes. Data confirmation resets when the actual files change.
+  Retained action ledger/research view still blocks unsupported execution.
+- Compacted landing layout; collapsed capital/risk/costs and advanced detector/
+  action settings while showing a monetary summary. Synthetic basis no longer
+  conflicts with Unknown. Explain label-only symbol input and scope of settings.
+  Reference defaults to searchable library with clear filters and exercise-free
+  displayed articles. Existing optional labs/lessons remain; no new assignments.
+- Made strategy ledgers lead with readable entry/exit/shares/P&L/reason. Outcome
+  axes/titles explicitly label gross movement direction and observation horizon;
+  both event/baseline hovers show matched/complete/selected event coverage, and
+  distribution titles show actual n. Raw numerical/export definitions unchanged.
+- First focused existing suite:57 passed/1 failed in50.05s. Date helper created a
+  single-handle prototype when a range was initialized through state alone.
+  Explicit range default corrected it; targeted comparison/study2 passed in30.40s.
+- Initial new usability runs:10 passed/1 failed in55.74s, then11 passed/1 failed
+  in56.07s. These failures came from a new test changing form widgets through
+  separate reruns without submitting the combined definition. Corrected the test
+  to submit all intended edits together; focused1 passed in17.02s. Expectations
+  were not relaxed. Intermediate complete regression: **335 passed in214.51s**.
+- Real browser acceptance then exposed an empty cleanup callback erasing cached
+  comparison bytes after a reference visit despite the earlier mocked-picker test.
+  Added generation/context guards and a separate stale-callback/current-removal
+  regression. A running process collected an earlier test edit before its trailing
+  block was relocated:12 passed/1 failed in45.06s; rerun of corrected isolated
+  callback test **1 passed in5.08s**. This was a test-source timing error, not a
+  new application failure. Final suite must be read from the later entry below.
+- A final browser check found latest-date recovery changed analysis to600 rows
+  but left the visible slider at the earlier date. Replaced delete/default-only
+  recovery with explicit state synchronization. Strengthened the regression to
+  assert outgoing set_value and its actual date. Focused1 passed/1 failed in31.26s
+  because the new assertion initially expected a numeric index; pinned runtime
+  serializes date strings. Corrected expected raw value to2025-04-18.
+- Browser acceptance after fixes: two synthetic uploads retained through Education
+  with window10 and completed declaration; explicit Clear Stock A removed its
+  session copy and requested both files; actual comparison JSON download parsed
+  successfully (4,856 bytes; comparison/labels/source_passports). Evening Star
+  search visibly returned3 related entries and selected its contextual article.
+  Research reference return preserved replay and Backtest tab. Latest recovery
+  visibly synchronized slider599/date2025-04-18 and600-row analysis. Saved baseline/
+  retest success observed; final screenshot saved locally under outputs. No owner's
+  real dataset was uploaded again or included in publication during this audit.
+- Browser tools encountered short CDP/selector deadlines and stale intermediate
+  Streamlit snapshots; fresh completed states resolved them. Do not count these
+  automation failures as site crashes. Windows restricted AppTest socket startup
+  still needs the authorized local test runner; no runtime dependency was changed.
+- Updated saved-result reference scope (still131 concepts), added four bounded
+  S15 acceptance gates and regenerated handbook/checklists/status. **361 tasks:
+  54 Done,48 Partial,247 Planned,12 Optional**; original43 bullets unchanged at
+  8 Done/20 Partial/15 Planned. No whole phase, mobile/accessibility certification,
+  durable history or predictive/trading validation is claimed.
+- Added `USABILITY_REVIEW_2026-11-16.md`; refreshed current build/context/priorities
+  and README. Compared source manifests: original strategy/retest/event-study/
+  comparison/indicator/parser engines unchanged. Source allow-list excludes owner
+  uploads, runtime files/screenshots/downloads, environments and credentials.
+- Sources: local pinned Streamlit1.66.1 signatures/implementation, official widget
+  behavior https://docs.streamlit.io/develop/concepts/architecture/widget-behavior
+  and file uploader https://docs.streamlit.io/develop/api-reference/widgets/st.file_uploader.
+- Next: final full regression, reviewed private publication/file verification and
+  observed CI; then fair declared strategy comparison, independent validation and
+  durable saved research. Learning exercises remain paused.
+
+Usability local acceptance ·2026-11-16:
+- Final complete regression after picker/date fixes and catalogue regeneration:
+  **336 passed in211.85s**, all323 existing cases plus13 new usability cases.
+  This includes the corrected date serialization/outgoing-set-value assertion
+  and stale-picker-versus-native-removal case. No failing checks remain in this run.
+- Bounded workflow gate accepted.87 reviewed source files are prepared for private
+  publication (three new files: UI-state helper, usability tests and dated report).
+  Actual publication/remote CI evidence will be recorded after observation.
