@@ -1061,3 +1061,25 @@ Usability local acceptance ·2026-11-16:
 - Bounded workflow gate accepted.87 reviewed source files are prepared for private
   publication (three new files: UI-state helper, usability tests and dated report).
   Actual publication/remote CI evidence will be recorded after observation.
+
+Usability publication acceptance ·2026-11-16:
+- Published source commit `48c9b9d44f70cec696f8ad53dc49e5b78605fe23` on private
+  main from expected previous headb85a206, without force.23 new/modified files;
+  all87 final tree paths/blob SHAs match the reviewed local manifest. The branch
+  update returned success:true (rather than a ref object); the subsequent explicit
+  branch/tree read verified the actual result. No automatic approval rejection.
+- GitHub Actions run43748677879 / job132917552071 completed successfully:
+  **336 passed in57.30s**, Ubuntu26.04.1 / Python3.13.18. Inspected completed job,
+  matching source head and decoded log. Local final acceptance remains336 passed
+  in211.85s; these are distinct executions. All three generated records were
+  additionally compared directly against their shared source functions.
+- Archive87 reviewed files plus SOURCE_MANIFEST.json passed ZIP member integrity
+  and every SHA256 check. Verified repository metadata remains private. Actual
+  datasets, runtime records/screenshots/downloads, environments and credentials
+  excluded. Archive is rebuilt after the final documentation update.
+- Updated README and GITHUB_SYNC with observed source/CI evidence. This later
+  documentation audit does not predict its own future CI. Bounded usability gate
+  complete; no whole original phase or investment-performance claim. Next feature:
+  fair declared strategy comparison, then independent validation and durable saved
+  research. Original43 bullets8 Done/20 Partial/15 Planned;361 expanded tasks
+  54 Done/48 Partial/247 Planned/12 Optional. Exercises remain paused.

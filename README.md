@@ -65,7 +65,10 @@ structural stop, and audits cancellations/capacity/pending states. Its independe
 session record includes saved bars so a stale setup chart cannot use new prices.
 The baseline simulator remains unchanged. Fair strategy comparison and held-out
 validation are next; neither strategy has a demonstrated trading edge.
-The breakout-retest source has84 verified files; GitHub run43740352903 passed
+The usability source has87 verified files; [GitHub run43748677879](https://github.com/aryankjain11/signal-ledger/actions/runs/43748677879)
+passed all336 tests in57.30s. Source commit48c9b9d and observed acceptance are
+recorded in the sync document; its later documentation audit is a separate commit.
+The prior breakout-retest source had84 verified files; GitHub run43740352903 passed
 all323 tests in49.59 seconds. Publication details are in the sync record.
 The earlier event-study CI run42098482104 passed all240 tests in15.74 seconds;
 the reliability source now has78 verified files and GitHub run43728863777 passed

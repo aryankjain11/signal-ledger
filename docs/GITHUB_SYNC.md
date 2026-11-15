@@ -1,11 +1,30 @@
 # GitHub sync status
 
-Updated: 2026-11-15.
+Updated: 2026-11-16.
 
 - Repository: https://github.com/aryankjain11/signal-ledger
 - Visibility: **private**, verified through the GitHub page and connected metadata.
 - Initial branch: `main`.
 - Initial README commit: `bc09670a45e3776f5fcb47b393d93e685974fe63`.
+- **Latest usability source: complete and verified.** Commit
+  [`48c9b9d44f70cec696f8ad53dc49e5b78605fe23`](https://github.com/aryankjain11/signal-ledger/commit/48c9b9d44f70cec696f8ad53dc49e5b78605fe23)
+  contains **87 reviewed files**,23 new/modified. All final tree paths/blob SHAs
+  matched the local allow-list; changed blobs also matched at creation. Private
+  main advanced fromb85a206 with the expected-head check and no force. Includes
+  session upload/context/date recovery, exact-file confirmation, clearer controls/
+  reference/outcome/ledger presentation,13 new tests and the dated usability audit.
+  Strategy/retest/event-study/comparison/indicator/parser numerical engines unchanged.
+- **Usability CI:** [run43748677879](https://github.com/aryankjain11/signal-ledger/actions/runs/43748677879),
+  job132917552071, completed successfully: **336 passed in57.30s**, Ubuntu26.04.1 /
+  Python3.13.18. Completed job and decoded log inspected. Final local regression:
+  **336 passed in211.85s**. Browser verified reference/file/window retention,
+  explicit clear, parsed comparison download, concept search and synchronized
+  latest-date slider/analysis. Full scope/limits: `USABILITY_REVIEW_2026-11-16.md`.
+  Source archive87 files plus manifest passed member-integrity/all-SHA256 checks.
+  Actual owner uploads, runtime records/screenshots/downloads, environments and
+  credentials are excluded. Repository metadata still reports private.
+  This later synchronization audit records the observed source/CI snapshot; it
+  does not predict the CI result of its own later documentation-only commit.
 - **Latest breakout-retest source: complete and verified.** Commit
   [`98f097bf0dce83f735ec24153e6c49104b1b3ec5`](https://github.com/aryankjain11/signal-ledger/commit/98f097bf0dce83f735ec24153e6c49104b1b3ec5)
   contains **84 reviewed files**. All published tree paths/blob SHAs matched the
