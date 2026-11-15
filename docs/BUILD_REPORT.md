@@ -150,6 +150,23 @@ where they are useful, rather than hiding all uncertainty in a footer.
 
 ## Verification and limitations
 
+2026-11-15 inspection: no analytical application changes. Added a full platform
+review and compact continuation brief. Fresh regression **240 passed in99.08s**;
+all70 pre-inspection files matched private-repository commit
+`6a64fed3f28fa397ed889417eb84fa73d911eb9f`. All five workspaces, unchanged real NSE
+upload, completed-bar guard, synthetic backtest/study/comparison, concept search,
+quality/freshness disclosure and actual JSON downloads were inspected. Supplemental
+probes reproduced chart coordinates outside a selected period (F01) and loss of
+backtest output after a display-only toggle (F02). These remain open; passing
+regression is not a claim that these newly identified behaviours are covered.
+
+The report distinguishes usable/partial/planned features, evidence types, financial
+limits, user-experience judgments and untested mobile/security/production scope.
+Source task counts remain351 and reference concepts126; inspection does not finish
+new strategy/model features. Recommended sequence: bounded visual/state/readiness
+repairs, then the dedicated breakout-retest strategy. Full evidence and repair
+acceptance gates: `PLATFORM_INSPECTION_2026-11-15.md` and `PLATFORM_CONTEXT.md`.
+
 2026-11-05 event-study increment: **After the pattern** is a dedicated workspace
 reusing source declarations, detector rules and replay. Independent numerical
 engine `quant_engine/event_study.py` measures each supported occurrence from its

@@ -1,5 +1,11 @@
 # Feature priorities after the data-foundation increments
 
+Inspection recommendation ·2026-11-15: before the next major strategy feature,
+repair selected-period chart bounds and completed-backtest result retention, then
+improve data readiness and workflow clarity. The dedicated breakout-retest strategy
+remains the next major feature. See `PLATFORM_INSPECTION_2026-11-15.md` for evidence,
+priorities and measurable gates; these proposed repairs have not been implemented.
+
 Status: continuing feature priorities, with bounded implementation updates. Updated 2026-11-05.
 
 2026-11-04 implementation update: the initial breakout/retest detector, triangle/

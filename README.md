@@ -27,6 +27,9 @@ or detected separately from features that are only explained.
   five development phases, with done/partial/pending scope. Learning assignments
   are paused; product development continues.
 - [Build report](docs/BUILD_REPORT.md): architecture, curriculum and current limits.
+- [Platform inspection · 15 November](docs/PLATFORM_INSPECTION_2026-11-15.md):
+  full vision/current-state review, observed workflows, issues and acceptance gates.
+- [Continuation brief](docs/PLATFORM_CONTEXT.md): compact context for future human/AI collaborators.
 - [After the pattern rules](docs/EVENT_STUDIES.md): forward outcomes, known-time
   references, excursions, matching/coverage, overlap/censoring and research limits.
 

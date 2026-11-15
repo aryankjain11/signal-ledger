@@ -724,3 +724,48 @@ publication/verification records use the client's Asia/Calcutta date2026-11-06.
   study complete, broader phase4 research database/inference/validation Partial or
   Planned as recorded in PROJECT_STATUS.md. Next: versioned breakout-retest
   execution strategy, then fair strategy comparison. Exercises remain paused.
+
+## 2026-11-15 · Researcher walkthrough and full product inspection
+
+- User requested a very thorough inspection/report for human and AI readers:
+  vision, current functionality, missing capabilities, user friendliness, routine
+  workflows, defects, progress and a plan. This was an audit/documentation increment;
+  analytical source and existing tests were left unchanged.
+- Read original brief, refined plan, current status, shared checklist/concepts,
+  source and prior acceptance records. Relaunched local loopback app. Fresh
+  regression: **240 passed in99.08 seconds**. Reconfirmed private repository;
+  all70 audited files matched commit `6a64fed3f28fa397ed889417eb84fa73d911eb9f`.
+- Browser-inspected all five workspaces, default synthetic analysis/backtest,
+  candle explanations, unchanged owner-provided NSE upload and completed-session
+  gate, short-history/freshness details, two-stock comparison, event inspection,
+  reference search and build journal. Kept real upload out of screenshots/report
+  artifacts intended for sharing. No source market-data rows were published.
+- Actual synthetic JSON downloads parsed: comparison/labels/passports object and
+  study schema/outcomes84/controls536/summary24 with null incomplete returns.
+- Eleven supplemental probe groups covered CSV/XLSX parity, five invalid-input
+  classes, original NSE parsing, narrow chart bounds, cost sensitivity, backtest
+  state, navigation context, study empty/neutral modes, comparison short period
+  and UDiFF synthetic preview. Probe script/results stay in excluded runtime outputs.
+- Reproduced F01: selected three-candle window beginning2023-03-28 still draws
+  older double-pattern/breakout coordinates. Reproduced F02: completed backtest
+  output disappears after an unrelated overlay toggle. Documented repair gates;
+  no repairs were claimed or made during the inspection.
+- Corrected an early audit probe that used a positional number-input selector;
+  label-based probe confirmed account capital and research label survive the
+  tested workspace round trip. First last-ten-demo-date chart probe had no active
+  out-of-window pattern; a deliberately pattern-containing narrow window exposed
+  F01. Neither probe correction is an application defect.
+- A390x844 viewport request was ineffective: actual browser stayed1280x720;
+  reset override and explicitly left mobile acceptance unverified. Keyboard search
+  was exercised, not a full screen-reader/accessibility audit. No penetration,
+  production multi-user, fresh-machine or full50,000-row UI acceptance claimed.
+- One uncached5,000 repeated-synthetic-bar computational probe:9.852s analysis,
+  7.780s event study; no exception. This excludes browser rendering and is not a
+  load/scalability guarantee. Data are artificial, not market observations.
+- Added `PLATFORM_INSPECTION_2026-11-15.md`, `PLATFORM_CONTEXT.md`, linked from
+  README and current build records; retained351-task/126-concept software status.
+  A readable HTML companion with synthetic screenshots is generated locally.
+  Next recommendation: chart/state/readiness fixes, then breakout-retest execution
+  strategy, saved research and independent validation. Exercises remain paused.
+- Source publication and final artifact checks are recorded after observation;
+  this entry does not predict remote CI or claim a newly implemented feature.
