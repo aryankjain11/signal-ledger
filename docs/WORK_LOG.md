@@ -769,3 +769,20 @@ publication/verification records use the client's Asia/Calcutta date2026-11-06.
   strategy, saved research and independent validation. Exercises remain paused.
 - Source publication and final artifact checks are recorded after observation;
   this entry does not predict remote CI or claim a newly implemented feature.
+
+Inspection delivery acceptance:
+- Detailed report:12 main sections, approximately7,000 words, feature/workspace
+  inventories,15 findings/maturity gaps,33-row check matrix and18 original
+  acceptance-criterion mappings. Compact continuation brief written separately.
+- HTML companion visually checked in the browser; section navigation and findings
+  table rendered correctly. Validated all internal section links and two embedded
+  synthetic/reference screenshots. Actual comparison JSON confirms149 paired
+  intervals and two source passports. No mobile result was mislabelled as passed.
+- Published documentation commit `e4f6adccc0e05ec3573f5f74977c8d6b6267430b` on
+  private main with an expected-head check. All72 files fetched and blob-SHA
+  matched. No analytical source/test changes, uploaded data or runtime artifacts
+  included. Documentation-only remote CI not separately observed; local240-test
+  result and historical feature CI remain distinct evidence.
+- This final synchronization record references the observed documentation commit;
+  its own later commit is an audit, not a prediction of its CI. Open findings are
+  documented, not fixed. Original351-task software completion counts are unchanged.

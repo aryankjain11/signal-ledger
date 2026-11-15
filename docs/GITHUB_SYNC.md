@@ -1,18 +1,26 @@
 # GitHub sync status
 
-Updated: 2026-11-06.
+Updated: 2026-11-15.
 
 - Repository: https://github.com/aryankjain11/signal-ledger
 - Visibility: **private**, verified through the GitHub page and connected metadata.
 - Initial branch: `main`.
 - Initial README commit: `bc09670a45e3776f5fcb47b393d93e685974fe63`.
+- **Latest inspection/documentation snapshot: complete and verified.** Commit
+  [`e4f6adccc0e05ec3573f5f74977c8d6b6267430b`](https://github.com/aryankjain11/signal-ledger/commit/e4f6adccc0e05ec3573f5f74977c8d6b6267430b)
+  contains72 reviewed files, all fetched and blob-SHA matched. Adds the thorough
+  platform inspection and human/AI continuation brief; application source and
+  existing tests were unchanged. Fresh local regression:240 passed in99.08s.
+  Runtime probes, real uploads, screenshots and HTML output were excluded.
+  The documentation-only commit's remote CI was not separately observed; feature
+  CI below is previously recorded evidence. This synchronization audit is later.
 - **Latest event-study source: complete and verified.** Commit
   [`d931316367a204664bc618a9e650a47e0cf3f28b`](https://github.com/aryankjain11/signal-ledger/commit/d931316367a204664bc618a9e650a47e0cf3f28b)
   has **70 reviewed files**, each fetched and blob-SHA matched. Repository remains
   private; branch update used the expected previous head. Includes After the pattern,
   causal forward outcomes, complete-window excursions, matched non-event baseline
   coverage, overlap/censoring, occurrence inspection and auditable portable records.
-- **Latest CI:** [run 42098482104](https://github.com/aryankjain11/signal-ledger/actions/runs/42098482104),
+- **Recorded event-study feature CI:** [run 42098482104](https://github.com/aryankjain11/signal-ledger/actions/runs/42098482104),
   job127494694051, **240 passed in15.74 seconds**. Local full regression on2026-11-05:
   **240 passed in92.41 seconds**. Publication/remote verification completed2026-11-06
   Asia/Calcutta. No market-data uploads, runtime JSON/screenshots or credentials
