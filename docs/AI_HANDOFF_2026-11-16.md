@@ -498,6 +498,14 @@ modified README test copy; the copy was restored and reverified. These checks ar
 separate from the historical full336-case application regression. No new numerical
 engine/UI behavior was introduced during this transfer.
 
+Handoff source/documents were then published as
+`ee2244147b72c0c1a8db3b2ca6bda1091355f9c0`, with all91 reviewed files matched
+against the remote tree and an expected-head/no-force branch update. Its fresh
+GitHub run43911784583/job133455309551 passed **336 tests in37.68s** on
+Ubuntu26.04/Python3.13.18; completed job and log were inspected. A later audit
+records this observed result; the final archive's snapshot gives its verified
+publication head. This does not certify the recipient's future environment.
+
 | Test module | Main evidence |
 | --- | --- |
 | `test_engine.py` | Input failures, indicator arithmetic/seeds, pivots/geometry, sizing, original execution/P&L and causal invariance |

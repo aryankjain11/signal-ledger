@@ -1137,3 +1137,20 @@ Handoff local acceptance:
   verified success again. No original project file/data was altered by the probe.
 - Source allow-list/credential scan passes. Final archive will be regenerated after
   observed publication so its checkpoint and all final file hashes are accurate.
+
+Handoff publication acceptance:
+- Published `ee2244147b72c0c1a8db3b2ca6bda1091355f9c0` from expected head0442e369
+  without force;9 new/modified paths,91 reviewed files, no source removals. All
+  final Git tree paths/blob SHAs matched the reviewed local manifest. App, numerical
+  engines, tests, concept/status sources and pinned dependencies unchanged.
+- Fresh GitHub Actions run43911784583/job133455309551 completed successfully:
+  **336 passed in37.68s**, Ubuntu26.04/Python3.13.18. Completed job and decoded
+  log inspected. Local handoff checks remain15 passed in12.03s plus archive/
+  extraction/verifier/negative integrity acceptance; no fresh full local run claimed.
+- Updated this log, full handoff report and sync record with observed evidence.
+  These later documentation changes do not predict their own CI. Final private
+  branch/files and regenerated portable archive are verified before delivery;
+  PROJECT_SNAPSHOT.json records the actual final published head. All necessary
+  source, tests, original brief, reference/roadmap records, starter prompt and next
+  milestone proposal are included. Real uploads, credentials and runtime probes
+  remain excluded. No new feature gate or original phase was marked complete.

@@ -16,6 +16,19 @@ Updated: 2026-11-16.
   **15 passed in12.03s**. Extracted archive verifier and changed-file negative
   check passed. Publication evidence for this later handoff follows once observed;
   the portable snapshot separately records its actual published head.
+- **Handoff publication: complete and verified.** Commit
+  [`ee2244147b72c0c1a8db3b2ca6bda1091355f9c0`](https://github.com/aryankjain11/signal-ledger/commit/ee2244147b72c0c1a8db3b2ca6bda1091355f9c0)
+  contains91 reviewed files;9 new/modified paths, no removed source. All final tree
+  paths/blob SHAs matched the local manifest; each changed blob matched on creation.
+  Main advanced from0442e369 with expected-head/no-force update. No application,
+  financial engine, test, concept/status catalogue or dependency behavior changed.
+- **Handoff CI:** [run43911784583](https://github.com/aryankjain11/signal-ledger/actions/runs/43911784583),
+  job133455309551, completed/successful: **336 passed in37.68s**, Ubuntu26.04 /
+  Python3.13.18. Completed job and decoded log inspected. Local relevant checks:
+ 15 passed in12.03s; archive/verifier integrity and changed-file negative check
+  passed separately. This later documentation audit records the observed handoff
+  source/CI, not its own subsequent CI result. The final portable ZIP is regenerated
+  after the audit, with the verified published head in PROJECT_SNAPSHOT.json.
 - **Latest usability source: complete and verified.** Commit
   [`48c9b9d44f70cec696f8ad53dc49e5b78605fe23`](https://github.com/aryankjain11/signal-ledger/commit/48c9b9d44f70cec696f8ad53dc49e5b78605fe23)
   contains **87 reviewed files**,23 new/modified. All final tree paths/blob SHAs
