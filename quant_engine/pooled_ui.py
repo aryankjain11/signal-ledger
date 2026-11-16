@@ -26,8 +26,9 @@ def _load(symbol, exchange, period):
         return symbol, None, str(exc)
 
 
-@st.cache_data(ttl=3600, show_spinner=False)
-def run_pooled(symbols: tuple, exchange: str, period: str, rule_values: dict):
+@st.cache_data(ttl=3600, show_spinner=False, max_entries=4)
+def load_universe(symbols: tuple, exchange: str, period: str):
+    """Fetch + full analysis for each symbol, shared by the pooled study and the portfolio backtest."""
     with ThreadPoolExecutor(max_workers=6) as pool:
         loaded = list(pool.map(lambda s: _load(s, exchange, period), symbols))
     stocks, failures = {}, []
@@ -37,8 +38,13 @@ def run_pooled(symbols: tuple, exchange: str, period: str, rule_values: dict):
             continue
         analysis = analyze(data, Settings())
         stocks[symbol] = (analysis.frame, analysis.events, {"source_sha256": data.source_hash})
-    result = pooled_study(stocks, StudyRules(**rule_values))
-    return result, failures
+    return stocks, failures
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def run_pooled(symbols: tuple, exchange: str, period: str, rule_values: dict):
+    stocks, failures = load_universe(symbols, exchange, period)
+    return pooled_study(stocks, StudyRules(**rule_values)), failures
 
 
 def _pct(x):

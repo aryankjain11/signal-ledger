@@ -1259,3 +1259,35 @@ Changes:
   one fetch failure). **Null check** on 50 random-walk stocks (5 y, 4,713 events at 10 sessions):
   5 of 66 intervals (8%) excluded zero vs ~10% expected by chance, so the method does not
   manufacture edges. Full suite **377 passed**; browser run of a 50-stock pooled study.
+
+
+## 2026-11-17 · Portfolio strategy backtest with out-of-sample test and random-entry control
+
+GitHub: aryankjain11 connected to Claude; pushes now go directly from the session.
+
+- `portfolio.py`: long-only portfolio simulation of one pattern cohort across a watchlist.
+  Conventions identical to `strategy.backtest` (next-open entry + slippage, per-side costs,
+  ATR stop, R target, gap-through-stop at the open, stop-first when both touched, holding
+  limit, liquidation-cost marking). Portfolio rules: risk % of current equity, position %
+  cap, cash cap, max open positions, one position per stock; excess same-day signals taken
+  by pre-known relative volume then symbol, the rest recorded as skipped.
+  `random_entry_control`: same rules and number of signals on random (stock, day) entries,
+  40 simulations, so a pattern is compared with random entries rather than with zero.
+- `portfolio_ui.py` (new page "Strategy backtest"): load watchlist (shared cached loader with
+  Pattern research) → split (last 30% held out by default) → choose a bullish pattern from a
+  pooled study whose outcomes are measured only up to split − horizon (no training measurement
+  touches test years) → rules → side-by-side training/test metrics, equity vs gross
+  equal-weight buy-and-hold, trades, skipped signals, CSV. Verdict: Held up (test R beats ≥80%
+  of random runs) / Weakened / Failed / No clear edge even in training.
+- Verification (`test_portfolio.py`, 11 tests): hand-computed target trade (500 shares,
+  +2,000, 2.0R); costs + gap-through-stop fill; stop-first when both touched; capacity priority
+  and skip records (this caught a real bug: externally supplied signals were not re-sorted
+  by priority); cash accounting identity; position caps; future bars do not alter earlier
+  trades; split/benchmark; rules validation; deterministic random control; verdict judged
+  against random entries; end-to-end page test. Loop optimisation re-verified by the same tests.
+- Null checks on 50 drifting random walks (5 y): the top training pattern collapsed out of
+  sample, and a zero-based verdict would have called market drift an edge (+0.17R both
+  periods). Against the random-entry control, 0 of the 8 best training patterns were rated
+  "Held up". Full suite **388 passed**; browser run of the full flow on 50 stand-in stocks.
+- Not yet: roadmap/checklist status entries for this feature (learning/roadmap.py) — the
+  generated PROJECT_STATUS is unchanged.

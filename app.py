@@ -28,6 +28,7 @@ from quant_engine.providers import EXCHANGE_SUFFIX, PERIODS, PROVIDER_ADJUSTMENT
 from quant_engine.market_read import market_read
 from quant_engine.scanner_ui import render_scanner
 from quant_engine.pooled_ui import render_pooled_research
+from quant_engine.portfolio_ui import render_portfolio_backtest
 from quant_engine.dashboard_ui import STYLE, render_header, render_market_read, render_timeframes, chart_controls, render_welcome
 import os
 from quant_engine.ui_state import (retained_upload, completed_confirmation,
@@ -61,6 +62,9 @@ with st.sidebar:
 st.query_params["page"] = PAGES[workspace]
 if workspace == "Scanner":
     render_scanner()
+    st.stop()
+if workspace == "Strategy backtest":
+    render_portfolio_backtest()
     st.stop()
 if workspace == "Compare stocks":
     render_comparison()
