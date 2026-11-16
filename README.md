@@ -5,6 +5,16 @@ trading**. This starting build turns a daily OHLCV file into traceable structure
 an annotated chart, a deterministic report and two explicit long strategy experiments.
 It does not claim a demonstrated trading edge.
 
+## Continue with another assistant
+
+Read the [complete project handoff](docs/AI_HANDOFF_2026-11-16.md), including the
+unchanged first prompt, scope evolution, current architecture/rules, evidence,
+remaining work and migration instructions. The [starter prompt](docs/NEXT_ASSISTANT_START_HERE.md)
+and [next-feature specification](docs/NEXT_MILESTONE_STRATEGY_COMPARISON.md) let a
+replacement assistant continue without rebuilding. `scripts/package_handoff.py`
+produces a portable source/documentation ZIP with a complete status snapshot and
+standard-library integrity verifier. The proposed comparison remains unimplemented.
+
 ## Learn while building
 
 Use **Research steps** or the sidebar **Workspace** menu to switch between the research dashboard,

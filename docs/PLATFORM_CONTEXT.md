@@ -2,6 +2,11 @@
 
 Last reviewed: **2026-11-16, Asia/Calcutta**. This is a handoff, not a declaration that the full project is complete. Read [the detailed inspection](PLATFORM_INSPECTION_2026-11-15.md) and [usability follow-up](USABILITY_REVIEW_2026-11-16.md), then verify current source and records before changing implementation.
 
+For transfer to another assistant, start with [the full handoff](AI_HANDOFF_2026-11-16.md)
+and [continuation prompt](NEXT_ASSISTANT_START_HERE.md). They preserve the first
+prompt, scope changes, exact current rules, setup and proposed next comparison gate.
+The original attachment and `ORIGINAL_BRIEF.md` were verified byte-identical.
+
 ## Product identity and purpose
 
 Signal Ledger is intended to become an interpretable quantitative technical-analysis and strategy-research platform. Its central promise is to connect data, observable structure, historical evidence, exact conditional strategies, risk and clear explanations. The original brief calls it an AI-powered engine, but the current software is deterministic and does not have a connected LLM or trained model.
@@ -13,7 +18,7 @@ The initial user is an individual researching Indian-stock swing setups from com
 - Local Python/Streamlit application, loopback address `http://127.0.0.1:8501/`.
 - Workspace folder: `C:/Users/aryan/OneDrive/Documents/ChatGPT/Projects to Build/quant-research-engine`.
 - Private source repository: [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
-- Audited pre-report commit: `6a64fed3f28fa397ed889417eb84fa73d911eb9f`; all 70 source files matched that snapshot during the inspection. A later documentation commit adds this brief/report.
+- Historical inspection baseline: `6a64fed3f28fa397ed889417eb84fa73d911eb9f` (70 files). Latest verified pre-handoff main: `0442e36912ca37bcb34d03760b61d82280745a55` (87 files); later handoff docs/packager are separately identified in the portable snapshot. Source/CI evidence is in `GITHUB_SYNC.md`.
 - Current implementation status: useful exploratory research prototype, not a finished trading terminal or empirically validated prediction service.
 - Five workspaces: Research dashboard; After the pattern; Compare two stocks; Education and Concepts; Build checklist & log.
 - No public hosting, automatic ticker retrieval, live market feed, saved research database or live order integration is implemented.

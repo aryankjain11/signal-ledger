@@ -4,6 +4,14 @@ Updated: 2026-11-16. This is a living project report. The chronological record i
 `WORK_LOG.md`; the comprehensive status list is `MASTER_CHECKLIST.md`. Neither is
 a claim of profitable trading or of the learner having mastered the material.
 
+Continuation deliverables ·2026-11-16: `AI_HANDOFF_2026-11-16.md` consolidates the
+original vision, scope changes, exact current features/rules, architecture, limits,
+verification and migration. `NEXT_ASSISTANT_START_HERE.md` is a ready-to-paste
+continuation request; `NEXT_MILESTONE_STRATEGY_COMPARISON.md` is a proposed gate,
+not implemented functionality. A portable ZIP builder includes all reviewed source,
+tests, synthetic data, original brief, a full machine-readable task/phase snapshot
+and read-only integrity verifier. Application/catalogue counts are unchanged.
+
 ## Latest increment · researcher workflow and usability audit
 
 The 15–16 November audit repaired lost replay/comparison/rule context and upload

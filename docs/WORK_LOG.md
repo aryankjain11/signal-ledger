@@ -1083,3 +1083,57 @@ Usability publication acceptance ·2026-11-16:
   fair declared strategy comparison, then independent validation and durable saved
   research. Original43 bullets8 Done/20 Partial/15 Planned;361 expanded tasks
   54 Done/48 Partial/247 Planned/12 Optional. Exercises remain paused.
+
+## 2026-11-16 · complete context and portable handoff for another assistant
+
+- Owner request: preserve the entire project context for another AI assistant as
+  the current subscription ends; refer to the first prompt, original vision,
+  changes, work done, remaining work and deliver all necessary continuation files.
+  This increment prepares the transfer; it does not implement the next strategy
+  feature or change numerical behavior.
+- Read original brief/attachment, current architecture/source/settings/specs,
+  phase/task/concept catalogues, chronological log and publication record.
+  Original attachment and `docs/ORIGINAL_BRIEF.md` are byte-identical:50,000 bytes,
+  SHA256 f2c7c3286b7fcd14725b2412f8af5a3dcbad227de38a509626a437173442f160.
+- Independently verified private repository main at0442e36912ca37bcb34d03760b61d82280745a55,
+  matching all87 local reviewed files before edits. Its push run43749507116 was
+  observed completed/successful; no new test count inferred without its log.
+  Accepted application evidence remains local336/211.85s and source CI336/57.30s.
+- Added detailed `AI_HANDOFF_2026-11-16.md`: original section-by-section vision,
+  owner steering/timeline, exact current inputs/indicators/timing/strategies/research,
+  five-page user journey, architecture/source map, tests, repaired/open issues,
+  remaining43-phase/361-task scope, safe data/privacy boundaries, setup/migration
+  and instructions for a replacement assistant. Historical notes distinguished
+  from current scope; no fabricated complete chat transcript or learner mastery.
+- Added `NEXT_ASSISTANT_START_HERE.md` with a reusable continuation prompt and
+  reading/verification order. Added `NEXT_MILESTONE_STRATEGY_COMPARISON.md` as an
+  explicitly unimplemented proposal: frozen engines, common protocol and coverage,
+  warm-up/evaluation/cutoff policies, immutable evidence, metrics and acceptance.
+- Added standard-library `scripts/package_handoff.py` using the existing reviewed
+  source allow-list/credential scan. Builds a dated portable ZIP with project
+  source/tests/synthetic/docs, startup guide, full machine-readable roadmap/phase/
+  concept index and source hashes, source/package manifests and read-only verifier.
+  Excludes environments, credentials, real uploads, licensed data and runtime output.
+  Source snapshot does not include Git history; private repository retains it.
+- Refreshed README/current build/context entry points. No financial engine, app UI,
+  dependency pin, shared status or concept content changed. Remains131 concepts,
+  361 tasks54/48/247/12; original43 bullets8/20/15. Exercises remain paused.
+- Preliminary package:91 reviewed source files,96 members. ZIP integrity and every
+  payload SHA256 passed. Final contents/digest are regenerated after verification
+  and publication; no preliminary archive hash is claimed as the final artifact.
+- Next: verify extracted portable checker, relevant documentation checks, reviewed
+  private publication and final branch/tree/package identities; then deliver the
+  archive/report/prompt/spec. Recipient must verify its own environment and any
+  later owner edits before building. Detailed financial research validation remains
+  separate from software acceptance and from the archive's integrity checks.
+
+Handoff local acceptance:
+- Relevant documentation/reference regression: **15 passed in12.03s**. No financial
+  or app behavior changed, so the earlier full336-case acceptance remains separately
+  dated evidence rather than a fabricated new full run.
+- Rebuilt/extracted91-source-file,96-member ZIP. Standalone read-only verifier
+  checked95 manifest payload files successfully. Deliberately changed the extracted
+  README only: verifier returned failure and named that path. Restored bytes and
+  verified success again. No original project file/data was altered by the probe.
+- Source allow-list/credential scan passes. Final archive will be regenerated after
+  observed publication so its checkpoint and all final file hashes are accurate.
