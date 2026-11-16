@@ -1,6 +1,6 @@
-# Tested on Python 3.13.7. Direct dependencies pinned for this starting release.
+# Tested on Python 3.13; every pin has binary wheels for Python 3.11-3.14 (Streamlit Cloud default may be 3.14).
 numpy==2.3.3
-pandas==2.3.2
+pandas==2.3.3
 plotly==6.9.0
 streamlit==1.66.1
 openpyxl==3.1.5
