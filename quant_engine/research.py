@@ -216,3 +216,77 @@ def momentum_analysis(frame, pivots):
                     "price": second.price, "direction": direction, "coordinates": [[first.timestamp, first.price], [second.timestamp, second.price]],
                     "evidence": f"Price {first.price:.4f} → {second.price:.4f}; {label} {a:.4f} → {b:.4f}, on 5–60-bar-separated pivots. Available only after second-pivot confirmation; reversal not guaranteed.", "rule_version": RULE_VERSION})
     return {"facts": facts, "interpretation": interpretation, "rule_version": RULE_VERSION}, events
+
+
+def head_shoulders(frame, pivots, shoulder_tolerance_atr=1.0, head_margin_atr=0.5, expiry=40):
+    """Head-and-shoulders (bearish) and inverse (bullish) from five alternating confirmed pivots.
+
+    Shape: shoulder · trough · head · trough · shoulder (mirrored for inverse). The
+    formation is knowable only when the right shoulder pivot is confirmed. The
+    neckline through the two intervening pivots is frozen at that moment; later
+    breaks are judged against that frozen line. No refit with later data.
+    """
+    events, ordered = [], sorted(pivots, key=lambda p: p.index)
+    for direction, outer in ((-1, "high"), (1, "low")):
+        name = "Head and shoulders" if direction == -1 else "Inverse head and shoulders"
+        for j in range(len(ordered) - 4):
+            seq = ordered[j:j + 5]
+            kinds = [p.kind for p in seq]
+            inner = "low" if outer == "high" else "high"
+            if kinds != [outer, inner, outer, inner, outer]:
+                continue
+            ls, t1, head, t2, rs = seq
+            known = rs.confirmed_at
+            if known >= len(frame):
+                continue
+            atr = float(frame.atr_14.iloc[known])
+            span = rs.index - ls.index
+            if not np.isfinite(atr) or atr <= 0 or not 10 <= span <= 150:
+                continue
+            sign = -direction  # +1 when the outer points are highs
+            if sign * (head.price - max(ls.price, rs.price, key=lambda x: sign * x)) < head_margin_atr * atr:
+                continue
+            if abs(ls.price - rs.price) > shoulder_tolerance_atr * atr:
+                continue
+            # Rough symmetry: neither shoulder-to-head leg more than 2.5x the other.
+            left, right = head.index - ls.index, rs.index - head.index
+            if max(left, right) > 2.5 * min(left, right):
+                continue
+            slope = (t2.price - t1.price) / (t2.index - t1.index)
+            neck = lambda i: t1.price + slope * (i - t1.index)
+            depth = sign * (head.price - neck(head.index))
+            if depth < 1.5 * atr or abs(slope) * span > depth:  # neckline must be flatter than the pattern is deep
+                continue
+            # The pattern is void if price already closed through the neckline before it was knowable.
+            if any(sign * (frame.close.iloc[i] - neck(i)) < -0.1 * atr for i in range(rs.index, known)):
+                continue
+            base = {"id": f"hs-{outer}-{ls.index}-{rs.index}", "family": "chart", "name": name,
+                "formed_at": rs.timestamp, "formation_start": ls.timestamp, "direction": direction,
+                "coordinates": [[p.timestamp, p.price] for p in seq], "rule_version": RULE_VERSION,
+                "neckline": float(neck(known)),
+                "measured_move": float(depth),
+                "geometry": {"head_margin_atr": float(sign * (head.price - max(ls.price, rs.price, key=lambda x: sign * x)) / atr),
+                    "shoulder_difference_atr": float(abs(ls.price - rs.price) / atr), "neckline_slope_per_observation": float(slope),
+                    "depth_atr": float(depth / atr), "span": int(span), "reference_atr": atr},
+                "evidence": f"Five alternating confirmed pivots; head beyond both shoulders by >= {head_margin_atr} ATR; shoulders within {shoulder_tolerance_atr} ATR; "
+                            f"neckline frozen at right-shoulder confirmation; break needs a close 0.1 ATR through the neckline. Measured move {depth:.2f} is a reference distance, not a forecast."}
+            for i in range(known, min(len(frame), known + expiry + 1)):
+                close = float(frame.close.iloc[i])
+                level = float(neck(i))
+                status = None
+                if sign * (close - head.price) > 0:
+                    status = "Invalidated: beyond head"
+                elif sign * (level - close) > 0.1 * atr:
+                    status = "Confirmed neckline break"
+                elif i == known + expiry:
+                    status = "Expired"
+                elif i == known:
+                    status = "Developing"
+                if status:
+                    events.append({**base, "status": status, "index": i, "detected_at": _date(frame, i),
+                        "price": float(frame.high.iloc[i]), "level": level,
+                        "boundary_coordinates": {"neckline": [[t1.timestamp, t1.price], [_date(frame, i), level]]},
+                        **({"measured_target": level - sign * depth} if status == "Confirmed neckline break" else {})})
+                    if status != "Developing":
+                        break
+    return sorted(events, key=lambda e: (e["index"], e["id"]))

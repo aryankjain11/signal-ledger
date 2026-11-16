@@ -30,26 +30,61 @@ def clip_geometry(points, start, end):
     return output
 
 
-def chart_window_caption(analysis):
-    frame = analysis.frame.iloc[-250:]
+def equity_chart(equity: pd.DataFrame) -> go.Figure:
+    """Equity (scaled to its own range, not from zero) with drawdown below."""
+    fig = make_subplots(rows=2, cols=1, shared_xaxes=True, row_heights=[0.7, 0.3], vertical_spacing=0.05)
+    fig.add_trace(go.Scatter(x=equity.index, y=equity.equity, name="Equity (INR)", line=dict(color=GREEN, width=1.8)), row=1, col=1)
+    peak = equity.equity.cummax()
+    drawdown = 100 * (equity.equity / peak - 1)
+    fig.add_trace(go.Scatter(x=equity.index, y=drawdown, name="Drawdown (%)", fill="tozeroy",
+                             line=dict(color=RED, width=1), fillcolor="rgba(255,107,130,0.25)"), row=2, col=1)
+    fig.update_yaxes(title_text="Equity (INR)", row=1, col=1, gridcolor="#202c40")
+    fig.update_yaxes(title_text="Drawdown %", row=2, col=1, gridcolor="#202c40")
+    fig.update_layout(height=420, template="plotly_dark", paper_bgcolor="#101a2b", plot_bgcolor="#101a2b",
+                      margin=dict(l=12, r=12, t=20, b=10), showlegend=False, hovermode="x unified")
+    return fig
+
+
+def _window(analysis, window):
+    return analysis.frame if window is None else analysis.frame.iloc[-window:]
+
+
+def chart_window_caption(analysis, window=250):
+    frame = _window(analysis, window)
     return (f"Showing {len(frame):,} of {len(analysis.frame):,} observations · "
             f"{frame.index[0].date()}–{frame.index[-1].date()}. "
-            "Geometry is clipped to this view; full formation coordinates remain in the evidence. "
-            "Pivots are plotted at formation; hover shows when they became knowable. "
-            "Shaded zones describe this as-of snapshot, not historical signals.")
+            "Circles mark confirmed swing highs (red) and lows (green) at formation; hover shows when each became knowable. "
+            "Shaded bands are current support (green) and resistance (red) zones. Dashed blue lines are pattern geometry; dotted purple are pattern boundaries / necklines; yellow diamonds are candlestick observations.")
 
 
-def price_chart(analysis: Analysis, show_bands: bool = False) -> go.Figure:
-    frame = analysis.frame.iloc[-250:]
+OVERLAY_SPEC = {"EMA20": [("ema_20", BLUE, "solid")], "EMA50": [("ema_50", "#f6c86a", "solid")],
+                "SMA200": [("sma_200", "#e48cff", "solid")],
+                "Donchian 20": [("donchian_high_20", "#8fa3c0", "dot"), ("donchian_low_20", "#8fa3c0", "dot")],
+                "Keltner": [("keltner_upper", "#5fc4d8", "dash"), ("keltner_lower", "#5fc4d8", "dash")],
+                "VWAP 20": [("vwap_20", "#ffa66b", "solid")]}
+
+
+def price_chart(analysis: Analysis, show_bands: bool = False, overlays=None, lower: str = "RSI",
+                window: int | None = 250) -> go.Figure:
+    overlays = ["EMA20", "EMA50"] if overlays is None else overlays
+    frame = _window(analysis, window)
     start, end = frame.index[0], frame.index[-1]
     fig = make_subplots(rows=3, cols=1, shared_xaxes=True,
                         row_heights=[0.65, 0.18, 0.17], vertical_spacing=0.035)
     fig.add_trace(go.Candlestick(x=frame.index, open=frame.open, high=frame.high,
                                  low=frame.low, close=frame.close, name="Daily OHLC",
                                  increasing_line_color=GREEN, decreasing_line_color=RED), row=1, col=1)
-    for column, color, label in (("ema_20", BLUE, "EMA20"), ("ema_50", "#f6c86a", "EMA50")):
-        fig.add_trace(go.Scatter(x=frame.index, y=frame[column], name=label,
-                                 line=dict(color=color, width=1.4)), row=1, col=1)
+    for label in overlays:
+        if label == "Supertrend" and "supertrend" in frame:
+            for direction, color in ((1, GREEN), (-1, RED)):
+                fig.add_trace(go.Scatter(x=frame.index, y=frame.supertrend.where(frame.supertrend_dir == direction),
+                                         name=f"Supertrend {'up' if direction == 1 else 'down'}", connectgaps=False,
+                                         line=dict(color=color, width=1.6)), row=1, col=1)
+            continue
+        for column, color, dash in OVERLAY_SPEC.get(label, []):
+            if column in frame:
+                fig.add_trace(go.Scatter(x=frame.index, y=frame[column], name=label, showlegend=column.endswith(("20", "50", "200")) or "upper" in column or "high" in column,
+                                         line=dict(color=color, width=1.3, dash=dash)), row=1, col=1)
     if show_bands:
         for column in ("bb_upper", "bb_lower"):
             fig.add_trace(go.Scatter(x=frame.index, y=frame[column], name=column,
@@ -99,12 +134,8 @@ def price_chart(analysis: Analysis, show_bands: bool = False) -> go.Figure:
     colors = [GREEN if c >= o else RED for c, o in zip(frame.close, frame.open)]
     fig.add_trace(go.Bar(x=frame.index, y=frame.volume, name="Volume", marker_color=colors,
                          opacity=0.65, showlegend=False), row=2, col=1)
-    fig.add_trace(go.Scatter(x=frame.index, y=frame.rsi_14, name="RSI14",
-                             line=dict(color=BLUE, width=1.5), showlegend=False), row=3, col=1)
-    for level in (30, 70):
-        fig.add_hline(y=level, line_dash="dot", line_color="#576579", row=3, col=1)
-    fig.update_yaxes(range=[0, 100], row=3, col=1)
-    fig.update_layout(height=720, template="plotly_dark", paper_bgcolor="#101a2b",
+    _lower_panel(fig, frame, lower)
+    fig.update_layout(height=760, template="plotly_dark", paper_bgcolor="#101a2b",
                       plot_bgcolor="#101a2b", margin=dict(l=12, r=12, t=45, b=10),
                       legend=dict(orientation="h", y=1.02, yanchor="bottom", x=0, font=dict(size=10)),
                       hovermode="x unified", xaxis_rangeslider_visible=False)
@@ -112,3 +143,39 @@ def price_chart(analysis: Analysis, show_bands: bool = False) -> go.Figure:
     fig.update_xaxes(showgrid=False, range=[start-pd.Timedelta(hours=12), end+pd.Timedelta(hours=12)], autorange=False)
     fig.update_yaxes(gridcolor="#202c40")
     return fig
+
+
+def _lower_panel(fig, frame, lower):
+    def line(column, name, color, width=1.5):
+        if column in frame:
+            fig.add_trace(go.Scatter(x=frame.index, y=frame[column], name=name, showlegend=False,
+                                     line=dict(color=color, width=width)), row=3, col=1)
+    def guides(levels, bounded=None):
+        for level in levels:
+            fig.add_hline(y=level, line_dash="dot", line_color="#576579", row=3, col=1)
+        if bounded:
+            fig.update_yaxes(range=bounded, row=3, col=1)
+    if lower == "MACD" and "macd" in frame:
+        hist = frame.macd_histogram
+        fig.add_trace(go.Bar(x=frame.index, y=hist, name="MACD histogram", showlegend=False,
+                             marker_color=[GREEN if v >= 0 else RED for v in hist.fillna(0)], opacity=.6), row=3, col=1)
+        line("macd", "MACD", BLUE)
+        line("macd_signal", "Signal", "#f6c86a", 1.2)
+    elif lower == "ADX / DI":
+        line("adx_14", "ADX14", "#e8eef8", 1.8)
+        line("plus_di_14", "+DI", GREEN, 1.2)
+        line("minus_di_14", "−DI", RED, 1.2)
+        guides([20, 25])
+    elif lower == "Stochastic":
+        line("stoch_k_14", "%K14", BLUE)
+        line("stoch_d_3", "%D3", "#f6c86a", 1.2)
+        guides([20, 80], [0, 100])
+    elif lower == "MFI":
+        line("mfi_14", "MFI14", "#ffa66b")
+        guides([20, 80], [0, 100])
+    elif lower == "OBV":
+        line("obv", "OBV", "#8fa3c0")
+    else:
+        line("rsi_14", "RSI14", BLUE)
+        guides([30, 70], [0, 100])
+    fig.update_yaxes(title_text=lower, title_font=dict(size=10), row=3, col=1)

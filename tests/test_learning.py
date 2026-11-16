@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def education_app():
     app = AppTest.from_file(str(ROOT / "app.py"), default_timeout=30).run()
-    app.selectbox(key="workspace_page").set_value("Education and Concepts").run()
+    app.radio(key="workspace_page").set_value("Learn").run()
     assert not app.exception
     return app
 
@@ -61,7 +61,7 @@ def test_rsi_teaching_rejects_invalid_averages(gain, loss):
 
 def test_education_page_search_lab_and_quiz_flow():
     app = education_app()
-    assert app.title[0].value == "Education and Concepts"
+    assert app.title[0].value == "Learn"
     app.text_input(key="concept_search").set_value("Evening Star").run()
     assert not app.exception
     assert app.selectbox(key="chosen_concept").value == "evening-star"
@@ -81,7 +81,10 @@ def test_no_result_search_and_build_journal_navigation():
     app = education_app()
     app.text_input(key="concept_search").set_value("zzzzz-no-entry").run()
     assert any("No matching concepts" in w.value for w in app.warning)
-    app.selectbox(key="workspace_page").set_value("Build checklist & log").run()
+    # The developer checklist is no longer in the main navigation; it stays reachable at ?page=build.
+    app = AppTest.from_file(str(ROOT / "app.py"), default_timeout=30)
+    app.query_params["page"] = "build"
+    app.run()
     assert not app.exception
     assert app.title[0].value == "Build checklist and journal"
     app.selectbox(key="build_stage").set_value("S05").run()

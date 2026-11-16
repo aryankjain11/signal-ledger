@@ -324,9 +324,9 @@ def test_real_engine_catalogue_runs_and_records_are_finite_and_chartable():
 
 def test_event_study_workspace_filters_replay_and_export_ui():
     app = AppTest.from_file(str(ROOT / "app.py"), default_timeout=60).run()
-    app.selectbox(key="workspace_page").set_value("After the pattern").run()
+    app.radio(key="workspace_page").set_value("Pattern research").run()
     assert not app.exception
-    assert app.title[0].value == "After the pattern"
+    assert app.title[0].value == "Pattern research"
     assert any(t.label == "Inspect an occurrence" for t in app.tabs)
     assert any(m.label == "Included occurrences" and int(m.value) > 0 for m in app.metric)
     assert any("pattern-outcomes/1" in j.value for j in app.json)

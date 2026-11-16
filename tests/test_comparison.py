@@ -85,8 +85,8 @@ def test_synthetic_pair_deterministic_and_finite():
 
 def test_comparison_page_synthetic_pair_and_period_replay():
     app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=45).run()
-    app.selectbox(key="workspace_page").set_value("Compare two stocks").run()
-    assert not app.exception and app.title[0].value == "Compare two stocks"
+    app.radio(key="workspace_page").set_value("Compare stocks").run()
+    assert not app.exception and app.title[0].value == "Compare stocks"
     assert any(m.label == "Matched return intervals" and m.value == "149" for m in app.metric)
     app.number_input(key="correlation_window").set_value(10).run()
     assert not app.exception
@@ -108,7 +108,7 @@ def test_two_native_nse_uploads_work_without_manual_cleanup(monkeypatch):
         return uploaded
     monkeypatch.setattr(st, "file_uploader", uploader)
     app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=45).run()
-    app.selectbox(key="workspace_page").set_value("Compare two stocks").run()
+    app.radio(key="workspace_page").set_value("Compare stocks").run()
     app.radio(key="comparison_mode").set_value("Upload two stocks").run()
     app.checkbox(key="compare_complete").check().run()
     assert not app.exception

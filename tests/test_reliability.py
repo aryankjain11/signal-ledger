@@ -145,9 +145,9 @@ def test_saved_ui_survives_overlay_and_navigation_and_marks_changed_costs_stale(
     app.button(key='run_baseline').click().run()
     assert not any('out of date' in w.value for w in app.warning)
     app.button(key='reference_rsi').click().run()
-    assert app.selectbox(key='workspace_page').value=='Education and Concepts'
+    assert app.radio(key='workspace_page').value=='Learn'
     assert app.selectbox(key='chosen_concept').value=='rsi'
-    app.selectbox(key='workspace_page').set_value('Research dashboard').run()
+    app.radio(key='workspace_page').set_value('Analyze').run()
     assert not app.exception
     assert any(m.label=='Completed trades' for m in app.metric)
     assert next(n for n in app.number_input if n.label=='Estimated total charges per side (bps)').value == 25.
@@ -159,7 +159,7 @@ def test_saved_ui_survives_overlay_and_navigation_and_marks_changed_costs_stale(
 def test_outcome_and_baseline_navigation_links_and_requested_cohort():
     app = AppTest.from_file(str(ROOT/'app.py'),default_timeout=60).run()
     app.button(key='explore_outcomes').click().run()
-    assert app.title[0].value=='After the pattern'
+    assert app.title[0].value=='Pattern research'
     cohort = next(c for c in app.multiselect(key='study_cohorts').value if 'Retest held' in c)
     app.session_state['requested_study_cohort'] = cohort
     app.session_state['requested_study_direction'] = 1
@@ -167,7 +167,7 @@ def test_outcome_and_baseline_navigation_links_and_requested_cohort():
     assert app.multiselect(key='study_cohorts').value == [cohort]
     app.button(key='study_to_baseline').click().run()
     assert not app.exception
-    assert app.selectbox(key='workspace_page').value=='Research dashboard'
+    assert app.radio(key='workspace_page').value=='Analyze'
     assert app.button(key='run_baseline')
 
 

@@ -1154,3 +1154,58 @@ Handoff publication acceptance:
   source, tests, original brief, reference/roadmap records, starter prompt and next
   milestone proposal are included. Real uploads, credentials and runtime probes
   remain excluded. No new feature gate or original phase was marked complete.
+
+## 2026-11-16 · Product pass: ticker data, Market read, H&S, navigation (new assistant)
+
+Context: owner moved the project to a new assistant and asked for a fundamental
+inspection, decluttering and feature progress toward the original brief.
+
+Baseline verified first: handoff archive integrity OK; fresh environment
+(Python 3.13.18, pinned deps); **336 passed**; all five pages loaded in a real browser
+with no exceptions.
+
+Assessment: engines (causal timing, costs/gaps, no invented probabilities) are sound.
+Effort had drifted toward process documentation; user-facing gaps vs brief §2/§7/§14:
+no ticker entry (the "Research label" box looked like one but fetched nothing), no
+bullish/bearish/conflicting summary, no head-and-shoulders (acceptance criterion 8),
+limited indicator catalogue, developer checklist exposed as a user page, heavy caveats.
+
+Changes:
+- `quant_engine/providers.py`: ticker → Yahoo Finance (yfinance 0.2.66) daily history,
+  NSE/BSE suffix mapping, invalid-price rows dropped and counted (never filled),
+  still-forming session excluded before 18:00 IST, rounding-only OHLC containment
+  (<0.0001%) disclosed, then the normal `load_bars` validation/passport path.
+  Declared basis "Split-adjusted by provider; dividends not adjusted" (added to the
+  passport allow-list; corporate-action adjustment stays blocked so splits are not applied twice).
+- `indicators.py`: ADX/±DI, Supertrend(10,3), Donchian20, Keltner(EMA20±2ATR) and
+  squeeze flag, A/D line, CMF20, MFI14, rolling VWAP20, Williams %R, CCI20, Stoch RSI,
+  20-session annualized volatility, ATR %, 52-week high/low. ADX, +DI, CCI, MFI,
+  Williams %R and CMF matched the independent `ta` library to ≤5e-10 after warm-up.
+- `research.head_shoulders`: H&S and inverse from five alternating confirmed pivots;
+  knowable at right-shoulder confirmation; neckline frozen then; developing →
+  confirmed break / invalidated beyond head / expired (40). Flows into Pattern research.
+- `market_read.py`: one vote per family (structure, trend, momentum, volume flow,
+  weekly, recent patterns); correlated indicators combined inside a family first;
+  ADX/stretch/volatility shown as non-voting context; verdict labelled heuristic,
+  `probability=None`. Key levels with % and ATR distances. Added to the report.
+- UI: four pages (Analyze · Pattern research · Compare stocks · Learn); developer
+  checklist only at `?page=build`. Data source: Fetch by ticker (default) / Upload /
+  Demo / NSE reports (demo reports now a checkbox). Header + Market read first; chart
+  overlays, lower-panel selector and range control; equity curves scaled to their
+  range with drawdown; Compare can fetch two tickers; duplicate sections and
+  repeated caveats removed; Streamlit deploy toolbar hidden; friendlier fetch errors.
+  Data/Settings sidebar shown only where it applies.
+- Tests: `test_providers.py` (13, incl. offline AppTests with stand-in provider),
+  `test_extended_analysis.py` (7: causality on truncated data, ranges, H&S lifecycle
+  and no-repaint, market-read invariants). `conftest.py` defaults app tests to demo
+  data and clears st.cache_data per test. Existing tests updated only for renamed
+  labels/widgets; no numerical expectation was changed.
+
+Verification: **356 passed** locally. Browser walkthrough of every tab/page, both
+backtests, round trip Analyze→Learn→Analyze (source and saved backtest retained).
+Limitation: live Yahoo fetch could not be exercised from the build sandbox (no
+outbound access); first live run on the owner's machine is the remaining check.
+
+Next: multi-timeframe confirmation inside the Market read; flags/wedges/cup-and-handle;
+cross-stock pattern database (run Pattern research over a watchlist) for larger samples;
+fair baseline-vs-retest comparison; persistent analysis history.

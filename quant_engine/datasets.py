@@ -35,7 +35,8 @@ def attach_passport(data: ValidatedData, *, instrument: Instrument, provider: st
                     input_format: str, adjustment: str, sources: list[dict],
                     is_synthetic: bool = False, source_hash_kind: str = "raw-file SHA-256",
                     coverage: dict | None = None, normalization: dict | None = None) -> ValidatedData:
-    allowed = {"Unknown / unverified", "Consistently adjusted OHLC", "Unadjusted OHLC", "Synthetic example"}
+    allowed = {"Unknown / unverified", "Consistently adjusted OHLC", "Unadjusted OHLC", "Synthetic example",
+               "Split-adjusted by provider; dividends not adjusted"}
     if adjustment not in allowed:
         raise ValueError("Unsupported adjustment declaration.")
     normalized_hash = sha256(canonical_bars_bytes(data.bars)).hexdigest()

@@ -1,3 +1,4 @@
+import os
 import json
 from copy import deepcopy
 
@@ -9,18 +10,50 @@ from .analysis import analyze, json_safe
 from .charts import price_chart
 from .comparison import compare_stocks, synthetic_pair
 from .data import load_bars
+from .providers import EXCHANGE_SUFFIX, PERIODS, PROVIDER_ADJUSTMENT, fetch_daily
 from .datasets import Instrument, attach_passport
 from .models import Settings
 from .ui_state import retained_upload, completed_confirmation, date_control, reset_dates, workspace_tabs
 
 
+@st.cache_data(ttl=3600, show_spinner="Fetching daily history…")
+def _cached_fetch(symbol, exchange, period):
+    return fetch_daily(symbol, exchange, period)
+
+
 def render_comparison():
-    st.title("Compare two stocks")
+    st.title("Compare stocks")
     st.write("Compare price performance, risk, momentum and return correlation over the same observation window.")
-    mode = st.radio("Comparison data", ["Synthetic pair", "Upload two stocks"], key="comparison_mode", horizontal=True, persist_state="session")
+    modes = ["Fetch two tickers", "Synthetic pair", "Upload two stocks"]
+    default = 1 if os.environ.get("SIGNAL_LEDGER_DEFAULT_SOURCE") == "Demo data" else 0
+    mode = st.radio("Comparison data", modes, index=default, key="comparison_mode", horizontal=True, persist_state="session")
     data, labels = [], []
     synthetic = mode == "Synthetic pair"
-    if synthetic:
+    if mode == "Fetch two tickers":
+        cols = st.columns([2, 2, 1, 1])
+        first = cols[0].text_input("Stock A", "HDFCBANK", key="compare_ticker_A", persist_state="session")
+        second = cols[1].text_input("Stock B", "ICICIBANK", key="compare_ticker_B", persist_state="session")
+        exchange = cols[2].selectbox("Exchange", list(EXCHANGE_SUFFIX), key="compare_exchange", persist_state="session")
+        period = cols[3].selectbox("History", list(PERIODS), index=1, key="compare_period", persist_state="session")
+        if not first.strip() or not second.strip():
+            st.info("Enter two tickers to compare.")
+            return
+        for ticker in (first, second):
+            try:
+                fetched = _cached_fetch(ticker, exchange, period)
+            except ValueError as exc:
+                st.error(f"Couldn't load {ticker.strip().upper()}. Check the symbol and your connection, or switch to Synthetic pair / Upload.")
+                with st.expander("Technical details"):
+                    st.code(str(exc), language=None)
+                return
+            loaded = load_bars(fetched.csv_bytes, f"{fetched.provider_symbol}.csv")
+            attach_passport(loaded, instrument=Instrument(fetched.exchange if fetched.exchange != "As typed" else "Unknown", fetched.provider_symbol),
+                provider="Yahoo Finance via yfinance", input_format="Provider daily history", adjustment=PROVIDER_ADJUSTMENT,
+                sources=[{"name": f"{fetched.provider_symbol}.csv", "sha256": loaded.source_hash}])
+            data.append(loaded)
+            labels.append(fetched.display_symbol)
+        st.caption(f"Daily candles from Yahoo Finance · {PROVIDER_ADJUSTMENT.lower()}. Price returns only (no dividends).")
+    elif synthetic:
         st.info("SYNTHETIC PAIR · DEMO-A and DEMO-B are invented observations. Business dates are a fixture, not an exchange calendar.")
         inputs = list(zip(("DEMO-A", "DEMO-B"), synthetic_pair()))
         for label, content in inputs:

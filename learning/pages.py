@@ -22,7 +22,7 @@ def rsi_from_averages(gain, loss):
 
 
 def render_education(root: Path):
-    st.title("Education and Concepts")
+    st.title("Learn")
     st.write("Learn the idea, work through an example, then inspect how the application uses it.")
     st.caption(f"{len(CONCEPTS)} searchable entries · hypothetical examples · explicit implementation status")
     st.info("Knowing a pattern's name is different from having a detector, a strategy, or evidence that it works. Each entry tells you what is actually implemented.")

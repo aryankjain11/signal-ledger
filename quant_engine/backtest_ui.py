@@ -38,7 +38,8 @@ def render_backtest(analysis, data, settings, symbol, adjustment):
     d.metric("Historical win rate", f"{metrics['historical_win_fraction']:.1%}" if metrics["trades"] else "Unavailable")
     equity = pd.DataFrame(record["equity"])
     equity["date"] = pd.to_datetime(equity.date)
-    st.line_chart(equity.set_index("date")[["equity"]])
+    from .charts import equity_chart
+    st.plotly_chart(equity_chart(equity.set_index("date")), width="stretch")
     st.caption(f"Gross close-to-close buy & hold: {metrics['gross_buy_hold_return']:.2%}; different exposure and no costs. Equity includes estimated liquidation costs while a position is open.")
     if record["trades"]:
         trades=pd.DataFrame(record["trades"])

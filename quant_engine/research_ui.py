@@ -30,7 +30,7 @@ def render_research(analysis):
                         (name == "Chart patterns" and e["name"].startswith("Double")) or
                         (name == "Candlestick context" and "family" not in e and not e["name"].startswith("Double"))]
             if name == "Momentum / divergence":
-                st.dataframe(pd.DataFrame(analysis.momentum["facts"]), hide_index=True, width="stretch")
+                st.dataframe(pd.DataFrame(analysis.momentum["facts"]).rename(columns={"measure": "Measure", "value": "Latest value", "state": "State"}), hide_index=True, width="stretch")
                 for text in analysis.momentum["interpretation"]:
                     st.write(text)
                 fig = go.Figure()
@@ -40,7 +40,7 @@ def render_research(analysis):
                 st.plotly_chart(fig, width="stretch")
                 st.caption("Divergences require two confirmed price pivots; the second pivot's confirmation delay is preserved. No current RSI value is substituted for historical pivot RSI.")
             if name == "Chart patterns":
-                st.caption("Supported: double top/bottom, rectangle, ascending/descending/symmetrical triangles. Six alternating confirmed anchors and frozen fitted boundaries define the new families. Other named patterns remain planned.")
+                st.caption("Supported: double top/bottom, head-and-shoulders and inverse, rectangle, ascending/descending/symmetrical triangles. Each uses confirmed swing points and boundaries frozen when the pattern became knowable. Flags, wedges and cup-and-handle are planned.")
             if name == "Candlestick context":
                 st.caption("Added: Hammer, Hanging man, Inverted hammer, Shooting star, Morning Star and Evening Star. New observations require a preceding trend; star variants do not require a gap. Existing doji/engulfing observations remain geometry-only.")
             if not selected:
@@ -50,7 +50,9 @@ def render_research(analysis):
             for event in sorted(selected, key=lambda e: (e["detected_at"], e["index"])):
                 latest[event["id"]] = event
             st.markdown("**Latest state of each formation**")
-            st.dataframe(pd.DataFrame([{k: e.get(k) for k in ("name", "status", "formed_at", "detected_at", "level", "evidence")} for e in sorted(latest.values(), key=lambda e: e["detected_at"], reverse=True)[:50]]), hide_index=True, width="stretch")
+            table = pd.DataFrame([{k: e.get(k) for k in ("name", "status", "formed_at", "detected_at", "level", "evidence")} for e in sorted(latest.values(), key=lambda e: e["detected_at"], reverse=True)[:50]])
+            table.columns = ["Pattern", "Latest state", "Formed on", "Knowable on", "Level", "Detection evidence"]
+            st.dataframe(table, hide_index=True, width="stretch", column_config={"Level": st.column_config.NumberColumn(format="%.2f")})
             with st.expander("State transitions and detection evidence"):
                 printable = [{key: json.dumps(json_safe(value), ensure_ascii=False) if isinstance(value, (list, dict)) else value
                               for key, value in event.items()} for event in selected]

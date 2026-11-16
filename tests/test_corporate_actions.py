@@ -190,7 +190,7 @@ def test_action_upload_ui_adjusted_view_and_execution_block(monkeypatch):
     app.checkbox(key="use_action_ledger").check().run()
     app.radio(key="action_price_view").set_value("Split/bonus adjusted research").run()
     assert any("Select Unadjusted OHLC" in w.value for w in app.warning)
-    app.selectbox[1].set_value("Unadjusted OHLC").run()
+    app.selectbox(key="adjustment_basis").set_value("Unadjusted OHLC").run()
     assert not app.exception
     assert any("adjusted research view" in i.value for i in app.info)
     assert app.button(key="run_baseline").disabled
@@ -215,7 +215,7 @@ def test_view_switch_cache_isolates_execution_policy_when_prices_match(monkeypat
     app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=30).run()
     next(r for r in app.radio if r.label == "Data source").set_value("Upload daily data").run()
     app.checkbox[0].check().run()
-    app.selectbox[1].set_value("Unadjusted OHLC").run()
+    app.selectbox(key="adjustment_basis").set_value("Unadjusted OHLC").run()
     app.checkbox(key="use_action_ledger").check().run()
     app.select_slider[0].set_value("2026-06-03").run()
     assert not app.button(key="run_baseline").disabled

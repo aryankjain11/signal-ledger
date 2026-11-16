@@ -11,4 +11,8 @@ gatherUsageStats = false
 
 [server]
 maxUploadSize = 20
-address = "127.0.0.1"
+# No fixed address here: hosting services set their own. Local launchers pass
+# --server.address 127.0.0.1 so a home run stays private to your computer.
+
+[client]
+toolbarMode = "minimal"

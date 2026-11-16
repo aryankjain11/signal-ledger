@@ -42,7 +42,7 @@ def test_replay_rules_strategy_tab_and_saved_result_survive_reference_visit():
     a.button(key='run_retest').click().run()
     saved=a.session_state['saved_retest_run'].record_json
     a.button(key='reference_retest_strategy').click().run()
-    a.selectbox(key='workspace_page').set_value('Research dashboard').run()
+    a.radio(key='workspace_page').set_value('Analyze').run()
     assert not a.exception
     assert a.select_slider(key='research_cutoff').value=='2024-01-31'
     assert a.number_input(key='research_rvol').value==2.5
@@ -67,14 +67,14 @@ def test_comparison_uploads_confirmation_range_and_window_survive_page_visit(mon
         i=0 if kwargs['key'].startswith('compare_upload_A') else 1
         f=BytesIO(contents[i]);f.name=f'stock-{i}.csv';return f
     monkeypatch.setattr(st,'file_uploader',uploader)
-    a=app();a.selectbox(key='workspace_page').set_value('Compare two stocks').run()
+    a=app();a.radio(key='workspace_page').set_value('Compare stocks').run()
     a.radio(key='comparison_mode').set_value('Upload two stocks').run()
     a.checkbox(key='compare_complete').check().run()
     a.number_input(key='correlation_window').set_value(10).run()
     a.select_slider(key='comparison_period').set_value(('2026-01-01','2026-01-07')).run()
-    a.selectbox(key='workspace_page').set_value('Education and Concepts').run()
+    a.radio(key='workspace_page').set_value('Learn').run()
     state['supply']=False  # New empty uploader widget; retained bytes must supply the data.
-    a.selectbox(key='workspace_page').set_value('Compare two stocks').run()
+    a.radio(key='workspace_page').set_value('Compare stocks').run()
     assert not a.exception
     assert a.radio(key='comparison_mode').value=='Upload two stocks'
     assert a.checkbox(key='compare_complete').value
@@ -125,11 +125,11 @@ def test_study_filters_horizons_and_reference_search_recover_safely():
     one=a.multiselect(key='study_cohorts').value[:1]
     a.multiselect(key='study_cohorts').set_value(one)
     next(b for b in a.button if b.label=='Run event study').click().run()
-    a.selectbox(key='workspace_page').set_value('Education and Concepts').run()
+    a.radio(key='workspace_page').set_value('Learn').run()
     a.text_input(key='concept_search').set_value('no-such-concept-xyz').run()
     a.button(key='clear_concept_filters').click().run()
     assert a.text_input(key='concept_search').value==''
-    a.selectbox(key='workspace_page').set_value('After the pattern').run()
+    a.radio(key='workspace_page').set_value('Pattern research').run()
     assert not a.exception
     assert a.multiselect(key='study_horizons').value==[1,5]
     assert a.multiselect(key='study_cohorts').value==one
@@ -164,9 +164,9 @@ def test_retained_action_ledger_keeps_execution_restrictions_on_reference_return
     a.checkbox(key='use_action_ledger').check().run()
     a.radio(key='action_price_view').set_value('Split/bonus adjusted research').run()
     assert a.button(key='run_baseline').disabled
-    a.selectbox(key='workspace_page').set_value('Education and Concepts').run()
+    a.radio(key='workspace_page').set_value('Learn').run()
     state['supply']=False
-    a.selectbox(key='workspace_page').set_value('Research dashboard').run()
+    a.radio(key='workspace_page').set_value('Analyze').run()
     assert not a.exception
     assert a.checkbox(key='use_action_ledger').value
     assert a.radio(key='action_price_view').value=='Split/bonus adjusted research'

@@ -8,7 +8,7 @@ from . import __version__
 from .data import completed_weeks
 from .indicators import indicators
 from .models import Analysis, Settings, ValidatedData, ResearchRules
-from .research import breakout_events, contextual_candles, chart_formations, momentum_analysis, RULE_VERSION
+from .research import breakout_events, contextual_candles, chart_formations, head_shoulders, momentum_analysis, RULE_VERSION
 from .patterns import candle_events, double_patterns, market_structure, support_resistance, swings
 from .strategy import current_setup
 from .datasets import passport_for_analysis
@@ -48,7 +48,7 @@ def analyze(data: ValidatedData, settings: Settings, rules: ResearchRules | None
         "Corporate actions, spreads, news, event risk and actual order-book liquidity are not verified."]
     momentum, divergences = momentum_analysis(frame, pivots)
     events = (candle_events(frame) + contextual_candles(frame, rules) + double_patterns(frame, pivots)
-              + breakout_events(frame, rules) + chart_formations(frame, pivots) + divergences)
+              + breakout_events(frame, rules) + chart_formations(frame, pivots) + head_shoulders(frame, pivots) + divergences)
     return Analysis(frame, pivots, events,
                     support_resistance(frame, pivots), trend, structure, evidence, weekly,
                     current_setup(frame, settings), warnings, momentum,
@@ -86,10 +86,26 @@ def run_evidence(analysis: Analysis, data: ValidatedData, settings: Settings,
                       "warnings": analysis.warnings, "probability": None})
 
 
-def report_markdown(analysis: Analysis, symbol: str, adjustment: str) -> str:
+def report_markdown(analysis: Analysis, symbol: str, adjustment: str, read: dict | None = None) -> str:
     last = analysis.frame.index[-1].date().isoformat()
     parts = [f"# {symbol} · daily research report", f"As of {last} · {len(analysis.frame)} sessions",
-             f"Adjustment declaration: {adjustment}", f"## {analysis.trend}"]
+             f"Adjustment declaration: {adjustment}"]
+    if read:
+        parts.append(f"## Market read: {read['verdict']}")
+        parts.append(read["summary"] + " " + read["basis"])
+        for title, value in (("Bullish evidence", 1), ("Bearish evidence", -1), ("Neutral or conflicting evidence", 0)):
+            items = [f for f in read["families"] if f["votes"] and f["signal"] == value]
+            parts.append(f"**{title}**")
+            parts.append("\n".join(f"- {f['family']}: {f['detail']}" for f in items) or "- None")
+        context = [f for f in read["families"] if not f["votes"]]
+        if context:
+            parts.append("**Context (not counted)**")
+            parts.append("\n".join(f"- {f['family']}: {f['detail']}" for f in context))
+        if read["levels"]:
+            parts.append("**Key levels**\n\n| Level | Price | Distance |\n| --- | --- | --- |\n" + "\n".join(
+                f"| {l['label']} | {l['low']:.2f}" + (f"–{l['high']:.2f}" if l['high'] != l['low'] else "") + f" | {l['distance_pct']:+.1f}% |"
+                for l in read["levels"]))
+    parts.append(f"## {analysis.trend}")
     parts.extend(f"- {e}" for e in analysis.evidence)
     weekly = analysis.weekly
     weekly_text = f"{weekly['context']}. {weekly['completed_weeks']} prior calendar weeks available."
@@ -122,11 +138,11 @@ def report_markdown(analysis: Analysis, symbol: str, adjustment: str) -> str:
     if not candles:
         parts.append("No supported candle geometry detected.")
     parts += ["\n## Chart pattern event history"]
-    pattern_events = [e for e in analysis.events if e["name"].startswith("Double")]
-    parts.extend(f"- {e['name']} · {e['status']} · formed {e['formed_at']} · known {e['detected_at']} · neckline {e['neckline']:.4f}"
+    pattern_events = [e for e in analysis.events if e["name"].startswith("Double") or e["id"].startswith("hs-")]
+    parts.extend(f"- {e['name']} · {e['status']} · formed {e['formed_at']} · known {e['detected_at']} · neckline {e.get('level', e['neckline']):.4f}"
                  for e in pattern_events[-20:])
     if not pattern_events:
-        parts.append("No double-top/bottom geometries met the configured criteria.")
+        parts.append("No double-top/bottom or head-and-shoulders geometries met the configured criteria.")
     parts += ["\n## Breakout, chart and divergence observations"]
     expanded = sorted([e for e in analysis.events if e.get("family") in {"breakout", "chart", "momentum"}], key=lambda e: (e["detected_at"], e["id"]))[-20:]
     parts.extend(f"- {e['name']} · {e['status']} · known {e['detected_at']}. {e['evidence']}" for e in expanded)

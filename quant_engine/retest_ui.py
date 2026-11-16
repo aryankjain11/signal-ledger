@@ -115,7 +115,8 @@ def render_retest_lab(analysis, data, settings, symbol, adjustment):
     ledger,audit,inspect,exports=st.tabs(["Trades & equity","Setup audit","Inspect a setup","Strategy record & exports"])
     with ledger:
         equity=pd.DataFrame(record['equity']);equity['date']=pd.to_datetime(equity.date)
-        st.line_chart(equity.set_index('date')[['equity']])
+        from .charts import equity_chart
+        st.plotly_chart(equity_chart(equity.set_index('date')), width="stretch")
         st.caption("Equity marks held shares at estimated net liquidation value. End-of-file exits are included above and labelled separately in the ledger. No benchmark superiority is claimed.")
         trades=pd.DataFrame(record['trades'],columns=record['trade_columns'])
         columns=['entry_date','exit_date','quantity','pnl','reason','entry','stop','target','planned_risk','realized_r','breakout_date','retest_date','forced_cutoff_exit']
@@ -160,4 +161,4 @@ def render_retest_lab(analysis, data, settings, symbol, adjustment):
                 f"retest-{key}.csv","text/csv",key='download_retest_'+key)
         st.caption("The record includes saved price bars and source evidence. Keep it private if your source has redistribution limits. Durable archive reopening remains planned.")
     st.warning(m['validation'])
-    st.button("Read the breakout-retest strategy concept",key="reference_retest_strategy",on_click=navigate,args=("Education and Concepts","retest-strategy"))
+    st.button("Read the breakout-retest strategy concept",key="reference_retest_strategy",on_click=navigate,args=("Learn","retest-strategy"))

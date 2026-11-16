@@ -118,7 +118,7 @@ def test_direct_nse_download_ui_auto_label_close_and_passport(monkeypatch):
     assert not app.exception
     assert any("NSE stock-history format detected" in s.value for s in app.success)
     assert app.metric[0].value == "1,240.00"  # CLOSE differs from LTP
-    assert any("DEMO-ALPHA" in c.value for c in app.caption)
+    assert any("DEMO-ALPHA" in m.value for m in app.markdown)
     assert any("NSE security-history export" in m.value for m in app.markdown)
     assert any(e.label == "How this upload was interpreted" for e in app.expander)
     assert any("Fewer than 60" in m.value for m in app.markdown)

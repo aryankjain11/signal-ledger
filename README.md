@@ -1,277 +1,86 @@
 # Signal Ledger
 
-A local quantitative technical-research workbench for **Indian stocks and swing
-trading**. This starting build turns a daily OHLCV file into traceable structure,
-an annotated chart, a deterministic report and two explicit long strategy experiments.
-It does not claim a demonstrated trading edge.
+A local technical-analysis and trading-research workbench for **Indian stocks** (NSE/BSE),
+built for daily-candle swing research. Type a ticker, and Signal Ledger reads the trend,
+structure, momentum, volume flow and chart patterns, shows where support and resistance
+sit, studies what happened after similar patterns in the stock's own history, and
+backtests explicit strategies with costs. It never invents a success probability.
 
-## Continue with another assistant
+## Run it
 
-Read the [complete project handoff](docs/AI_HANDOFF_2026-11-16.md), including the
-unchanged first prompt, scope evolution, current architecture/rules, evidence,
-remaining work and migration instructions. The [starter prompt](docs/NEXT_ASSISTANT_START_HERE.md)
-and [next-feature specification](docs/NEXT_MILESTONE_STRATEGY_COMPARISON.md) let a
-replacement assistant continue without rebuilding. `scripts/package_handoff.py`
-produces a portable source/documentation ZIP with a complete status snapshot and
-standard-library integrity verifier. The proposed comparison remains unimplemented.
+**Windows:** double-click `Start App.cmd`. The first run creates `.venv` and installs packages.
 
-## Learn while building
+**Any OS:**
 
-Use **Research steps** or the sidebar **Workspace** menu to switch between the research dashboard,
-**After the pattern**, **Compare two stocks**, **Education and Concepts**, and **Build checklist & log**.
-Reference pages work without an upload. Existing lessons and labs remain available;
-new assignments are paused. The concept library labels what is actually computed
-or detected separately from features that are only explained.
-
-- [Master checklist](docs/MASTER_CHECKLIST.md): 361 tracked items across 21 stages,
-  covering the original brief and optional extensions with acceptance gates.
-- [Education and Concepts](docs/EDUCATION_AND_CONCEPTS.md): 131 definitions and
-  notes; worked examples for foundations and current features, concise entries for
-  future additions.
-- [Lesson 1](docs/lessons/01_from_prices_to_evidence.md): connected explanations,
-  exercises, answers and pointers into the code.
-- [Lesson 2](docs/lessons/02_daily_data_and_passports.md): daily reports, security
-  identity, session dates, adjustments, hashes and a hands-on import walkthrough.
-- [Work log](docs/WORK_LOG.md): chronological changes, reasons, verification and blockers.
-- [Original-plan status](docs/PROJECT_STATUS.md): all 43 items from the original
-  five development phases, with done/partial/pending scope. Learning assignments
-  are paused; product development continues.
-- [Build report](docs/BUILD_REPORT.md): architecture, curriculum and current limits.
-- [Platform inspection · 15 November](docs/PLATFORM_INSPECTION_2026-11-15.md):
-  full vision/current-state review, observed workflows, issues and acceptance gates.
-- [Continuation brief](docs/PLATFORM_CONTEXT.md): compact context for future human/AI collaborators.
-- [Usability review · 16 November](docs/USABILITY_REVIEW_2026-11-16.md): tested
-  journeys, repaired context/upload/date loss, clearer presentation and open limits.
-- [Research reliability](docs/RESEARCH_RELIABILITY.md): bounded charts, readiness/recovery,
-  retained baseline results, stale-input warnings and connected research/reference routes.
-- [After the pattern rules](docs/EVENT_STUDIES.md): forward outcomes, known-time
-  references, excursions, matching/coverage, overlap/censoring and research limits.
-- [Breakout-retest strategy](docs/BREAKOUT_RETEST_STRATEGY.md): versioned next-open
-  execution, structural stop, gap cancellation, setup audit, saved charts and records.
-
-Each future increment follows learn → specify → build → verify → explain → record.
-The continuing agreement is in [AGENTS.md](AGENTS.md). Understanding is not
-automatically checked off for the learner.
-
-The private repository is [aryankjain11/signal-ledger](https://github.com/aryankjain11/signal-ledger).
-The source, tests, synthetic sample and learning documents have been uploaded and
-verified, including direct NSE stock-history uploads. The latest workflow audit
-keeps files, replay/rules, committed study/comparison settings and selected tabs
-across tested reference visits within the live session. Clear/latest/all-date
-actions recover context; replacing files requires completed-bar confirmation again.
-Controls are more compact, concepts open directly to search, trade tables use
-readable headings and outcome plots label gross direction/horizon/sample coverage.
-Final local regression: **336 passed in211.85s** on16 November, including13 new
-usability cases. See the sync record for observed remote CI.
-Prior strategy regression: **323 passed in84.15s** on15 November.
-Chart boundaries and baseline-result continuity found in the inspection are now
-repaired. Data readiness explains partial history, chart captions show actual counts,
-and selected observations link to outcome studies. One immutable baseline result
-survives session reruns with original-run downloads; changed calculation inputs
-mark it out of date. Durable save/reopen history remains planned.
-Open **Research dashboard → Backtest lab → Breakout-retest v1** for the new
-strategy. It waits for a later held retest, uses one next-open attempt and a frozen
-structural stop, and audits cancellations/capacity/pending states. Its independent
-session record includes saved bars so a stale setup chart cannot use new prices.
-The baseline simulator remains unchanged. Fair strategy comparison and held-out
-validation are next; neither strategy has a demonstrated trading edge.
-The usability source has87 verified files; [GitHub run43748677879](https://github.com/aryankjain11/signal-ledger/actions/runs/43748677879)
-passed all336 tests in57.30s. Source commit48c9b9d and observed acceptance are
-recorded in the sync document; its later documentation audit is a separate commit.
-The prior breakout-retest source had84 verified files; GitHub run43740352903 passed
-all323 tests in49.59 seconds. Publication details are in the sync record.
-The earlier event-study CI run42098482104 passed all240 tests in15.74 seconds;
-the reliability source now has78 verified files and GitHub run43728863777 passed
-all268 tests in23.13 seconds. The later synchronization record is a separate commit.
-The separate UDiFF real-report gate remains pending. See
-[GitHub sync status](docs/GITHUB_SYNC.md) for the verified commit and Actions run.
-The local computer's Git client does not currently have a saved GitHub login;
-the connected GitHub tools handle this upload, and no credentials are stored here.
-
-## Open the app
-
-This workspace has a prepared `.venv`. Double-click **Start App.cmd**, or run:
-
-```powershell
-cd 'C:\Users\aryan\OneDrive\Documents\ChatGPT\Projects to Build\quant-research-engine'
-.\.venv\Scripts\python.exe -m streamlit run app.py
-```
-
-Visit http://127.0.0.1:8501. The server binds only to your computer. Stop it with
-Ctrl+C in its terminal. No API key, broker account or paid AI service is needed.
-The walkthrough uses clearly labelled synthetic observations, not market data.
-
-## Fresh setup
-
-Use Python 3.13 (tested with 3.13.7):
-
-```powershell
+```bash
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
-.\.venv\Scripts\python.exe -m streamlit run app.py
+.venv/bin/python -m pip install -r requirements.txt     # Windows: .venv\Scripts\python.exe
+.venv/bin/python -m streamlit run app.py --server.address 127.0.0.1
 ```
 
-If Python's bundled pip setup is unavailable, use an existing pip to provision the
-environment without changing system packages:
+Open http://127.0.0.1:8501. No API key or account is needed; ticker data comes from
+Yahoo Finance (via `yfinance`) and needs an internet connection. Without one, use
+**Upload daily data** (an NSE stock-history CSV works unchanged) or **Demo data**.
 
-```powershell
-python -m venv --without-pip .venv
-python -m pip --python .venv\Scripts\python.exe install -r requirements-dev.txt
+To put it online so others can use it from a browser, see [DEPLOY.md](DEPLOY.md).
+
+## What you can do
+
+| Page | Use it to |
+| --- | --- |
+| **Analyze** | Fetch a ticker or load a file. The **Market read** gives one vote each to price structure, trend, momentum, volume flow, the weekly timeframe and recent patterns, plus key support/resistance levels with % and ATR distances. The chart has switchable overlays (EMA, SMA200, Supertrend, Donchian, Keltner, VWAP, Bollinger) and lower panels (RSI, MACD, ADX/DI, Stochastic, MFI, OBV). Other tabs: pattern/candle/divergence detections, a conditional trade plan with sizing, two backtestable long strategies, and data quality and exports. **Replay** recomputes everything as of an earlier date. |
+| **Pattern research** | For any detected pattern type (breakouts/retests, double tops/bottoms, head & shoulders, triangles, candles, divergences): forward moves, best/worst excursions, and comparison with ordinary days in the same stock. |
+| **Compare stocks** | Two tickers (or files) side by side: relative performance, drawdowns and return correlation. |
+| **Learn** | 131 searchable definitions with worked examples, each labelled with what the app actually implements. |
+
+Settings in the sidebar: capital, risk per trade and costs (used by the trade plan and
+backtests only), a corporate-action ledger for split/bonus adjustment of uploaded files,
+and breakout/retest rule parameters.
+
+## Principles the code enforces
+
+- **No look-ahead.** Every pattern records when it *formed* and when it became *knowable*.
+  Swing points need right-side confirmation; boundaries and necklines are frozen at
+  detection; replay slices the data before analysis. Tests check that truncated data
+  reproduces earlier results.
+- **No invented numbers.** Missing rows are never filled. A still-forming session is dropped
+  from fetched data. The Market read counts evidence and is labelled as a heuristic,
+  not a probability. "Success probability: unavailable" stays until a validated model exists.
+- **Realistic simulation.** Next-open entries, costs and slippage on both sides, gap-through-stop
+  fills, stop-first when a bar touches both levels, cash/risk/liquidity position caps.
+- **It can say no.** "NO TRADE — INSUFFICIENT EVIDENCE" is a normal outcome.
+
+Research and decision support only: not investment advice, and it never places orders.
+
+## Project layout
+
+```
+app.py                     Streamlit shell: navigation, data source, Analyze page
+quant_engine/
+  providers.py             ticker → validated daily OHLCV (Yahoo), completed-bar filter
+  data.py, nse_*.py        file ingestion and validation (generic, NSE history, UDiFF)
+  indicators.py            trailing indicator catalogue (cross-checked against `ta`)
+  patterns.py, research.py swings, structure, zones, candles, breakouts, chart patterns, H&S
+  market_read.py           one-vote-per-family evidence summary + key levels
+  strategy.py, retest_*.py position sizing and the two strategy simulators
+  event_study*.py          Pattern research engine and page
+  comparison*.py           two-stock comparison
+  *_ui.py, charts.py       presentation
+learning/                  concept library, roadmap and progress sources
+tests/                     pytest suite (run: python -m pytest -q)
+docs/                      design notes, work log, original brief, status records
 ```
 
-## Try your own data
+Run the tests with `python -m pytest -q` (installs: `requirements-dev.txt`). App tests
+default to the bundled demo data so they run offline. Ticker fetching is tested
+against stand-in provider responses.
 
-1. Select **Upload daily data** and choose a CSV or XLSX file containing one stock.
-   Original NSE security-history CSVs work directly: retain the downloaded file's
-   columns and filename. DD-Mon-YYYY dates, Indian/international number grouping,
-   extra market columns and newest-first rows are handled automatically.
-2. Enter its label. Labels do not fetch data. Supply INR prices; no currency
-   conversion is performed. No automated NSE/BSE data feed is integrated yet.
-3. Declare whether all OHLC prices use a consistent corporate-action adjustment
-   basis. The app cannot verify this declaration or repair corporate actions.
-4. Confirm every row is a completed daily candle. Intraday timestamps are rejected.
-5. Enter capital, risk budget, and estimated per-side charges/slippage. The default
-   numbers are illustrative inputs, not an Indian tax or brokerage schedule.
-6. Inspect the chart, evidence and limitations. Move the replay slider to see only
-   what was observable by a selected date. Run the exploratory backtest separately.
-7. Download the report, feature table, analysis evidence and backtest record.
+## Project records
 
-Required columns (case insensitive):
-
-```csv
-date,open,high,low,close,volume
-2024-01-01,100,102,99,101,100000
-2024-01-02,101,103,100,102,110000
-2024-01-03,102,104,101,103,105000
-```
-
-Standard CSV dates must be YYYY-MM-DD; recognized NSE stock-history exports also
-accept DD-Mon-YYYY. Native Excel date cells are accepted. Missing values,
-duplicate dates, mixed symbols, infinite/negative values and impossible OHLC
-relationships fail validation. Rows may be sorted with a visible warning. No
-prices are forward-filled or fabricated. Only the first XLSX worksheet is read.
-Maximum size: 20 MB and 50,000 sessions. Use at least 60 sessions for the baseline
-and 20 completed prior calendar weeks for weekly SMA context.
-
-## Implemented
-
-- **Patterns & momentum**: frozen-range breakout/retest/failure/continuation events;
-  six-anchor rectangle/triangle geometry; contextual shadow and Morning/Evening
-  Star observations; ROC/stochastic and confirmed-pivot RSI/MACD divergences.
-- **Compare two stocks**: two CSV/XLSX/NSE uploads or synthetic pair; same-period
-  side-by-side charts, indexed performance, drawdowns, matched-interval Pearson/
-  Spearman/rolling return correlation, scatter and exports. No prices are filled.
-  See [exact definitions and limits](docs/ANALYSIS_AND_COMPARISON.md).
-
-- Optional reviewed split/bonus action ledger with replay-aware OHLCV research
-  normalization; preserved source, per-date factors and audit exports. Adjusted
-  research and known event-crossing ranges disable execution/backtesting until
-  share-accounting support exists. See [corporate-action scope](docs/CORPORATE_ACTIONS.md).
-
-- NSE CM 2026 calendar snapshot, absent/non-session/future-date checks and
-  conservative freshness reporting; replay audits only visible rows. See
-  [data quality scope](docs/DATA_QUALITY.md). Other years/exchanges remain unverified.
-
-- Direct NSE stock-history CSV/XLSX normalization using CLOSE and share VOLUME;
-  automatic filename label hint, EQ guards and a passport interpretation record.
-  See [NSE upload guide](docs/NSE_CSV_UPLOAD.md). This is distinct from UDiFF reports.
-
-- Offline NSE CM UDiFF-style CSV/ZIP import preview for one selected EQ security
-  across daily reports; source/date/identity/duplicate guards and bounded ZIP reading.
-- Synthetic 80-report walkthrough with two fake securities; no real market data.
-- Provider-neutral data passport, original-file hashes, source versus replay-slice
-  fingerprints, JSON passport and analyzed-CSV downloads. Provenance records claims;
-  it does not independently authenticate origin or verify adjustment/usage rights.
-- Lesson 2 in Education → Start here. See [S02-A scope](docs/S02_DATA_IMPORT.md)
-  for acceptance and remaining real-file, calendar and corporate-action work.
-
-- SMA20/50/200, EMA20/50, Wilder RSI14 and ATR14, MACD12/26/9, Bollinger20
-  (population standard deviation), OBV and prior-20-session relative volume.
-- Confirmed three-session-left/right pivots with distinct formation and detection
-  dates; HH/HL and LH/LL structure; nearby pivot clusters as approximate zones.
-- Doji and bullish/bearish engulfing geometry. Double tops/bottoms have explicit
-  tolerances, coordinates and developing/confirmed/invalidated/expired events.
-  Confirmation here means a geometric neckline close, not proven profitability.
-- Completed prior-calendar-week aggregation and weekly SMA20 context. The latest
-  calendar week is always excluded, even on Friday, to avoid assuming a calendar.
-- One long-only 20-session breakout rule; next-open entry, a fixed-at-entry 2 ATR
-  stop, 2R target and ten-session maximum hold; explicit no-trade outcome.
-- Whole-share sizing capped by cash, planned stop risk and 1% of previous-session
-  volume; per-side blended fees and adverse slippage; gap-through-stop handling;
-  stop-first rule for ambiguous bars; liquidation-cost marked equity and drawdown.
-- Chart annotations and report derived from one analysis object. Evidence JSON
-  includes raw-source SHA-256, as-of date, adjustment declaration, settings, engine
-  version, feature values, events and limitations. Backtest JSON adds equity and
-  trades. Downloads are records; there is no persistent run database yet.
-- **After the pattern:** a separate workspace with1/5/10/20-observation default
-  forward outcomes, MFE/signed MAE, event/context/date filters, deterministic
-  overlap spacing, per-horizon censoring, auditable same-stock context baselines,
-  comparable coverage, box plots, occurrence charts and portable JSON/CSV records.
-  Default reference is the next observed open after detection. These are gross
-  descriptive price outcomes, not simulated trades or calibrated probabilities.
-
-## Analytical conventions and limitations
-
-EMA uses a first-observation recursive seed with `adjust=False` and a period-length
-warm-up. RSI uses an arithmetic seed over the first 14 price changes; zero gains
-and losses produce RSI50. ATR uses the first 14 true ranges, including the initial
-high-low range, then Wilder recursion. Other libraries may use different seeds.
-
-Swings are plotted at formation for visual context; their hover text and evidence
-show when they became knowable. Latest support/resistance zones and market
-structure are as-of summaries, not backdated trading signals. The pattern event
-log preserves observation times and immutable state changes. The fixed baseline
-strategy does not trade those chart patterns.
-
-The latest-close plan is an indicative reference, not a known fill. Actual
-simulation levels are recalculated from the next open including entry slippage.
-Stop risk includes assumed normal stop slippage and fees, but opening gaps can
-produce losses beyond the risk budget. Historical volume participation is a rough
-cap, not a fill or liquidity guarantee. No partial fills, settlement, circuits,
-auctions, order-book spreads, asymmetric taxes, corporate-action cash flows or
-market impact are modeled. Input OHLC adjustment consistency matters.
-
-Backtests are exploratory on the uploaded dataset. They are not walk-forward,
-held-out validation or evidence of future success. The win rate is descriptive
-of those completed trades, not the chance the current setup succeeds. Profit
-factor is unavailable when there are no losing trades. Buy-and-hold comparison
-is gross close-to-close return, not cost/exposure-matched. No calibrated
-probabilities, model training, head-and-shoulders, screenshot analysis,
-live feeds, paper trading, database history or order execution are implemented.
-
-## Verify
-
-```powershell
-.\.venv\Scripts\python.exe -m pytest -q
-```
-
-Tests cover data failure modes and CSV/XLSX parity, hand-calculated Wilder seeds,
-warm-ups, future-append invariance, pivot confirmation, pattern event timing,
-cost-aware sizing, execution timing, gaps, ambiguous candles, numerical exports,
-chart alignment, and dashboard flows. Fixtures test software correctness; they
-cannot establish real-world alpha. The synthetic fixture can be regenerated with
-`python scripts/make_demo.py`.
-
-Tests also cover concept search, honest feature labels, generated-document
-consistency, learning-page navigation, worked RSI arithmetic, quiz feedback and
-invalid long-position examples. Update shared content in `learning/`, then run
-`python scripts/export_learning_docs.py` to refresh the two generated handbooks.
-The CI workflow runs checks on pushes and pull requests; a configured workflow
-must not be confused with an observed successful run.
-
-## Structure and next milestone
-
-`quant_engine/` contains UI-independent data, numerical analysis, patterns,
-strategy execution, evidence export and chart functions. `app.py` is the thin
-Streamlit interface; `tests/` holds numerical and application checks.
-
-Read [the refined plan](docs/BUILD_PLAN.md) for product decisions, contracts and
-release gates. Your [original project brief](docs/ORIGINAL_BRIEF.md) is preserved
-as a reference; its complete feature list is not a claim about this prototype.
-The next valuable increment is to add licensed, consistently
-adjusted Indian equity history, an exchange calendar and immutable experiment
-records; then freeze a chronological evaluation protocol and test against simple
-benchmarks. Only add probability estimation after that foundation.
-
-Research and decision support only. Outcomes are uncertain and profits are not
-guaranteed.
+- [Original brief](docs/ORIGINAL_BRIEF.md): the full product vision.
+- [Work log](docs/WORK_LOG.md): dated changes, reasons and verification.
+- [Original-plan status](docs/PROJECT_STATUS.md) and [master checklist](docs/MASTER_CHECKLIST.md).
+- Rule specifications: [event studies](docs/EVENT_STUDIES.md), [breakout-retest strategy](docs/BREAKOUT_RETEST_STRATEGY.md),
+  [research reliability](docs/RESEARCH_RELIABILITY.md), [data quality](docs/DATA_QUALITY.md), [corporate actions](docs/CORPORATE_ACTIONS.md).
+- Earlier handoff and inspection reports (16 Nov 2026 and before) are kept in `docs/` as history.
+- The developer checklist page is still available at `http://127.0.0.1:8501/?page=build`.

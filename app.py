@@ -23,103 +23,142 @@ from quant_engine.event_study_ui import render_event_study
 from quant_engine.readiness import render_readiness
 from quant_engine.backtest_ui import render_backtest
 from quant_engine.retest_ui import render_retest_lab
-from quant_engine.workflow_ui import PAGES, navigate, render_navigation, render_reference_links
+from quant_engine.workflow_ui import PAGES, PAGE_ICONS, navigate, render_reference_links
+from quant_engine.providers import EXCHANGE_SUFFIX, PERIODS, PROVIDER_ADJUSTMENT, fetch_daily
+from quant_engine.market_read import market_read
+from quant_engine.dashboard_ui import STYLE, render_header, render_market_read, chart_controls, render_welcome
+import os
 from quant_engine.ui_state import (retained_upload, completed_confirmation,
     date_control, reset_dates, workspace_tabs, preserve_tab_state)
 
+SOURCES = ["Fetch by ticker", "Upload daily data", "Demo data", "Import NSE daily reports"]
+DEFAULT_SOURCE = os.environ.get("SIGNAL_LEDGER_DEFAULT_SOURCE", "Fetch by ticker")
+
+
+@st.cache_data(ttl=3600, show_spinner="Fetching daily history…")
+def cached_fetch(symbol, exchange, period):
+    return fetch_daily(symbol, exchange, period)
+
+
 ROOT = Path(__file__).resolve().parent
-st.set_page_config(page_title="Signal Ledger · Quant research", page_icon="◈", layout="wide")
-st.markdown("""<style>
- .block-container {padding-top:2.6rem; max-width:1500px}
- h1 {letter-spacing:-1.5px; font-weight:650!important}
- .eyebrow {color:#36d6a4;font-size:12px;letter-spacing:2px;font-weight:700}
- .subtitle {color:#97a7bf;font-size:17px;margin-bottom:22px}
- [data-testid="stMetric"] {background:#101a2b;border:1px solid #253248;border-radius:12px;padding:16px}
- [data-testid="stMetricLabel"] {color:#97a7bf}
- [data-testid="stSidebar"] {border-right:1px solid #253248}
- .stTabs [data-baseweb="tab-list"] {gap:24px;border-bottom:1px solid #253248}
- </style>""", unsafe_allow_html=True)
+st.set_page_config(page_title="Signal Ledger · Technical research", page_icon="◈", layout="wide")
+st.markdown(STYLE, unsafe_allow_html=True)
 
 requested_page = st.query_params.get("page", "research")
+if requested_page == "build":  # developer view, intentionally not in the main navigation
+    render_build_journal(ROOT)
+    st.stop()
 preserve_tab_state()
 page_names = list(PAGES)
-page_index = list(PAGES.values()).index(requested_page) if requested_page in PAGES.values() else 0
-workspace = st.sidebar.selectbox("Workspace", page_names, index=page_index, key="workspace_page")
-st.query_params["page"] = PAGES[workspace]
-render_navigation(workspace)
+if "workspace_page" not in st.session_state:
+    st.session_state["workspace_page"] = next((k for k, v in PAGES.items() if v == requested_page), page_names[0])
 with st.sidebar:
-    st.markdown("### ◈ Signal Ledger")
-    st.caption("TECHNICAL RESEARCH WORKBENCH · v0.1")
+    st.markdown('<div class="brand">◈ Signal Ledger</div><div class="brand-sub">Technical research workbench</div>', unsafe_allow_html=True)
+    workspace = st.radio("Navigate", page_names, key="workspace_page", label_visibility="collapsed",
+                         format_func=lambda name: f"{PAGE_ICONS[name]}  {name}")
+st.query_params["page"] = PAGES[workspace]
+if workspace == "Compare stocks":
+    render_comparison()
+    st.stop()
+if workspace == "Learn":
+    render_education(ROOT)
+    st.stop()
+with st.sidebar:
     st.divider()
-    source = st.radio("Data source", ["Synthetic walkthrough", "Upload daily data", "Synthetic NSE report walkthrough", "Import NSE daily reports"],key="data_source",persist_state="session")
+    st.markdown('<div class="side-head">Data</div>', unsafe_allow_html=True)
+    source = st.radio("Data source", SOURCES, key="data_source", persist_state="session",
+                      index=SOURCES.index(DEFAULT_SOURCE) if DEFAULT_SOURCE in SOURCES else 0)
     upload = None
     report_uploads = None
-    is_reports = source in {"Synthetic NSE report walkthrough", "Import NSE daily reports"}
-    if source == "Upload daily data":
-        upload = retained_upload("OHLCV file", type=["csv", "xlsx"], key="research_upload")
-        st.caption("NSE stock-history downloads work directly: keep the original CSV, columns and filename. Dates and Indian comma formatting are recognized automatically.")
-    elif source == "Import NSE daily reports":
-        report_uploads = retained_upload("Daily UDiFF reports (preview)", type=["csv", "zip"], accept_multiple_files=True, key="nse_reports")
-    symbol = st.text_input("Research label", "SYNTHETIC" if source.startswith("Synthetic") else "NSE / YOUR SYMBOL", max_chars=40,
-        help="A label for the current file, not a quote lookup. The app does not fetch stock data when you type a symbol.")
+    fetched = None
+    report_demo = False
+    is_reports = source == "Import NSE daily reports"
     declared_provider, declared_exchange = "User-supplied file; provider not stated", "Unknown"
-    if not is_reports:
-        adjustment = "Synthetic example" if source.startswith("Synthetic") else st.selectbox("Price adjustment basis", ["Unknown / unverified", "Consistently adjusted OHLC", "Unadjusted OHLC"])
-        if source == "Upload daily data":
-            with st.expander("Data source declaration"):
-                declared_provider = st.text_input("Provider/source label", value=declared_provider, key="declared_provider")
-                declared_exchange = st.selectbox("Exchange declaration", ["Unknown", "NSE", "BSE"], key="declared_exchange")
+    if source == "Fetch by ticker":
+        ticker = st.text_input("Ticker", key="ticker_symbol", value="RELIANCE", max_chars=30, persist_state="session",
+                               placeholder="RELIANCE, TCS, HDFCBANK, ^NSEI",
+                               help="NSE/BSE symbols get .NS/.BO added automatically. Indices start with ^ (e.g. ^NSEI). Choose 'As typed' for other markets.")
+        left, right = st.columns(2)
+        exchange = left.selectbox("Exchange", list(EXCHANGE_SUFFIX), key="ticker_exchange", persist_state="session")
+        period = right.selectbox("History", list(PERIODS), index=2, key="ticker_period", persist_state="session")
+        if st.button("Refresh data", key="ticker_refresh", icon=":material/refresh:", width="stretch"):
+            cached_fetch.clear()
+        symbol = ticker.strip().upper() or "TICKER"
+        adjustment = PROVIDER_ADJUSTMENT
+    elif source == "Upload daily data":
+        upload = retained_upload("OHLCV file", type=["csv", "xlsx"], key="research_upload")
+        st.caption("Original NSE stock-history CSVs work unchanged. Otherwise use date, open, high, low, close, volume columns.")
+        symbol = Path(upload.name).stem.upper()[:40] if upload is not None else "UPLOAD"
+    elif is_reports:
+        report_uploads = retained_upload("Daily UDiFF reports (preview)", type=["csv", "zip"], accept_multiple_files=True, key="nse_reports")
+        if not report_uploads:
+            report_demo = st.checkbox("Use demo reports", key="report_demo", help="Three invented UDiFF-style reports to try this import path.")
+        symbol = "NSE REPORTS"
     else:
-        adjustment = "Synthetic example" if source.startswith("Synthetic") else "Unadjusted OHLC"
-        st.caption("UDiFF preview: select the security from report fields after upload. Prices remain as quoted; adjustments and origin are not independently verified.")
+        symbol = "SYNTHETIC"
+    is_demo = source == "Demo data" or report_demo
+    if source == "Upload daily data":
+        adjustment = st.selectbox("Price adjustment basis", ["Unknown / unverified", "Consistently adjusted OHLC", "Unadjusted OHLC"], key="adjustment_basis", persist_state="session")
+        with st.expander("Source details (optional)"):
+            declared_provider = st.text_input("Provider/source label", value=declared_provider, key="declared_provider", persist_state="session")
+            declared_exchange = st.selectbox("Exchange declaration", ["Unknown", "NSE", "BSE"], key="declared_exchange", persist_state="session")
+    elif is_reports:
+        adjustment = "Synthetic example" if is_demo else "Unadjusted OHLC"
+    elif source == "Demo data":
+        adjustment = "Synthetic example"
     complete = True
     if source in {"Upload daily data", "Import NSE daily reports"}:
         complete = completed_confirmation("Every row is a completed daily session bar", upload if source == "Upload daily data" else report_uploads, key="research_complete")
     st.divider()
-    with st.expander("Simulation capital, risk and costs"):
-        st.caption("These inputs affect both strategy simulations. Historical outcome studies and stock comparisons do not use them.")
+    st.markdown('<div class="side-head">Settings</div>', unsafe_allow_html=True)
+    with st.expander("Capital, risk and costs"):
+        st.caption("Used by the trade plan and backtests only.")
         capital = st.number_input("Account capital (INR)", min_value=100.0, value=100_000.0, step=1000.0, key="simulation_capital", persist_state="session")
         risk = st.slider("Risk budget per trade (%)", 0.1, 5.0, 1.0, 0.1, key="simulation_risk", persist_state="session")
         fees = st.number_input("Estimated total charges per side (bps)", min_value=0.0, max_value=100.0, value=10.0, step=1.0, key="simulation_fees", persist_state="session")
         slip = st.number_input("Slippage per side (bps)", min_value=0.0, max_value=100.0, value=5.0, step=1.0, key="simulation_slippage", persist_state="session")
-        st.caption("1 basis point = 0.01%. Enter brokerage, taxes and other charges as a blended per-side estimate. Actual charges can differ by side and transaction; no statutory schedule is built in.")
-    st.caption(f"Simulation: ₹{capital:,.0f} · risk {risk:g}% · charges {fees:g} + slippage {slip:g} bps/side")
-    bands = st.checkbox("Show Bollinger bands")
-    st.caption("Indian equities · swing research · INR-denominated uploads · daily bars · no live orders")
+        st.caption("1 basis point = 0.01%. Blend brokerage, STT, exchange and other charges into one per-side estimate.")
+    st.caption(f"₹{capital:,.0f} · risk {risk:g}% · costs {fees:g}+{slip:g} bps/side")
 
-# Render research inputs on every workspace so Streamlit retains their widget state,
-# including the local file handle. Reference/checklist pages still need no data.
-if workspace == "Compare two stocks":
-    st.caption("The sidebar retains your single-stock research context. Choose the two comparison datasets below; baseline capital and costs do not affect comparison statistics.")
-    render_comparison()
-    st.stop()
-if workspace == "Education and Concepts":
-    render_education(ROOT)
-    st.stop()
-if workspace == "Build checklist & log":
-    render_build_journal(ROOT)
-    st.stop()
 
-st.markdown('<div class="eyebrow">OBSERVE / EXPLAIN / TEST</div>', unsafe_allow_html=True)
-st.title("After the pattern" if workspace == "After the pattern" else "Price structure, with evidence.")
-st.caption("Use your daily file or explore the demo. Inspect the chart, study historical outcomes, then test a strategy under explicit costs and risk assumptions.")
+if workspace == "Pattern research":
+    st.title("Pattern research")
+    st.caption("What happened after each detected pattern in this stock's history: forward moves, best/worst excursions and comparison with ordinary days.")
 
+provider_notes = []
 if is_reports:
-    if source == "Import NSE daily reports" and report_uploads and not complete:
+    if report_uploads and not complete:
         st.warning("Confirm that all uploaded rows are completed daily bars before running analysis.")
         st.stop()
     files = [(f.name, f.getvalue()) for f in report_uploads] if report_uploads else []
-    data = report_import(files, is_synthetic=source.startswith("Synthetic"))
+    data = report_import(files, is_synthetic=is_demo)
     symbol = data.metadata["instrument"]["symbol"]
     filename = f"{len(data.metadata['source_files'])} report input file(s)"
     adjustment = data.metadata["adjustment_basis"]
-elif source.startswith("Synthetic"):
+elif source == "Fetch by ticker":
+    if not ticker.strip():
+        render_welcome()
+        st.stop()
+    try:
+        fetched = cached_fetch(ticker, exchange, period)
+    except ValueError as exc:
+        detail = str(exc)
+        st.error(f"Couldn't load **{ticker.strip().upper()}** ({exchange}). Check the symbol and your internet connection.", icon=":material/cloud_off:")
+        with st.expander("Technical details"):
+            st.code(detail, language=None)
+        st.caption("You can also use **Upload daily data** (e.g. an NSE stock-history CSV) or **Demo data** in the sidebar.")
+        st.button("Try the demo data instead", on_click=lambda: st.session_state.update(data_source="Demo data"), icon=":material/play_arrow:")
+        st.stop()
+    content, filename = fetched.csv_bytes, f"{fetched.provider_symbol}.csv"
+    symbol = fetched.display_symbol
+    provider_notes = fetched.notes
+elif source == "Demo data":
     content = (ROOT / "data" / "synthetic_daily.csv").read_bytes()
     filename = "synthetic_daily.csv"
-    st.info("SYNTHETIC DATA · Generated solely to demonstrate the application. This is not a stock or evidence of trading performance.")
+    st.info("Demo data: an invented price series for exploring the app. Not a real stock.", icon=":material/science:")
 else:
     if upload is None:
-        st.info("Upload one symbol's daily file: an original NSE stock-history CSV, or a standard date/open/high/low/close/volume CSV/XLSX. NSE downloads need no manual editing.")
+        render_welcome(upload_mode=True)
         st.download_button("Download example format (synthetic)", (ROOT / "data" / "synthetic_daily.csv").read_bytes(), "synthetic_daily.csv", "text/csv")
         st.stop()
     if not complete:
@@ -134,14 +173,22 @@ if not is_reports:
         is_nse_quote = input_metadata.get("detected_nse_quote", False)
         file_symbol = data.metadata.get("file_symbol")
         instrument_symbol = file_symbol or symbol
-        data = attach_passport(data, instrument=Instrument("Synthetic" if source.startswith("Synthetic") else "NSE" if is_nse_quote else declared_exchange, instrument_symbol, input_metadata.get("file_series", "")),
-                               provider="Synthetic project fixture" if source.startswith("Synthetic") else "User-supplied NSE security-history export" if is_nse_quote else declared_provider.strip() or "Provider not stated",
-                               input_format=input_metadata.get("input_format", "Standard OHLCV CSV/XLSX"), adjustment="Synthetic example" if source.startswith("Synthetic") else adjustment,
+        if fetched is not None:
+            instrument = Instrument(fetched.exchange if fetched.exchange != "As typed" else "Unknown", fetched.provider_symbol, "")
+            provider_label, input_format = "Yahoo Finance via yfinance (fetched " + pd.Timestamp.now(tz="Asia/Kolkata").strftime("%Y-%m-%d %H:%M IST") + ")", "Provider daily history"
+        else:
+            instrument = Instrument("Synthetic" if is_demo else "NSE" if is_nse_quote else declared_exchange, instrument_symbol, input_metadata.get("file_series", ""))
+            provider_label = "Synthetic project fixture" if is_demo else "User-supplied NSE security-history export" if is_nse_quote else declared_provider.strip() or "Provider not stated"
+            input_format = input_metadata.get("input_format", "Standard OHLCV CSV/XLSX")
+        data = attach_passport(data, instrument=instrument, provider=provider_label,
+                               input_format=input_format, adjustment="Synthetic example" if is_demo else adjustment,
                                sources=[{"name": Path(filename).name, "sha256": data.source_hash, "bytes": len(content)}],
-                               is_synthetic=source.startswith("Synthetic"),
+                               is_synthetic=is_demo,
                                normalization={**input_metadata.get("normalization", {}), "symbol_basis": input_metadata["symbol_basis"]} if is_nse_quote else None)
-        if file_symbol:
+        if file_symbol and fetched is None:
             symbol = file_symbol
+        if provider_notes:
+            data.warnings = data.warnings + provider_notes
         if is_nse_quote:
             st.success(f"NSE stock-history format detected · {symbol} · {len(data.bars)} sessions. Dates, number formatting and row order handled automatically.")
             st.caption(input_metadata["symbol_basis"] + ". CLOSE and VOLUME used; extra fields ignored. Adjustment declaration is still unverified.")
@@ -159,9 +206,13 @@ with st.sidebar:
     action_ledger, use_adjusted = action_controls(data)
     research_rules = research_controls()
 options = [d.date().isoformat() for d in data.bars.index]
-as_of = date_control("Replay through session · analysis uses only rows through this date", options, key="research_cutoff", context=data.source_hash)
+replaying = st.session_state.get("research_cutoff") not in (None, options[-1])
+header_slot = st.container()
+with st.expander(":material/history: Replay · analyze as of an earlier date" + (" — ACTIVE" if replaying else ""), expanded=replaying):
+    as_of = date_control("Analyze using only sessions up to", options, key="research_cutoff", context=data.source_hash)
+    st.caption("Everything below (indicators, patterns, trade plan) is recomputed using only data up to this date — see what the analysis said back then.")
 if as_of != options[-1]:
-    st.caption("Historical replay is active. Later uploaded observations are excluded from this analysis.")
+    st.warning(f"Replay active: analysis as of {as_of}. Later sessions are hidden.", icon=":material/history:")
     st.button("Use latest uploaded bar", key="latest_research_bar", on_click=reset_dates, args=("research_cutoff",options))
 data.bars = data.bars.loc[:as_of]
 original_visible_csv = canonical_bars_bytes(data.bars)
@@ -195,45 +246,26 @@ analysis.warnings = data.warnings + analysis.warnings
 execution_restriction = data.metadata.get("execution_restriction")
 if execution_restriction:
     analysis.setup = {"status": "Research view · execution unavailable", "reason": execution_restriction}
+read = market_read(analysis)
+with header_slot:
+    render_header(analysis, symbol, adjustment, data, read)
 render_readiness(analysis, data, symbol, adjustment)
-render_reference_links()
-if workspace == "After the pattern":
+if workspace == "Pattern research":
     render_event_study(analysis, data, settings, symbol, adjustment)
     st.stop()
 frame, last = analysis.frame, analysis.frame.iloc[-1]
-columns = st.columns(4)
-columns[0].metric("Last close", f"{last.close:,.2f}", f"{(last.close / frame.close.iloc[-2] - 1) * 100:+.2f}%")
-columns[1].metric("Confirmed structure", analysis.trend.replace(" structure", ""))
-columns[2].metric("RSI · 14 sessions", f"{last.rsi_14:.1f}" if pd.notna(last.rsi_14) else "Warming up")
-columns[3].metric("Relative volume", f"{last.relative_volume:.2f}×" if pd.notna(last.relative_volume) else "Warming up")
-st.caption("Use the quick references above or Education and Concepts for RSI, MACD, ATR, candlestick patterns and worked examples.")
-st.caption(f"{symbol} · {len(frame):,} sessions · as of {as_of} · daily exchange session dates · INR assumed; no currency conversion")
 
-tab_names = ["Chart & structure", "Patterns & momentum", "Evidence & trade plan", "Backtest lab", "Data & exports"]
+tab_names = ["Overview", "Patterns & momentum", "Trade plan & report", "Backtest lab", "Data & exports"]
 requested_tab = st.session_state.pop("requested_research_tab", None)
 chart_tab, analytical_tab, report_tab, backtest_tab, quality_tab = workspace_tabs(tab_names, key="research_active_tab", requested=requested_tab)
 with analytical_tab:
     render_research(analysis)
 with chart_tab:
-    st.plotly_chart(price_chart(analysis, bands), width="stretch")
-    st.caption(chart_window_caption(analysis))
-    left, right = st.columns([1.2, 1])
-    with left:
-        st.markdown("#### What the data says")
-        for item in analysis.evidence:
-            st.write(f"• {item}")
-        st.caption(f"Weekly context: {analysis.weekly['context']}. Most recent calendar week excluded.")
-    with right:
-        st.markdown("#### Support & resistance zones")
-        if analysis.zones:
-            zones = pd.DataFrame(analysis.zones)[["role", "low", "high", "pivot_count"]]
-            zones.columns = ["Role", "Lower boundary", "Upper boundary", "Confirmed pivots"]
-            st.dataframe(zones, hide_index=True, width="stretch", column_config={
-                "Lower boundary": st.column_config.NumberColumn(format="%.2f"),
-                "Upper boundary": st.column_config.NumberColumn(format="%.2f")})
-        else:
-            st.caption("Not enough clustered confirmed pivots to define zones.")
-        st.caption("Zones cluster nearby pivots using 0.5 ATR tolerance. Pivot count is not a probability or count of independent tests.")
+    render_market_read(read)
+    st.markdown("#### Chart")
+    bands, overlays, lower, window = chart_controls()
+    st.plotly_chart(price_chart(analysis, bands, overlays=overlays, lower=lower, window=window), width="stretch")
+    st.caption(chart_window_caption(analysis, window))
     st.markdown("#### Observation log")
     if analysis.events:
         visible = [{k: e.get(k) for k in ("name", "status", "formed_at", "detected_at", "price", "evidence")}
@@ -251,18 +283,20 @@ with chart_tab:
             def open_study(cohort, direction):
                 st.session_state["requested_study_cohort"] = cohort
                 st.session_state["requested_study_direction"] = int(direction)
-                navigate("After the pattern")
+                navigate("Pattern research")
             st.button("Study this observation type", key="study_observation", disabled=not bool(row.eligible),
                       on_click=open_study, args=(row.cohort, row.direction))
             if not row.eligible:
                 st.caption("This diagnostic lifecycle state stays in the audit. Select a breakout, retest or geometric observation to study outcomes.")
-        st.caption("Select an observation row to study its event type. Formation dates, knowledge dates and full coordinates remain in the exported evidence.")
+        st.caption("Select a row to see how that pattern type has played out historically. 'Knowable on' is when the pattern could first be detected without hindsight.")
     else:
         st.caption("No supported geometries detected.")
-    st.button("Explore historical outcomes", key="explore_outcomes", on_click=navigate, args=("After the pattern",))
+    st.button("Explore historical outcomes", key="explore_outcomes", on_click=navigate, args=("Pattern research",))
+    render_reference_links()
 
 with report_tab:
     st.subheader(analysis.setup["status"])
+    st.caption(f"Market read: **{read['verdict']}** — {read['summary']} The trade plan below uses its own fixed breakout rule, not the market read.")
     if "reference_entry" in analysis.setup:
         st.caption(analysis.setup["note"])
         entry, stop, target, quantity = st.columns(4)
@@ -273,7 +307,7 @@ with report_tab:
     else:
         st.write(analysis.setup.get("reason", "No executable baseline setup."))
     st.info("Success probability: unavailable. There is no calibrated model or validated pattern-performance database in this release.")
-    st.markdown(report_markdown(analysis, symbol, adjustment))
+    st.markdown(report_markdown(analysis, symbol, adjustment, read))
 
 with backtest_tab:
     strategy = st.radio("Strategy to test", ["Fixed breakout baseline", "Breakout-retest v1"],
@@ -299,8 +333,8 @@ with quality_tab:
     st.dataframe(frame.tail(100), width="stretch")
     evidence = run_evidence(analysis, data, settings, symbol, adjustment)
     st.download_button("Download analysis evidence", json.dumps(evidence, indent=2, allow_nan=False), "analysis.json", "application/json")
-    st.download_button("Download research report", report_markdown(analysis, symbol, adjustment), "research-report.md", "text/markdown")
+    st.download_button("Download research report", report_markdown(analysis, symbol, adjustment, read), "research-report.md", "text/markdown")
     st.download_button("Download calculated features", frame.to_csv(), "features.csv", "text/csv")
 
 st.divider()
-st.caption("Research and decision support only. No live orders, predictive guarantees, or calibrated success estimates. Screenshot analysis, other chart patterns, intraday data, ML and broker integrations are future work.")
+st.caption("Research and decision support only — not investment advice. No live orders. Pattern rules are heuristic and their predictive value is not validated; the app never shows a success probability it cannot support.")

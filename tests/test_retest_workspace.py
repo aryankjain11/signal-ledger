@@ -106,7 +106,7 @@ def test_concept_and_event_strategy_links_select_the_requested_strategy():
     app.button(key='run_retest').click().run()
     app.button(key='reference_retest_strategy').click().run()
     assert app.selectbox(key='chosen_concept').value=='retest-strategy'
-    app.selectbox(key='workspace_page').set_value('After the pattern').run()
+    app.radio(key='workspace_page').set_value('Pattern research').run()
     app.button(key='study_to_baseline').click().run()
     assert app.radio(key='strategy_choice').value=='Fixed breakout baseline'
     app.button(key='explore_outcomes').click().run()
@@ -119,10 +119,10 @@ def test_strategy_selection_survives_missing_upload_gate_and_reference_page():
     app=app_retest()
     next(r for r in app.radio if r.label=='Data source').set_value('Upload daily data').run()
     assert any('Upload one symbol' in i.value for i in app.info)
-    next(r for r in app.radio if r.label=='Data source').set_value('Synthetic walkthrough').run()
+    next(r for r in app.radio if r.label=='Data source').set_value('Demo data').run()
     assert app.radio(key='strategy_choice').value=='Breakout-retest v1'
-    app.selectbox(key='workspace_page').set_value('Education and Concepts').run()
-    app.selectbox(key='workspace_page').set_value('Research dashboard').run()
+    app.radio(key='workspace_page').set_value('Learn').run()
+    app.radio(key='workspace_page').set_value('Analyze').run()
     assert app.radio(key='strategy_choice').value=='Breakout-retest v1'
     assert not app.exception
 

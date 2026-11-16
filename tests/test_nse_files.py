@@ -178,14 +178,15 @@ def test_report_walkthrough_ui_and_security_switch():
     from pathlib import Path
     root = Path(__file__).resolve().parents[1]
     app = AppTest.from_file(str(root / "app.py"), default_timeout=30).run()
-    next(r for r in app.radio if r.label == "Data source").set_value("Synthetic NSE report walkthrough").run()
+    next(r for r in app.radio if r.label == "Data source").set_value("Import NSE daily reports").run()
+    app.checkbox(key="report_demo").check().run()
     assert not app.exception
     assert len(app.metric) == 4
     assert app.selectbox(key="report_instrument").value == "DEMOALPHA|EQ"
     app.selectbox(key="report_instrument").set_value("DEMOBETA|EQ").run()
     assert not app.exception
     assert any("DEMOBETA" in m.value for m in app.markdown)
-    next(r for r in app.radio if r.label == "Data source").set_value("Import NSE daily reports").run()
+    app.checkbox(key="report_demo").uncheck().run()
     assert not app.exception
     assert any("Upload NSE CM" in i.value for i in app.info)
 
@@ -225,7 +226,7 @@ def test_uploaded_zip_analysis_or_friendly_failure(monkeypatch, content, expecte
 def test_lesson_two_available_in_education():
     from pathlib import Path
     app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=30).run()
-    app.selectbox(key="workspace_page").set_value("Education and Concepts").run()
+    app.radio(key="workspace_page").set_value("Learn").run()
     assert not app.exception
     assert any("Lesson 2" in e.label for e in app.expander)
     assert any("analyzed_normalized_sha256" in m.value for m in app.markdown)
