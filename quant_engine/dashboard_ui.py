@@ -9,6 +9,12 @@ STYLE = """<style>
  h1 {letter-spacing:-1px; font-weight:650!important}
  [data-testid="stMetric"] {background:#101a2b;border:1px solid #253248;border-radius:12px;padding:14px 16px}
  [data-testid="stMetricLabel"] {color:#97a7bf}
+ [data-testid="stMetricValue"] {font-size:1.75rem}
+ .tf-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0}
+ .tf {background:#101a2b;border:1px solid #253248;border-radius:10px;padding:10px 14px}
+ .tf .h {display:flex;justify-content:space-between;align-items:baseline;font-weight:650;color:#dfe7f3}
+ .tf .s {font-size:20px;font-weight:700;margin:2px 0}
+ .tf .d {color:#97a7bf;font-size:12.5px;line-height:1.35}
  [data-testid="stSidebar"] {border-right:1px solid #253248}
  [data-testid="stSidebar"] [role="radiogroup"] label {padding:3px 0}
  .stTabs [data-baseweb="tab-list"] {gap:22px;border-bottom:1px solid #253248}
@@ -123,3 +129,16 @@ def chart_controls():
         st.write("")
         bands = st.checkbox("Show Bollinger bands", key="show_bands", persist_state="session")
     return bands, overlays, lower, WINDOWS[window]
+
+
+def render_timeframes(mtf):
+    st.markdown("#### Timeframes")
+    cards = []
+    for r in mtf["reads"]:
+        tone = "up" if r["signal"] == 1 else "down" if r["signal"] == -1 else "flat"
+        arrow = {1: "▲", -1: "▼", 0: "▶", None: "·"}[r["signal"]]
+        meta = f"{r['bars']:,} bars" + (f" · to {r['last_period']}" if r.get("last_period") else "")
+        cards.append(f'<div class="tf"><div class="h"><span>{escape(r["timeframe"])}</span><span class="d">{meta}</span></div>'
+                     f'<div class="s {tone}">{arrow} {escape(r["label"])}</div><div class="d">{escape(r["detail"])}</div></div>')
+    st.markdown('<div class="tf-grid">' + "".join(cards) + "</div>", unsafe_allow_html=True)
+    st.caption(f"**{mtf['alignment']}** {mtf['note']}")

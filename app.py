@@ -26,7 +26,8 @@ from quant_engine.retest_ui import render_retest_lab
 from quant_engine.workflow_ui import PAGES, PAGE_ICONS, navigate, render_reference_links
 from quant_engine.providers import EXCHANGE_SUFFIX, PERIODS, PROVIDER_ADJUSTMENT, fetch_daily
 from quant_engine.market_read import market_read
-from quant_engine.dashboard_ui import STYLE, render_header, render_market_read, chart_controls, render_welcome
+from quant_engine.scanner_ui import render_scanner
+from quant_engine.dashboard_ui import STYLE, render_header, render_market_read, render_timeframes, chart_controls, render_welcome
 import os
 from quant_engine.ui_state import (retained_upload, completed_confirmation,
     date_control, reset_dates, workspace_tabs, preserve_tab_state)
@@ -57,6 +58,9 @@ with st.sidebar:
     workspace = st.radio("Navigate", page_names, key="workspace_page", label_visibility="collapsed",
                          format_func=lambda name: f"{PAGE_ICONS[name]}  {name}")
 st.query_params["page"] = PAGES[workspace]
+if workspace == "Scanner":
+    render_scanner()
+    st.stop()
 if workspace == "Compare stocks":
     render_comparison()
     st.stop()
@@ -75,7 +79,8 @@ with st.sidebar:
     is_reports = source == "Import NSE daily reports"
     declared_provider, declared_exchange = "User-supplied file; provider not stated", "Unknown"
     if source == "Fetch by ticker":
-        ticker = st.text_input("Ticker", key="ticker_symbol", value="RELIANCE", max_chars=30, persist_state="session",
+        st.session_state.setdefault("ticker_symbol", "RELIANCE")
+        ticker = st.text_input("Ticker", key="ticker_symbol", max_chars=30, persist_state="session",
                                placeholder="RELIANCE, TCS, HDFCBANK, ^NSEI",
                                help="NSE/BSE symbols get .NS/.BO added automatically. Indices start with ^ (e.g. ^NSEI). Choose 'As typed' for other markets.")
         left, right = st.columns(2)
@@ -228,8 +233,14 @@ if action_ledger is not None:
         st.stop()
 from quant_engine.calendar import attach_quality
 quality = attach_quality(data, replay=as_of != options[-1])
-if any(quality[key] for key in ("missing_expected_dates", "unexpected_dates", "future_dates")):
-    st.warning("Calendar checks found observations needing review. Open Data & exports for the dates and details; no bars were filled or removed.")
+calendar_flags = {label: quality[key] for key, label in (("missing_expected_dates", "missing trading day"),
+                  ("unexpected_dates", "date not in the NSE trading calendar"), ("future_dates", "future-dated row")) if quality[key]}
+if calendar_flags:
+    def _dates(values):
+        values = [str(v.get("date", v)) if isinstance(v, dict) else str(v) for v in values]
+        return ", ".join(values[:4]) + (f" +{len(values) - 4} more" if len(values) > 4 else "")
+    summary = "; ".join(f"{len(v)} {label}{'s' if len(v) > 1 else ''} ({_dates(v)})" for label, v in calendar_flags.items())
+    st.caption(f":material/event_busy: Calendar check: {summary}. Often a special session (e.g. Muhurat trading) or a provider gap. Nothing was filled or removed; details in Data & exports.")
 if len(data.bars) < 3:
     st.info("Select at least three observations to begin analysis.")
     st.stop()
@@ -262,6 +273,7 @@ with analytical_tab:
     render_research(analysis)
 with chart_tab:
     render_market_read(read)
+    render_timeframes(read["mtf"])
     st.markdown("#### Chart")
     bands, overlays, lower, window = chart_controls()
     st.plotly_chart(price_chart(analysis, bands, overlays=overlays, lower=lower, window=window), width="stretch")

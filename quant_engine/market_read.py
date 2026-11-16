@@ -12,6 +12,8 @@ import math
 import numpy as np
 import pandas as pd
 
+from .timeframes import multi_timeframe
+
 LIVE_STATES = ("Developing", "Confirmed", "Breakout", "Breakdown", "Retest held", "Continuation",
                "Contextual geometry", "Confirmed-pivot observation", "Confirmed upward break",
                "Confirmed downward break", "Confirmed neckline break")
@@ -99,10 +101,11 @@ def market_read(analysis, recent_bars: int = 15) -> dict:
     flow = None if len(subs) < 2 else (subs[0] if subs[0] == subs[1] else 0)
     families.append(_family("Volume flow", flow, "; ".join(inputs) or "Needs 21+ sessions.", inputs=inputs))
 
-    # 5. Completed weekly context
-    weekly = analysis.weekly
-    wk = None if weekly.get("status") != "Available" else (1 if weekly["context"].startswith("Above") else -1)
-    families.append(_family("Weekly timeframe", wk, f"{weekly['context']} ({weekly['completed_weeks']} completed weeks)."))
+    # 5. Higher timeframes (completed weeks and months), one combined vote
+    mtf = multi_timeframe(frame[["open", "high", "low", "close", "volume"]])
+    higher = {r["timeframe"]: r for r in mtf["reads"]}
+    detail = "; ".join(f"{t}: {higher[t]['label'].lower()}" for t in ("Monthly", "Weekly")) + ". " + mtf["alignment"]
+    families.append(_family("Higher timeframes", mtf["higher_signal"], detail))
 
     # 6. Recent, still-live pattern observations with a direction
     start = len(frame) - recent_bars
@@ -165,7 +168,7 @@ def market_read(analysis, recent_bars: int = 15) -> dict:
     levels = key_levels(analysis, close, atr)
     summary = (f"{bullish} of {available} evidence families point up, {bearish} down and {neutral} neutral."
                if available else "Not enough history to read the evidence.")
-    return {"verdict": verdict, "bullish": bullish, "bearish": bearish, "neutral": neutral,
+    return {"verdict": verdict, "mtf": mtf, "bullish": bullish, "bearish": bearish, "neutral": neutral,
             "available": available, "families": families, "levels": levels, "summary": summary,
             "probability": None,
             "basis": "Count of agreeing evidence families (one vote each); a heuristic description, not a probability or a trade signal."}

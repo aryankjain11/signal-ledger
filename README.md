@@ -28,7 +28,8 @@ To put it online so others can use it from a browser, see [DEPLOY.md](DEPLOY.md)
 
 | Page | Use it to |
 | --- | --- |
-| **Analyze** | Fetch a ticker or load a file. The **Market read** gives one vote each to price structure, trend, momentum, volume flow, the weekly timeframe and recent patterns, plus key support/resistance levels with % and ATR distances. The chart has switchable overlays (EMA, SMA200, Supertrend, Donchian, Keltner, VWAP, Bollinger) and lower panels (RSI, MACD, ADX/DI, Stochastic, MFI, OBV). Other tabs: pattern/candle/divergence detections, a conditional trade plan with sizing, two backtestable long strategies, and data quality and exports. **Replay** recomputes everything as of an earlier date. |
+| **Analyze** | Fetch a ticker or load a file. The **Market read** gives one vote each to price structure, trend, momentum, volume flow, higher timeframes (completed weeks + months) and recent patterns, plus key support/resistance levels with % and ATR distances, and a **Timeframes** strip (monthly · weekly · daily) that says whether the daily move is aligned with or against the larger trend. The chart has switchable overlays (EMA, SMA200, Supertrend, Donchian, Keltner, VWAP, Bollinger) and lower panels (RSI, MACD, ADX/DI, Stochastic, MFI, OBV). Other tabs: pattern/candle/divergence detections, a conditional trade plan with sizing, two backtestable long strategies, and data quality and exports. **Replay** recomputes everything as of an earlier date. |
+| **Scanner** | Run the full Market read over a watchlist (NIFTY 50 preset, or your own list of up to 100) and rank the results. Filter by verdict, timeframe alignment or recent patterns; select a row to open that stock in Analyze; export CSV. |
 | **Pattern research** | For any detected pattern type (breakouts/retests, double tops/bottoms, head & shoulders, triangles, candles, divergences): forward moves, best/worst excursions, and comparison with ordinary days in the same stock. |
 | **Compare stocks** | Two tickers (or files) side by side: relative performance, drawdowns and return correlation. |
 | **Learn** | 131 searchable definitions with worked examples, each labelled with what the app actually implements. |
@@ -62,6 +63,8 @@ quant_engine/
   indicators.py            trailing indicator catalogue (cross-checked against `ta`)
   patterns.py, research.py swings, structure, zones, candles, breakouts, chart patterns, H&S
   market_read.py           one-vote-per-family evidence summary + key levels
+  timeframes.py            completed monthly/weekly bars, per-timeframe trend, alignment verdict
+  scanner*.py              watchlist scan (NIFTY 50 preset) built on the same engine
   strategy.py, retest_*.py position sizing and the two strategy simulators
   event_study*.py          Pattern research engine and page
   comparison*.py           two-stock comparison

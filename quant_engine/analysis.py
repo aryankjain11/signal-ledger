@@ -101,6 +101,10 @@ def report_markdown(analysis: Analysis, symbol: str, adjustment: str, read: dict
         if context:
             parts.append("**Context (not counted)**")
             parts.append("\n".join(f"- {f['family']}: {f['detail']}" for f in context))
+        if read.get("mtf"):
+            parts.append("**Timeframes** (completed periods only)\n\n| Timeframe | Trend | Detail |\n| --- | --- | --- |\n" + "\n".join(
+                f"| {r['timeframe']} | {r['label']} | {r['detail']} |" for r in read["mtf"]["reads"]))
+            parts.append(read["mtf"]["alignment"])
         if read["levels"]:
             parts.append("**Key levels**\n\n| Level | Price | Distance |\n| --- | --- | --- |\n" + "\n".join(
                 f"| {l['label']} | {l['low']:.2f}" + (f"–{l['high']:.2f}" if l['high'] != l['low'] else "") + f" | {l['distance_pct']:+.1f}% |"

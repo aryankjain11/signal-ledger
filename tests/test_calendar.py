@@ -138,7 +138,7 @@ def test_quality_upload_ui_surfaces_absent_and_non_session_dates(monkeypatch):
     next(r for r in app.radio if r.label == "Data source").set_value("Upload daily data").run()
     app.checkbox[0].check().run()
     assert not app.exception
-    assert any("Calendar checks found" in w.value for w in app.warning)
+    assert any("Calendar check:" in c.value and "2026-10-22" in c.value for c in app.caption)
     tables = [d.value for d in app.dataframe if "Check" in d.value.columns]
     assert len(tables) == 1
     assert "2026-10-22" in tables[0]["Dates (first 20)"].tolist()

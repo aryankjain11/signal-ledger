@@ -20,7 +20,8 @@ def fake_history(rows=30, start="2026-10-01", tz="Asia/Kolkata", gaps=()):
 
 @pytest.mark.parametrize("typed,exchange,expected", [
     ("reliance", "NSE", "RELIANCE.NS"), (" tcs ", "BSE", "TCS.BO"), ("INFY.NS", "BSE", "INFY.NS"),
-    ("^NSEI", "NSE", "^NSEI"), ("aapl", "As typed", "AAPL"), ("M&M", "NSE", None)])
+    ("^NSEI", "NSE", "^NSEI"), ("aapl", "As typed", "AAPL"), ("m&m", "NSE", "M&M.NS"), ("BAJAJ-AUTO", "NSE", "BAJAJ-AUTO.NS"),
+    ("a/b", "NSE", None), ("x?y=1", "NSE", None)])
 def test_symbol_mapping(typed, exchange, expected):
     if expected is None:
         with pytest.raises(ValueError):

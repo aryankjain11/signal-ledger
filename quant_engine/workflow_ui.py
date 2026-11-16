@@ -2,8 +2,8 @@
 import streamlit as st
 
 # Display label -> URL query value. "build" (developer checklist) is reachable only via ?page=build.
-PAGES = {"Analyze": "research", "Pattern research": "events", "Compare stocks": "compare", "Learn": "education"}
-PAGE_ICONS = {"Analyze": ":material/candlestick_chart:", "Pattern research": ":material/science:",
+PAGES = {"Analyze": "research", "Scanner": "scanner", "Pattern research": "events", "Compare stocks": "compare", "Learn": "education"}
+PAGE_ICONS = {"Analyze": ":material/candlestick_chart:", "Scanner": ":material/radar:", "Pattern research": ":material/science:",
               "Compare stocks": ":material/compare_arrows:", "Learn": ":material/menu_book:"}
 
 

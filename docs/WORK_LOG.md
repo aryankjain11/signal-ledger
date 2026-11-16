@@ -1209,3 +1209,30 @@ outbound access); first live run on the owner's machine is the remaining check.
 Next: multi-timeframe confirmation inside the Market read; flags/wedges/cup-and-handle;
 cross-stock pattern database (run Pattern research over a watchlist) for larger samples;
 fair baseline-vs-retest comparison; persistent analysis history.
+
+
+## 2026-11-17 · Hosted on Streamlit Cloud; multi-timeframe read; Scanner
+
+Deployment: pushed to `aryankjain11/signal-ledger` (02aa2f5) from the owner's laptop and
+deployed on Streamlit Community Cloud. First boot failed (`ModuleNotFoundError: plotly`)
+because the host used Python 3.14 and `pandas==2.3.2` has no 3.14 wheel, so the whole
+requirements install failed. Pinned `pandas==2.3.3` (5222514); verified wheels for
+3.12/3.13/3.14 and the full suite on Python 3.14.6. Live Yahoo fetch confirmed working
+from the hosted app (owner screenshot, SBIN).
+
+Changes:
+- `timeframes.py`: completed monthly bars (forming month dropped, like weeks); per-timeframe
+  trend vote (close vs EMA20, EMA10 vs EMA20, Supertrend; majority rule) and swing structure;
+  `alignment_verdict` covers aligned / counter-trend / pause / conflict / unavailable.
+- Market read: the weekly-only family became **Higher timeframes** (monthly + weekly, one vote;
+  disagreement or sideways votes neutral). Timeframes strip on Overview; table in the report.
+- **Scanner** page: NIFTY 50 preset (as of 30 Sep 2026: BSE in, WIPRO out, per NSE Indices'
+  10 Aug 2026 notice; constituents from a published weight list dated 29 Sep 2026) or custom
+  list (max 100). Parallel fetch, sequential analysis with the same engine; failures isolated
+  as error rows; results cached 1 h; filters, CSV export, "Open in Analyze".
+- Fixes: tickers containing `&` (M&M) were rejected; calendar notice is now a specific caption
+  (counts + dates) instead of a generic warning; metric values no longer truncate.
+- Tests: `test_timeframes.py` (aggregation, forming-period exclusion, unavailable on short
+  history, every alignment case), `test_scanner.py` (parsing, default list validity, row =
+  single-stock analysis, failure isolation, page run, open-in-Analyze). **371 passed**.
+  Browser walkthrough with a stand-in provider: Analyze (timeframes) and a 50-stock scan.

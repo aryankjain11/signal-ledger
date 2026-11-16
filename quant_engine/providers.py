@@ -39,7 +39,8 @@ def provider_symbol(symbol: str, exchange: str) -> str:
     clean = symbol.strip().upper().replace(" ", "")
     if not clean:
         raise ValueError("Enter a ticker symbol, for example RELIANCE or TCS.")
-    if len(clean) > 30 or any(c in clean for c in "/\\?#&="):
+    # Letters, digits and the few symbols NSE tickers use (M&M, BAJAJ-AUTO, ^NSEI, RELIANCE.NS).
+    if len(clean) > 30 or not all(c.isalnum() or c in "&-^._" for c in clean):
         raise ValueError("That does not look like a ticker symbol.")
     if exchange not in EXCHANGE_SUFFIX:
         raise ValueError(f"Unsupported exchange: {exchange}")
