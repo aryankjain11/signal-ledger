@@ -27,6 +27,7 @@ from quant_engine.workflow_ui import PAGES, PAGE_ICONS, navigate, render_referen
 from quant_engine.providers import EXCHANGE_SUFFIX, PERIODS, PROVIDER_ADJUSTMENT, fetch_daily
 from quant_engine.market_read import market_read
 from quant_engine.scanner_ui import render_scanner
+from quant_engine.pooled_ui import render_pooled_research
 from quant_engine.dashboard_ui import STYLE, render_header, render_market_read, render_timeframes, chart_controls, render_welcome
 import os
 from quant_engine.ui_state import (retained_upload, completed_confirmation,
@@ -67,6 +68,13 @@ if workspace == "Compare stocks":
 if workspace == "Learn":
     render_education(ROOT)
     st.stop()
+if workspace == "Pattern research":
+    st.title("Pattern research")
+    scope = st.segmented_control("Study", ["This stock", "Watchlist (pooled)"], default="This stock",
+                                 key="research_scope", persist_state="session") or "This stock"
+    if scope == "Watchlist (pooled)":
+        render_pooled_research()
+        st.stop()
 with st.sidebar:
     st.divider()
     st.markdown('<div class="side-head">Data</div>', unsafe_allow_html=True)
@@ -127,8 +135,8 @@ with st.sidebar:
 
 
 if workspace == "Pattern research":
-    st.title("Pattern research")
-    st.caption("What happened after each detected pattern in this stock's history: forward moves, best/worst excursions and comparison with ordinary days.")
+    st.caption("What happened after each detected pattern in this stock's history: forward moves, best/worst excursions and comparison with ordinary days. "
+               "Switch to **Watchlist (pooled)** to study the same patterns across many stocks.")
 
 provider_notes = []
 if is_reports:

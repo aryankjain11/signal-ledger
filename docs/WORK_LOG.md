@@ -1236,3 +1236,26 @@ Changes:
   history, every alignment case), `test_scanner.py` (parsing, default list validity, row =
   single-stock analysis, failure isolation, page run, open-in-Analyze). **371 passed**.
   Browser walkthrough with a stand-in provider: Analyze (timeframes) and a 50-stock scan.
+
+
+## 2026-11-17 · Watchlist-wide pattern research (pooled)
+
+- `pooled_study.py`: runs the unchanged single-stock `build_study` per symbol (own detectors,
+  knowledge-date timing, overlap thinning and the stock's *own* non-event baseline), then
+  stacks outcomes. Per cohort × horizon: events, stocks, distinct dates, top-stock share,
+  mean/median/quartiles, share in the pattern's direction, MFE/MAE, matched baseline
+  difference, and a 90% interval for that difference from a bootstrap that resamples whole
+  event dates (shown only with >= 30 matched events on >= 20 dates). Sample notes flag
+  small, concentrated (>40% from one stock) or heavily date-clustered cohorts.
+- Pattern research page: "This stock" (default; unchanged) / "Watchlist (pooled)" switch.
+  Pooled view: results table, difference chart of rows with a range (bright = excludes
+  zero), a multiple-comparisons notice ("M of N exclude zero; ~N/10 expected by chance"),
+  drill-down by stock + outcome histogram, coverage, CSV, method and limits (incl.
+  survivorship bias of today's index list).
+- Verification: `test_pooled_study.py`. A one-stock pool reproduces the single-stock summary
+  exactly; duplicating a stock doubles events but leaves distinct dates and the interval
+  unchanged (date clustering works), while relabelling the copies as new dates would wrongly
+  narrow it; thresholds, cohort filter, failure isolation; end-to-end page test (2 of 3 stocks,
+  one fetch failure). **Null check** on 50 random-walk stocks (5 y, 4,713 events at 10 sessions):
+  5 of 66 intervals (8%) excluded zero vs ~10% expected by chance, so the method does not
+  manufacture edges. Full suite **377 passed**; browser run of a 50-stock pooled study.
