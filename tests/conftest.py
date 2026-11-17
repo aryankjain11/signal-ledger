@@ -12,4 +12,5 @@ def _fresh_streamlit_cache():
     """st.cache_data is process-global; isolate tests that fetch through it."""
     import streamlit as st
     st.cache_data.clear()
+    st.cache_resource.clear()
     yield

@@ -281,3 +281,17 @@ def percentile_vs_random(value, control) -> float | None:
         return None
     values = np.array(control["r_values"])
     return float((values < value).mean() * 100)
+
+
+def latest_signals(stocks: dict, cohort: str) -> list[dict]:
+    """Stocks whose newest completed session carries an eligible signal of this cohort (the next open is tradable)."""
+    out = []
+    for symbol, (frame, events, *_rest) in stocks.items():
+        ledger = occurrence_ledger(frame, events)
+        last = len(frame) - 1
+        hit = ledger.loc[ledger.eligible & ledger.cohort.eq(cohort) & ledger["index"].eq(last) & ledger.direction.eq(1)]
+        atr = float(frame.atr_14.iloc[last])
+        if not hit.empty and math.isfinite(atr) and atr > 0:
+            out.append({"symbol": symbol, "signal_date": frame.index[last].date().isoformat(),
+                        "close": float(frame.close.iloc[last]), "atr": atr})
+    return out

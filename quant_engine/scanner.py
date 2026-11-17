@@ -44,7 +44,7 @@ def _num(value, digits=2):
     return round(value, digits) if math.isfinite(value) else None
 
 
-def summarize(symbol: str, data, recent: int = 10) -> dict:
+def summarize(symbol: str, data, recent: int = 10, provider_symbol: str = "") -> dict:
     analysis = analyze(data, Settings())
     read = market_read(analysis)
     frame = analysis.frame
@@ -74,6 +74,7 @@ def summarize(symbol: str, data, recent: int = 10) -> dict:
         "Recent patterns (n)": len(live),
         "Breakout setup": analysis.setup["status"],
         "Sessions": len(frame), "Error": "",
+        "ATR": _num(last.get("atr_14"), 4), "Provider symbol": provider_symbol or symbol,
     }
 
 
@@ -110,7 +111,7 @@ def scan(symbols, exchange="NSE", period="2 years", *, history=None, workers=6, 
             continue
         try:
             data = load_bars(result.csv_bytes, f"{result.provider_symbol}.csv")
-            rows.append(summarize(result.display_symbol, data))
+            rows.append(summarize(result.display_symbol, data, provider_symbol=result.provider_symbol))
         except Exception as exc:  # one bad series must not sink the scan
             rows.append({"Symbol": symbol, "Error": f"Analysis failed: {exc}"})
     return rows

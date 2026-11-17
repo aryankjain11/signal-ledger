@@ -2,6 +2,7 @@
 import pandas as pd
 import streamlit as st
 
+from .paper_ui import record
 from .providers import EXCHANGE_SUFFIX
 from .scanner import NIFTY_50, NIFTY_50_AS_OF, VERDICT_ORDER, parse_watchlist, scan
 
@@ -96,9 +97,19 @@ def render_scanner():
         })
     chosen = event.selection.rows if event and event.selection else []
     if chosen:
-        symbol = view.iloc[chosen[0]]["Symbol"]
-        st.button(f"Open {symbol} in Analyze", type="primary", icon=":material/open_in_new:",
-                  on_click=_open_in_analyze, args=(symbol, exchange))
+        row = view.iloc[chosen[0]]
+        symbol = row["Symbol"]
+        a, b, _ = st.columns([1.4, 2.2, 2])
+        a.button(f"Open {symbol} in Analyze", type="primary", icon=":material/open_in_new:",
+                 on_click=_open_in_analyze, args=(symbol, exchange))
+        if b.button(f"Paper-trade {symbol} (2 ATR stop, 2R, 20 sessions)", icon=":material/bookmark_add:",
+                    disabled=pd.isna(row.get("ATR"))):
+            ok, message = record(dict(symbol=symbol, provider_symbol=row["Provider symbol"], exchange=exchange,
+                                      signal_date=row["As of"], signal_close=float(row["Close"]), atr=float(row["ATR"]),
+                                      source="Scanner", pattern=row["Recent pattern"] or "",
+                                      snapshot={"verdict": row["Market read"], "alignment": row["Alignment"], "rsi": row["RSI"]}),
+                                 last_bar_date=row["As of"])
+            (st.success if ok else st.warning)(message)
     else:
         st.caption("Select a row to open that stock in Analyze.")
     st.download_button("Download scan (CSV)", view[columns].to_csv(index=False), "signal-ledger-scan.csv", "text/csv")

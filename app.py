@@ -29,6 +29,7 @@ from quant_engine.market_read import market_read
 from quant_engine.scanner_ui import render_scanner
 from quant_engine.pooled_ui import render_pooled_research
 from quant_engine.portfolio_ui import render_portfolio_backtest
+from quant_engine.paper_ui import record_form, render_paper_trades
 from quant_engine.dashboard_ui import STYLE, render_header, render_market_read, render_timeframes, chart_controls, render_welcome
 import os
 from quant_engine.ui_state import (retained_upload, completed_confirmation,
@@ -65,6 +66,9 @@ if workspace == "Scanner":
     st.stop()
 if workspace == "Strategy backtest":
     render_portfolio_backtest()
+    st.stop()
+if workspace == "Paper trades":
+    render_paper_trades()
     st.stop()
 if workspace == "Compare stocks":
     render_comparison()
@@ -331,6 +335,17 @@ with report_tab:
     else:
         st.write(analysis.setup.get("reason", "No executable baseline setup."))
     st.info("Success probability: unavailable. There is no calibrated model or validated pattern-performance database in this release.")
+    if fetched is not None and pd.notna(last.atr_14):
+        mtf_reads = {r["timeframe"]: r["label"] for r in read["mtf"]["reads"]}
+        record_form("analyze", dict(
+            symbol=symbol, provider_symbol=fetched.provider_symbol, exchange=fetched.exchange,
+            signal_date=analysis.frame.index[-1].date().isoformat(), signal_close=float(last.close), atr=float(last.atr_14),
+            source="Analyze", pattern=("Breakout baseline setup" if "reference_entry" in analysis.setup else "Own idea"),
+            snapshot={"verdict": read["verdict"], "alignment": read["mtf"]["alignment"], "timeframes": mtf_reads,
+                      "rsi": float(last.rsi_14) if pd.notna(last.rsi_14) else None, "setup": analysis.setup["status"]}),
+            last_bar_date=options[-1], replay=as_of != options[-1], costs=(float(fees), float(slip)))
+    else:
+        st.caption(":material/bookmark: Paper trades need **Fetch by ticker** data, so their outcome can be checked automatically later.")
     st.markdown(report_markdown(analysis, symbol, adjustment, read))
 
 with backtest_tab:

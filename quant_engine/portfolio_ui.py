@@ -8,8 +8,10 @@ from .event_study import StudyRules
 from .event_study_ui import cohort_label
 from .pooled_study import pooled_study
 from .pooled_ui import PRESETS, load_universe
-from .portfolio import (PortfolioRules, equal_weight_benchmark, percentile_vs_random, random_entry_control,
-                        run_portfolio, split_date)
+from .paper_ui import record
+from .portfolio import (PortfolioRules, equal_weight_benchmark, latest_signals, percentile_vs_random,
+                        random_entry_control, run_portfolio, split_date)
+from .providers import provider_symbol
 from .providers import EXCHANGE_SUFFIX
 from .scanner import parse_watchlist
 
@@ -210,6 +212,27 @@ def render_portfolio_backtest():
                 st.dataframe(frame.drop(columns=[c for c in ("proceeds", "cohort") if c in frame]), hide_index=True, width="stretch",
                              column_config={c: st.column_config.NumberColumn(format="%.2f") for c in ("entry", "exit", "stop", "target", "pnl", "r_multiple", "return_pct", "rvol") if c in frame})
     st.download_button("Download test-year trades (CSV)", test.trades.to_csv(index=False), "signal-ledger-test-trades.csv", "text/csv")
+
+    st.markdown("### 4 · Follow it forward")
+    today = latest_signals(stocks, cohort)
+    if not today:
+        st.caption(f"No stock shows a {cohort_label(cohort)} signal on its latest session. Come back after the next close; "
+                   "recording each new signal as a paper trade is the honest way to see whether this pattern works from here on.")
+    else:
+        st.write(f"**{len(today)}** stock(s) show this signal on their latest session: "
+                 + ", ".join(f"{s['symbol']} ({s['signal_date']})" for s in today))
+        if st.button(f"Record {len(today)} as paper trades with these rules", icon=":material/bookmark_add:"):
+            messages = []
+            for s in today:
+                ok, msg = record(dict(symbol=s["symbol"], provider_symbol=provider_symbol(s["symbol"], exchange), exchange=exchange,
+                                      signal_date=s["signal_date"], signal_close=s["close"], atr=s["atr"],
+                                      stop_atr=rule_values["stop_atr"], reward_risk=rule_values["reward_risk"],
+                                      max_hold=rule_values["max_hold"], fee_bps=rule_values["fee_bps"],
+                                      slippage_bps=rule_values["slippage_bps"], source="Strategy backtest",
+                                      pattern=cohort_label(cohort), snapshot={"verdict": title}),
+                                 last_bar_date=s["signal_date"])
+                messages.append(("✓ " if ok else "· ") + msg)
+            st.info("\n\n".join(messages))
     with st.expander("Rules, assumptions and limits"):
         st.markdown(
             "- **Entry:** next session's open after the pattern's knowledge close, plus slippage. **Long only.**\n"

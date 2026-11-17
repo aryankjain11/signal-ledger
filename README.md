@@ -32,6 +32,7 @@ To put it online so others can use it from a browser, see [DEPLOY.md](DEPLOY.md)
 | **Scanner** | Run the full Market read over a watchlist (NIFTY 50 preset, or your own list of up to 100) and rank the results. Filter by verdict, timeframe alignment or recent patterns; select a row to open that stock in Analyze; export CSV. |
 | **Pattern research** | *This stock:* for any detected pattern type (breakouts/retests, double tops/bottoms, head & shoulders, triangles, candles, divergences), forward moves, best/worst excursions and comparison with ordinary days in the same stock. *Watchlist (pooled):* the same study run on every stock in a list (NIFTY 50 preset), pooled into hundreds of events per pattern, with distinct-date counts, concentration, a date-clustered 90% range for the edge over ordinary days, and an explicit "how many would look good by chance" check. |
 | **Strategy backtest** | Trade one bullish pattern across a watchlist as a portfolio (risk-based sizing, max open positions, ATR stop, R-multiple target, holding limit, costs). The pattern is chosen from the **training** years only; results are shown side by side for training and held-out **test** years, and judged against **random entries with identical rules** (40 runs), so market drift is not mistaken for an edge. |
+| **Paper trades** | Record a setup on the day it appears (from Analyze, a Scanner row, or a strategy's latest signals) and let the app check later whether it hit its target, its stop or its holding limit, using only sessions after the signal. Plans are frozen once recorded (void with a reason, never edit); recording a past date is refused. Stats in R, cumulative curve, per-source breakdown, named ledgers. Stored in SQLite locally, or any database via a `DATABASE_URL` secret. |
 | **Compare stocks** | Two tickers (or files) side by side: relative performance, drawdowns and return correlation. |
 | **Learn** | 131 searchable definitions with worked examples, each labelled with what the app actually implements. |
 
@@ -68,6 +69,7 @@ quant_engine/
   scanner*.py              watchlist scan (NIFTY 50 preset) built on the same engine
   pooled_study.py, pooled_ui.py  watchlist-wide pattern outcomes (per-stock engine, then pooled)
   portfolio.py, portfolio_ui.py  multi-stock portfolio backtest, train/test split, random-entry control
+  paper.py, paper_store.py, paper_ui.py  paper trading: frozen plans, forward-only evaluation, storage
   strategy.py, retest_*.py position sizing and the two strategy simulators
   event_study*.py          Pattern research engine and page
   comparison*.py           two-stock comparison

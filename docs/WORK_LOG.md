@@ -1291,3 +1291,30 @@ GitHub: aryankjain11 connected to Claude; pushes now go directly from the sessio
   "Held up". Full suite **388 passed**; browser run of the full flow on 50 stand-in stocks.
 - Not yet: roadmap/checklist status entries for this feature (learning/roadmap.py) — the
   generated PROJECT_STATUS is unchanged.
+
+
+## 2026-11-17 · Paper-trading tracker (prospective evaluation)
+
+- `paper.py`: frozen `PaperPlan` (signal date/close, ATR, stop ATR, R target, holding limit,
+  costs, source, pattern, context snapshot). `evaluate` is a pure function of the plan and
+  completed daily bars dated after the signal, with the backtests' rules (next-open entry +
+  slippage, gap-through-stop at the open, stop-first, holding limit, R after costs, MFE/MAE
+  capped at the exit). `check_recordable` refuses replay, non-latest sessions and signals more
+  than 4 calendar days old (hindsight). `ledger_stats` excludes voided trades.
+- `paper_store.py`: SQLAlchemy table; plan columns insert-only, evaluation columns and void
+  flag updatable; unique per (ledger, provider symbol, signal date, source, pattern).
+  `DATABASE_URL` (Streamlit secret or env) selects a hosted database; otherwise SQLite under
+  data/ (ignored by git). Added pins: sqlalchemy 2.0.44, psycopg[binary] 3.2.12 (wheels
+  verified for Python 3.14).
+- UI: "Paper trades" page (ledger name, update outcomes, stats in R, cumulative curve,
+  per-source table, CSV, void with reason, method). Recording from Analyze → Trade plan
+  (ticker data only, so outcomes can be fetched later), from a selected Scanner row, and
+  "record today's signals" on Strategy backtest (same rules as the backtest).
+- Verification (`test_paper.py`, 11): hand-computed target/gap/both-touched/expiry/cost cases;
+  bars on or before the signal are never used and later bars never change a closed outcome;
+  recording-time rules; storage round trip, dedup, void; end-to-end app test record → waiting →
+  three new sessions → "Target hit". That test first failed because the provider layer correctly
+  dropped a future-dated final session; fixed by advancing the test clock, not the code.
+  Full suite **399 passed**; browser check of recording and the page.
+- Open item: the hosted app has no persistent database yet, so its ledger resets on restart
+  (the page says so). Owner decision needed on a hosted database.
